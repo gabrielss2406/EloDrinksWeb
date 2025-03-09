@@ -1,4 +1,5 @@
 import { ReactQueryProvider } from "@/lib/react-query";
+import "@/assets/globals.css";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -1,3 +1,16 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+:root {
+    --color-primary: #F7A600;
+    --color-ghost: #202020;
+}
+
+.bg-primary {
+    background-color: var(--color-primary);
+}
+
+.bg-ghost {
+    background-color: var(--color-ghost);
+}

@@ -6,7 +6,7 @@ export default function LoginPage() {
 
   return (
     <div className='w-screen h-screen bg-ghost flex justify-center items-center'>
-      <div className='bg-white p-10'>
+      <div className='bg-white p-10 space-y-4'>
         <Image src={logo} alt="Elo Drinks Eventos" />
         <FormLogin />
       </div>

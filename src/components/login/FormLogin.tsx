@@ -13,7 +13,11 @@ export const FormLogin: React.FC = () => {
     const router = useRouter();
 
     const form = useForm<LoginType>({
-        resolver: zodResolver(loginSchema)
+        resolver: zodResolver(loginSchema),
+        defaultValues: {
+            email: '',
+            password: ''
+        }
     });
 
     const onSubmit = (data: LoginType) => {

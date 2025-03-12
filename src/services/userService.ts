@@ -1,18 +1,22 @@
-import { z } from "zod";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/lib/api";
 
-const userSchema = z.object({
-    id: z.string(),
-    name: z.string(),
-    email: z.string().email(),
-});
 
-export async function fetchUsers() {
-    const res = await fetch("/api/users");
-    const data = await res.json();
-    return userSchema.array().parse(data);
-}
+export function useLogin() {
+    return useMutation({
+        mutationFn: async ({ email, password }: { email: string; password: string }) => {
+            try {
+                const response = await api.post("login", {
+                    email,
+                    password
+                })
 
-export function useUsers() {
-    return useQuery({ queryKey: ["users"], queryFn: fetchUsers });
+                localStorage.setItem("token", response.data.token);
+
+                return true
+            } catch (error: unknown) {
+                console.log(error)
+            }
+        }
+    })
 }

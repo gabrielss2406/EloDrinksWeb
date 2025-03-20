@@ -1,4 +1,5 @@
 module.exports = {
+    darkMode: "class",
     content: [
         './src/**/*.{html,js,jsx,tsx}',  // Adapte conforme a estrutura do seu projeto
     ],

@@ -5,6 +5,7 @@ import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from '@/co
 import { Menu } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation'
+import ThemeToggle from './ThemeToogle';
 
 interface SidebarRoutesProps {
     pageName: string;
@@ -41,13 +42,14 @@ const Sidebar: React.FC = () => {
             </div>
             <div className="hidden sm:block p-5 h-screen">
                 <div className="text-xl font-bold mb-6 text-center">ELO DRINKS</div>
+                <ThemeToggle />
                 <nav>
                     <div className="flex flex-col items-center justify-between w-full gap-3">
-                        <SidebarRoutes pageName={'Dashboard'} routeName={'/'} />
-                        <SidebarRoutes pageName={'Revenue'} routeName={'/revenue'} />
-                        <SidebarRoutes pageName={'Orders'} routeName={'/orders'} />
-                        <SidebarRoutes pageName={'Products'} routeName={'/products'} />
-                        <SidebarRoutes pageName={'Customers'} routeName={'/customers'} />
+                        <SidebarRoutes pageName={'Painel'} routeName={'/'} />
+                        <SidebarRoutes pageName={'Receita'} routeName={'/receita'} />
+                        <SidebarRoutes pageName={'Orçamentos'} routeName={'/orcamentos'} />
+                        <SidebarRoutes pageName={'Produtos'} routeName={'/produtos'} />
+                        <SidebarRoutes pageName={'Clientes'} routeName={'/clientes'} />
                     </div>
                 </nav>
             </div>

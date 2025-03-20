@@ -20,7 +20,7 @@ const productData = [
 export default function Dashboard() {
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen">
       {/* Main Content */}
       <div className="flex-1 p-6">
         <header className="flex justify-between items-center mb-6">

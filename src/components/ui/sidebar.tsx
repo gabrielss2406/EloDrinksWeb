@@ -1,5 +1,5 @@
 import { usePathname } from "next/navigation";
-import Sidebar from "../Sidebar";
+import Sidebar from "../shared/Sidebar";
 
 const SidebarWrapper = () => {
     const pathname = usePathname();

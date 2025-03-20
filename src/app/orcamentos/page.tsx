@@ -1,5 +1,6 @@
 import { columns } from "@/components/orders/Columns"
 import { DataTable } from "@/components/orders/DataTable"
+import Header from "@/components/shared/Header";
 import { Payment } from "@/schemas/Orders";
 
 async function getData(): Promise<Payment[]> {
@@ -56,8 +57,11 @@ export default async function DemoPage() {
     const data = await getData()
 
     return (
-        <div className="container mx-auto py-10">
-            <DataTable columns={columns} data={data} />
-        </div>
+        <>
+            <Header name={"Orçamentos"} />
+            <div className="container mx-auto p-3">
+                <DataTable columns={columns} data={data} />
+            </div>
+        </>
     )
 }

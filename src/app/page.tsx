@@ -2,6 +2,7 @@
 
 import { LineChart, Line, PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import { Card, CardContent } from "@/components/ui/card";
+import Header from "@/components/shared/Header";
 
 const revenueData = [
   { date: "01/01", revenue: 1000 },
@@ -23,11 +24,7 @@ export default function Dashboard() {
     <div className="flex min-h-screen">
       {/* Main Content */}
       <div className="flex-1 p-6">
-        <header className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-bold">Dashboard</h1>
-          </div>
-        </header>
+        <Header name={"Dashboard"} />
 
         {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">

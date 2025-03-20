@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 export function useTheme() {
     const [theme, setTheme] = useState<"light" | "dark">(() => {
-        const storedTheme = localStorage.getItem("theme") as "light" | "dark";
-        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const prefersDark = typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const storedTheme = typeof window !== "undefined" ? (localStorage.getItem("theme") as "light" | "dark") : null;
         return storedTheme || (prefersDark ? "dark" : "light");
     });
 

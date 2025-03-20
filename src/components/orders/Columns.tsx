@@ -23,7 +23,7 @@ export const columns: ColumnDef<Payment>[] = [
     {
         accessorKey: "price",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Email" />
+            <DataTableColumnHeader column={column} title="Preço" />
         ),
         enableSorting: true,
     },
@@ -55,7 +55,7 @@ export const columns: ColumnDef<Payment>[] = [
         ),
         cell: ({ row }) => {
             const createdAt = row.getValue<Date>("createdAt")
-            return <span>{getDaysSincePost(createdAt)} ago</span>
+            return <span>{getDaysSincePost(createdAt)} atrás</span>
         },
         enableSorting: true,
     },

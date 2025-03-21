@@ -31,8 +31,7 @@ import {
     DropdownMenuCheckboxItem
 } from "@/components/ui/dropdown-menu"
 import { DataTablePagination } from "@/components/orders/DataTable-Pagination"
-import { Plus } from "lucide-react"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
+import { FormNewProduct } from "./Form-newProduct"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -103,23 +102,7 @@ export function DataTable<TData, TValue>({
                             })}
                     </DropdownMenuContent>
                 </DropdownMenu>
-                <Dialog>
-                    <DialogTrigger asChild>
-                        <Button type="submit" className="ml-1">Criar novo produto<Plus /></Button>
-                    </DialogTrigger>
-                    <DialogContent className="bg-white">
-                        <DialogHeader>
-                            <DialogTitle>Tem certeza que deseja excluir?</DialogTitle>
-                            <DialogDescription>
-                                Esta ação não pode ser desfeita. Isso removerá permanentemente.
-                            </DialogDescription>
-                        </DialogHeader>
-                        <DialogFooter>
-                            <Button type="submit" variant={"outline"}>Cancelar</Button>
-                            <Button type="submit">Excluir</Button>
-                        </DialogFooter>
-                    </DialogContent>
-                </Dialog>
+                <FormNewProduct />
             </div>
             <div className="rounded-md border mb-2">
                 <Table>

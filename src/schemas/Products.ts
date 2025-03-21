@@ -7,4 +7,10 @@ export const productSchema = z.object({
     updatedAt: z.string().datetime(),
 });
 
+export const productInputSchema = z.object({
+    name: z.string().min(1),
+    price: z.number()
+});
+
 export type Product = z.infer<typeof productSchema>;
+export type ProductInput = z.infer<typeof productInputSchema>;

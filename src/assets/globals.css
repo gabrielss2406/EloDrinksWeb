@@ -3,8 +3,15 @@
 @import "tailwindcss/utilities";
 
 :root {
-    --color-primary: #F7A600;
-    --color-ghost: #202020;
+    --color-primary: #9D4815;
+    --color-ghost: #101820;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-primary: #FF7F00; 
+        --color-ghost: #E0E0E0;
+    }
 }
 
 .bg-primary {

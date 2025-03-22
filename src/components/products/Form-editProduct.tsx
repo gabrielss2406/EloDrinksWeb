@@ -4,15 +4,16 @@ import { Input } from "@/components/ui/input";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { X } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { ProductInput, productInputSchema } from "@/schemas/Products";
+import { Product, ProductInput, productInputSchema } from "@/schemas/Products";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormEditProductProps {
     open: boolean;
     setOpen: (open: boolean) => void;
+    product: Product;
 }
 
-export const FormEditProduct: React.FC<FormEditProductProps> = ({ open, setOpen }) => {
+export const FormEditProduct: React.FC<FormEditProductProps> = ({ open, setOpen, product }) => {
 
     const form = useForm<ProductInput>({
         resolver: zodResolver(productInputSchema),
@@ -29,9 +30,9 @@ export const FormEditProduct: React.FC<FormEditProductProps> = ({ open, setOpen 
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="bg-white">
+            <DialogContent className="bg-white dark:bg-[#202020] dark:text-white">
                 <DialogHeader>
-                    <DialogTitle>Criar novo produto</DialogTitle>
+                    <DialogTitle>Editando {product.name}</DialogTitle>
                     <DialogDescription>
                         Preencha os detalhes abaixo para adicionar um novo produto.
                     </DialogDescription>

@@ -66,7 +66,7 @@ export function DataTable<TData, TValue>({
     })
 
     return (
-        <div className="bg-white dark:bg-slate-700 p-4 rounded-lg">
+        <div className="bg-white dark:[#202020] p-4 rounded-lg">
             <div className="flex items-center mb-4">
                 <Input
                     placeholder="Filtrar por nome do cliente..."

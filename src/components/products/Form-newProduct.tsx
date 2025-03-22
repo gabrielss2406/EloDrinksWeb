@@ -29,7 +29,7 @@ export const FormNewProduct: React.FC = () => {
             <DialogTrigger asChild>
                 <Button type="button" className="ml-1">Criar novo produto <Plus /></Button>
             </DialogTrigger>
-            <DialogContent className="bg-white">
+            <DialogContent className="bg-white dark:bg-[#202020] dark:text-white">
                 <DialogHeader>
                     <DialogTitle>Criar novo produto</DialogTitle>
                     <DialogDescription>

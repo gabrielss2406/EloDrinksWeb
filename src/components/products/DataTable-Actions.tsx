@@ -28,7 +28,7 @@ export function ProductActions({ product }: { product: Product }) {
                         <MoreHorizontal className="h-4 w-4" />
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="bg-white">
+                <DropdownMenuContent align="end" className="bg-white dark:bg-[#202020] dark:text-white">
                     <DropdownMenuLabel>Ações em {product.name}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
@@ -53,7 +53,8 @@ export function ProductActions({ product }: { product: Product }) {
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            <FormEditProduct open={isDialogEditOpen} setOpen={setIsDialogEditOpen} />
+            <FormEditProduct open={isDialogEditOpen} setOpen={setIsDialogEditOpen} product={product} />
+            {/* <FormAddProductPackage open={isDialogEditOpen} setOpen={setIsDialogEditOpen} /> */}
             <FormDeleteProduct open={isDialogDeleteOpen} setOpen={setIsDialogDeleteOpen} product={product} />
 
         </>

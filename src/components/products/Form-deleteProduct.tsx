@@ -2,17 +2,17 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Button } from "@/components/ui/button";
 import { Product } from "@/schemas/Products";
 
-interface FormEditProductProps {
+interface FormDeleteProductProps {
     open: boolean;
     setOpen: (open: boolean) => void;
     product: Product;
 }
 
-export const FormDeleteProduct: React.FC<FormEditProductProps> = ({ open, setOpen, product }) => {
+export const FormDeleteProduct: React.FC<FormDeleteProductProps> = ({ open, setOpen, product }) => {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="bg-white">
+            <DialogContent className="bg-white dark:bg-[#202020] dark:text-white">
                 <DialogHeader>
                     <DialogTitle>Tem certeza que deseja excluir {product.name}?</DialogTitle>
                     <DialogDescription>

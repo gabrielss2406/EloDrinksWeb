@@ -66,7 +66,7 @@ export function DataTable<TData, TValue>({
     })
 
     return (
-        <div className="bg-white dark:[#202020] p-4 rounded-lg">
+        <div className="bg-white dark:bg-[#202020] p-4 rounded-lg">
             <div className="flex items-center mb-4">
                 <Input
                     placeholder="Filtrar por nome do cliente..."
@@ -79,7 +79,7 @@ export function DataTable<TData, TValue>({
                             Colunas
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="z-50 bg-white">
+                    <DropdownMenuContent align="end" className="z-50 bg-white dark:bg-[#202020] dark:text-white">
                         {table
                             .getAllColumns()
                             .filter(
@@ -89,7 +89,7 @@ export function DataTable<TData, TValue>({
                                 return (
                                     <DropdownMenuCheckboxItem
                                         key={column.id}
-                                        className="capitalize"
+                                        className="capitalize cursor-pointer hover:text-gray-500"
                                         checked={column.getIsVisible()}
                                         onCheckedChange={(value: unknown) =>
                                             column.toggleVisibility(!!value)
@@ -129,7 +129,7 @@ export function DataTable<TData, TValue>({
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
                                     onClick={() => window.location.href = `/orcamentos/${row.getValue('id')}`}
-                                    className="cursor-pointer hover:bg-gray-300"
+                                    className="cursor-pointer hover:bg-gray-300 dark:hover:bg-[#151515]"
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id} className="text-lg text-center">

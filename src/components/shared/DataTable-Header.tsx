@@ -40,7 +40,7 @@ export function DataTableColumnHeader<TData, TValue>({
                         )}
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="bg-white">
+                <DropdownMenuContent align="start" className="bg-white dark:bg-[#202020] dark:text-white">
                     <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
                         <ArrowUp className="h-3.5 w-3.5 text-muted-foreground/70" />
                         Asc

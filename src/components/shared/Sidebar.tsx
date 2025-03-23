@@ -1,18 +1,12 @@
 "use client"
 
-import React, { useState, ElementType } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import logo from '@/assets/images/logo-white.svg'
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { Grid, FileText, Package, Users, Menu } from "lucide-react";
+import { Grid, FileText, Users, Menu } from "lucide-react";
 import Link from 'next/link';
-import { usePathname } from 'next/navigation'
-
-interface SidebarRoutesProps {
-    pageName: string;
-    routeName: string;
-    icon?: ElementType;
-}
+import { SidebarProductsRoutes, SidebarRoutes } from './SidebarRoutes';
 
 const Sidebar: React.FC = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -51,31 +45,13 @@ const Sidebar: React.FC = () => {
                         <div className="flex flex-col items-start justify-between w-full gap-3 mt-8">
                             <SidebarRoutes pageName={'Painel'} routeName={'/'} icon={Grid} />
                             <SidebarRoutes pageName={'Orçamentos'} routeName={'/orcamentos'} icon={FileText} />
-                            <SidebarRoutes pageName={'Produtos'} routeName={'/produtos'} icon={Package} />
+                            <SidebarProductsRoutes />
                             <SidebarRoutes pageName={'Clientes'} routeName={'/clientes'} icon={Users} />
                         </div>
                     </nav>
                 </div>
             </div>
         </div>
-    );
-};
-
-const SidebarRoutes: React.FC<SidebarRoutesProps> = ({ pageName, routeName, icon: Icon }) => {
-    const pathname = usePathname();
-
-    return (
-        <Link
-            href={routeName}
-            className={`
-                flex items-center gap-3 w-full px-8 py-2 rounded-lg 
-                text-base font-medium transition-all bg-white dark:bg-[#202020] hover:bg-slate-300
-                ${pathname === routeName ? 'text-yellow-500' : 'text-black dark:text-white'}
-            `}
-        >
-            {Icon && <Icon className="w-6 h-6" />}
-            {pageName}
-        </Link>
     );
 };
 

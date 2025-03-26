@@ -1,5 +1,5 @@
-import { columns } from "@/components/products/Columns"
-import { DataTable } from "@/components/products/DataTable"
+import { columns } from "@/components/structure/Columns"
+import { DataTable } from "@/components/structure/DataTable"
 import Header from "@/components/shared/Header";
 import { Product } from "@/schemas/Products";
 
@@ -43,8 +43,8 @@ export default async function Products() {
 
     return (
         <>
-            <Header name={"Produtos"} />
-            <div className="container mx-auto p-3">
+            <Header name={"Estrutura"} />
+            <div className="container mx-auto px-3">
                 <DataTable columns={columns} data={data} />
             </div>
         </>

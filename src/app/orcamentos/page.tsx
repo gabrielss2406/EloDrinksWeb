@@ -1,9 +1,9 @@
 import { columns } from "@/components/orders/Columns"
 import { DataTable } from "@/components/orders/DataTable"
 import Header from "@/components/shared/Header";
-import { Payment } from "@/schemas/Orders";
+import { OrderTemp } from "@/schemas/Orders";
 
-async function getData(): Promise<Payment[]> {
+async function getData(): Promise<OrderTemp[]> {
     return [
         {
             id: "1",
@@ -59,7 +59,7 @@ export default async function Orders() {
     return (
         <>
             <Header name={"Orçamentos"} />
-            <div className="container mx-auto p-3">
+            <div className="container mx-auto px-3">
                 <DataTable columns={columns} data={data} />
             </div>
         </>

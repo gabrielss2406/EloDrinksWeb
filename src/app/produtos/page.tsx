@@ -44,7 +44,7 @@ export default async function Products() {
     return (
         <>
             <Header name={"Produtos"} />
-            <div className="container mx-auto p-3">
+            <div className="container mx-auto px-3">
                 <DataTable columns={columns} data={data} />
             </div>
         </>

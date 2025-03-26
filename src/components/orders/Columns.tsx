@@ -1,11 +1,11 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { Payment } from "@/schemas/Orders"
+import { OrderTemp } from "@/schemas/Orders"
 import { getDaysSincePost } from "@/utils/days"
 import { DataTableColumnHeader } from "@/components/shared/DataTable-Header"
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<OrderTemp>[] = [
     {
         accessorKey: "id",
         header: ({ column }) => (

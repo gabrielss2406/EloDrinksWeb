@@ -38,11 +38,8 @@ export const SidebarProductsRoutes: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-        if (pathname === '/produtos' || pathname === '/produtos/estrutura' || pathname === '/produtos/pacotes') {
-            setIsOpen(true);
-        } else {
-            setIsOpen(false);
-        }
+        if (pathname === '/produtos' || pathname === '/produtos/estrutura' || pathname === '/produtos/pacotes') setIsOpen(true);
+        else setIsOpen(false);
     }, [pathname]);
 
     return (
@@ -64,36 +61,9 @@ export const SidebarProductsRoutes: React.FC = () => {
                 {isOpen ? <ChevronUp className="w-6 h-6" /> : <ChevronDown className="w-6 h-6" />}
             </CollapsibleTrigger>
             <CollapsibleContent className="w-full">
-                <Link
-                    href={'/produtos'}
-                    className={`
-                        flex items-center gap-3 w-full py-2 px-8
-                        text-base font-medium transition-all bg-white dark:bg-[#202020] hover:bg-slate-300
-                        ${pathname === '/produtos' ? 'text-[#ff7f00]' : 'text-black dark:text-white'}
-                    `}
-                >
-                    Produtos
-                </Link>
-                <Link
-                    href={'/produtos/estrutura'}
-                    className={`
-                        flex items-center gap-3 w-full py-2 px-8
-                        text-base font-medium transition-all bg-white dark:bg-[#202020] hover:bg-slate-300
-                        ${pathname === '/produtos/estrutura' ? 'text-[#ff7f00]' : 'text-black dark:text-white'}
-                    `}
-                >
-                    Estrutura
-                </Link>
-                <Link
-                    href={'/produtos/pacotes'}
-                    className={`
-                        flex items-center gap-3 w-full py-2 rounded-lg px-8
-                        text-base font-medium transition-all bg-white dark:bg-[#202020] hover:bg-slate-300
-                        ${pathname === '/produtos/pacotes' ? 'text-[#ff7f00]' : 'text-black dark:text-white'}
-                    `}
-                >
-                    Pacotes
-                </Link>
+                <SidebarRoutes pageName={'Produtos'} routeName={'/produtos'} />
+                <SidebarRoutes pageName={'Estrutura'} routeName={'/produtos/estrutura'} />
+                <SidebarRoutes pageName={'Pacotes'} routeName={'/produtos/pacotes'} />
             </CollapsibleContent>
         </Collapsible>
     );

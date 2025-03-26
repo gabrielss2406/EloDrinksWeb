@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const paymentSchema = z.object({
+export const orderTempSchema = z.object({
     id: z.string(),
     customer: z.string(),
     price: z.number(),
@@ -10,4 +10,24 @@ export const paymentSchema = z.object({
     createdAt: z.string(),
 });
 
-export type Payment = z.infer<typeof paymentSchema>;
+export const orderSchema = z.object({
+    id: z.string(),
+    createdAt: z.string(),
+    startDate: z.string(),
+    endDate: z.string(),
+    local: z.string(),
+    price: z.number(),
+    guestNumber: z.number(),
+    status: z.enum(["pending", "accepted", "confirm", "payed"]),
+});
+
+export const customerSchema = z.object({
+    id: z.string(),
+    name: z.string(),
+    email: z.string(),
+    phone: z.string(),
+});
+
+export type OrderTemp = z.infer<typeof orderTempSchema>;
+export type Order = z.infer<typeof orderSchema>;
+export type CustomerInfo = z.infer<typeof customerSchema>;

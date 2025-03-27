@@ -8,12 +8,17 @@ export const packageSchema = z.object({
     eventType: z.string()
 });
 
+export const packageProductSchema = productSchema.extend({
+    quantity: z.number().default(1)
+});
+
 export const packageInputSchema = z.object({
     name: z.string().min(1),
     price: z.number().min(0.1),
     eventType: z.string().min(1),
-    productsList: z.array(productSchema)
+    productsList: z.array(packageProductSchema)
 });
 
 export type Package = z.infer<typeof packageSchema>;
+export type PackageProduct = z.infer<typeof packageProductSchema>;
 export type PackageInput = z.infer<typeof packageInputSchema>;

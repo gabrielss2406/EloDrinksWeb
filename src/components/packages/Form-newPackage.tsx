@@ -5,10 +5,9 @@ import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/
 import { Plus, X } from "lucide-react";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PackageInput, packageInputSchema } from "@/schemas/Packages";
+import { PackageInput, packageInputSchema, PackageProduct } from "@/schemas/Packages";
 import { useForm } from "react-hook-form";
 import { ItemTable } from "./ItemTable";
-import { Product } from "@/schemas/Products";
 
 export const FormNewPackage: React.FC = () => {
     const [open, setOpen] = useState(false);
@@ -23,12 +22,19 @@ export const FormNewPackage: React.FC = () => {
         },
     });
 
-    const addProduct = (product: Product) => {
+    const addProduct = (product: PackageProduct) => {
         form.setValue("productsList", [...form.getValues("productsList"), product]);
     };
 
     const removeProduct = (id: string) => {
         const updatedList = form.getValues("productsList").filter((item) => item.id !== id);
+        form.setValue("productsList", updatedList);
+    };
+
+    const updateQuantity = (id: string, quantity: number) => {
+        const updatedList = form.getValues("productsList").map((item) =>
+            item.id === id ? { ...item, quantity } : item
+        );
         form.setValue("productsList", updatedList);
     };
 
@@ -43,7 +49,7 @@ export const FormNewPackage: React.FC = () => {
             <DialogTrigger asChild>
                 <Button type="button" className="ml-1">Criar novo pacote <Plus /></Button>
             </DialogTrigger>
-            <DialogContent className="bg-white dark:bg-[#202020] dark:text-white">
+            <DialogContent className="bg-white dark:bg-[#202020] dark:text-white max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>Criar novo pacote</DialogTitle>
                     <DialogDescription>
@@ -137,6 +143,7 @@ export const FormNewPackage: React.FC = () => {
                             items={form.watch("productsList")}
                             addProduct={addProduct}
                             removeProduct={removeProduct}
+                            updateQuantity={updateQuantity}
                         />
 
                         <DialogFooter>

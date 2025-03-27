@@ -1,20 +1,19 @@
 'use client'
 
 import { ColumnDef } from "@tanstack/react-table"
-import { getDaysSincePost } from "@/utils/days"
 import { DataTableColumnHeader } from "@/components/shared/DataTable-Header"
-import { Product } from "@/schemas/Products"
-import { ProductActions } from "./DataTable-Actions"
+import { Structure } from "@/schemas/Structures"
+import { StructureActions } from "./DataTable-Actions"
 
-export const columns: ColumnDef<Product>[] = [
+export const columns: ColumnDef<Structure>[] = [
     {
         accessorKey: "id",
         header: ({ column }) => <DataTableColumnHeader column={column} title="ID" />,
         enableSorting: true,
     },
     {
-        accessorKey: "name",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Nome" />,
+        accessorKey: "options",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Opções" />,
         enableSorting: true,
     },
     {
@@ -23,21 +22,17 @@ export const columns: ColumnDef<Product>[] = [
         enableSorting: true,
     },
     {
-        accessorKey: "updatedAt",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Atualizado" />,
-        cell: ({ row }) => {
-            const updatedAt = row.getValue<Date>("updatedAt")
-            return <span>{getDaysSincePost(updatedAt)} atrás</span>
-        },
+        accessorKey: "description",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Descrição" />,
         enableSorting: true,
     },
     {
         id: "actions",
         cell: ({ row }) => {
-            const product = row.original
+            const structure = row.original
 
             return (
-                <ProductActions product={product} />
+                <StructureActions structure={structure} />
             )
         },
     },

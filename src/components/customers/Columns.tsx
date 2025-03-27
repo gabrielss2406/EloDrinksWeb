@@ -31,7 +31,7 @@ export const columns: ColumnDef<Package>[] = [
     //         const product = row.original
 
     //         return (
-    //             <PackageActions product={product} />
+    //             <ProductActions product={product} />
     //         )
     //     },
     // },

@@ -31,7 +31,7 @@ import {
     DropdownMenuCheckboxItem
 } from "@/components/ui/dropdown-menu"
 import { DataTablePagination } from "@/components/orders/DataTable-Pagination"
-import { FormNewPackage } from "./Form-newPackage"
+import { FormNewProduct } from "./Form-newProduct"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -102,7 +102,7 @@ export function DataTable<TData, TValue>({
                             })}
                     </DropdownMenuContent>
                 </DropdownMenu>
-                <FormNewPackage />
+                <FormNewProduct />
             </div>
             <div className="rounded-lg border mb-2">
                 <Table>

@@ -4,7 +4,7 @@ export const productSchema = z.object({
     id: z.string(),
     name: z.string(),
     price: z.number(),
-    updatedAt: z.string().datetime(),
+    updatedAt: z.string().datetime().optional(),
 });
 
 export const productInputSchema = z.object({

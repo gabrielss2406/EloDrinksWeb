@@ -1,23 +1,19 @@
 'use client'
 
-import { useState } from "react"
 import { MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Product } from "@/schemas/Products"
-import { FormEditProduct } from "./Form-editProduct"
-import { FormDeleteProduct } from "./Form-deleteProduct"
+import { Structure } from "@/schemas/Structures"
 
-export function ProductActions({ product }: { product: Product }) {
-    const [isDialogEditOpen, setIsDialogEditOpen] = useState(false);
-    const [isDialogDeleteOpen, setIsDialogDeleteOpen] = useState(false);
+export function StructureActions({ structure }: { structure: Structure }) {
+    // const [isDialogEditOpen, setIsDialogEditOpen] = useState(false);
+    // const [isDialogDeleteOpen, setIsDialogDeleteOpen] = useState(false);
 
     return (
         <>
@@ -29,9 +25,9 @@ export function ProductActions({ product }: { product: Product }) {
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="bg-white dark:bg-[#202020] dark:text-white">
-                    <DropdownMenuLabel>Ações em {product.name}</DropdownMenuLabel>
+                    <DropdownMenuLabel>Ações em {structure.options}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem
+                    {/* <DropdownMenuItem
                         onClick={(e) => {
                             e.preventDefault();
                             setTimeout(() => setIsDialogEditOpen(true), 100);
@@ -49,13 +45,12 @@ export function ProductActions({ product }: { product: Product }) {
                         className="text-red-500 cursor-pointer"
                     >
                         Excluir
-                    </DropdownMenuItem>
+                    </DropdownMenuItem> */}
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            <FormEditProduct open={isDialogEditOpen} setOpen={setIsDialogEditOpen} product={product} />
-            {/* <FormAddProductPackage open={isDialogEditOpen} setOpen={setIsDialogEditOpen} /> */}
-            <FormDeleteProduct open={isDialogDeleteOpen} setOpen={setIsDialogDeleteOpen} product={product} />
+            {/* <FormEditProduct open={isDialogEditOpen} setOpen={setIsDialogEditOpen} product={product} />
+            <FormDeleteProduct open={isDialogDeleteOpen} setOpen={setIsDialogDeleteOpen} product={product} /> */}
 
         </>
     );

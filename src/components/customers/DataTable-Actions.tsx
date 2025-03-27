@@ -15,7 +15,7 @@ import { Product } from "@/schemas/Products"
 import { FormEditProduct } from "./Form-editProduct"
 import { FormDeleteProduct } from "./Form-deleteProduct"
 
-export function PackageActions({ product }: { product: Product }) {
+export function ProductActions({ product }: { product: Product }) {
     const [isDialogEditOpen, setIsDialogEditOpen] = useState(false);
     const [isDialogDeleteOpen, setIsDialogDeleteOpen] = useState(false);
 

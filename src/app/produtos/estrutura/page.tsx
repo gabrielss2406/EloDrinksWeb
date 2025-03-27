@@ -1,39 +1,27 @@
 import { columns } from "@/components/structure/Columns"
 import { DataTable } from "@/components/structure/DataTable"
 import Header from "@/components/shared/Header";
-import { Product } from "@/schemas/Products";
+import { Structure } from "@/schemas/Structures";
 
-async function getData(): Promise<Product[]> {
+async function getData(): Promise<Structure[]> {
     return [
         {
             id: "1",
-            name: "John Doe",
-            price: 150,
-            updatedAt: "2025-01-01T10:00:00Z",
+            options: "Option 1",
+            price: 100,
+            description: "Description for Structure 1",
         },
         {
             id: "2",
-            name: "Jane Smith",
-            price: 200,
-            updatedAt: "2025-02-01T12:00:00Z",
+            options: "Option 2",
+            price: 100,
+            description: "Description for Structure 2",
         },
         {
             id: "3",
-            name: "Alice Johnson",
-            price: 300,
-            updatedAt: "2025-03-01T14:00:00Z",
-        },
-        {
-            id: "4",
-            name: "Bob Brown",
-            price: 250,
-            updatedAt: "2025-03-01T16:00:00Z",
-        },
-        {
-            id: "5",
-            name: "Charlie Davis",
-            price: 180,
-            updatedAt: "2025-03-01T18:00:00Z",
+            options: "Option 3",
+            price: 100,
+            description: "Description for Structure 3",
         },
     ];
 }

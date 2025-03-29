@@ -1,15 +1,19 @@
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Order, orderSchema } from "@/schemas/Orders";
+import { X } from "lucide-react";
+import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
 interface FormOrderProps {
     order: Order;
 }
 
 export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
+    const router = useRouter();
+
     const form = useForm<Order>({
         resolver: zodResolver(orderSchema),
         defaultValues: {
@@ -18,7 +22,6 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
             startDate: order.startDate,
             endDate: order.endDate,
             local: order.local,
-            price: order.price,
             guestNumber: order.guestNumber,
             status: order.status,
         },
@@ -42,7 +45,7 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
                                 <div className="relative">
                                     <Input
                                         {...field}
-                                        placeholder="ID"
+                                        readOnly={true}
                                         className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
                                     />
                                 </div>
@@ -61,7 +64,7 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
                                 <div className="relative">
                                     <Input
                                         {...field}
-                                        placeholder="dd/mm/yyyy"
+                                        readOnly={true}
                                         className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
                                     />
                                 </div>
@@ -83,6 +86,15 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
                                         placeholder="dd/mm/yyyy - hh:mm"
                                         className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
                                     />
+                                    {field.value && (
+                                        <button
+                                            type="button"
+                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                            onClick={() => field.onChange("")}
+                                        >
+                                            <X />
+                                        </button>
+                                    )}
                                 </div>
                             </FormControl>
                         </FormItem>
@@ -102,6 +114,15 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
                                         placeholder="dd/mm/yyyy - hh:mm"
                                         className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
                                     />
+                                    {field.value && (
+                                        <button
+                                            type="button"
+                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                            onClick={() => field.onChange("")}
+                                        >
+                                            <X />
+                                        </button>
+                                    )}
                                 </div>
                             </FormControl>
                         </FormItem>
@@ -121,24 +142,15 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
                                         placeholder="Local do evento"
                                         className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
                                     />
-                                </div>
-                            </FormControl>
-                        </FormItem>
-                    )}
-                />
-
-                <FormField
-                    control={form.control}
-                    name="price"
-                    render={({ field, fieldState }) => (
-                        <FormItem>
-                            <FormLabel>Número de convidados</FormLabel>
-                            <FormControl>
-                                <div className="relative">
-                                    <Input
-                                        {...field}
-                                        className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
-                                    />
+                                    {field.value && (
+                                        <button
+                                            type="button"
+                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                            onClick={() => field.onChange("")}
+                                        >
+                                            <X />
+                                        </button>
+                                    )}
                                 </div>
                             </FormControl>
                         </FormItem>
@@ -150,23 +162,63 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
                     name="guestNumber"
                     render={({ field, fieldState }) => (
                         <FormItem>
+                            <FormLabel>Número de convidados</FormLabel>
+                            <FormControl>
+                                <div className="relative">
+                                    <Input
+                                        {...field}
+                                        type="number"
+                                        placeholder="Número de convidados do evento"
+                                        className={`bg-gray-200 appearance-none [&::-webkit-inner-spin-button]:appearance-none ${fieldState.invalid ? 'border-red-500' : ''}`}
+                                        onWheel={(e) => e.currentTarget.blur()}
+                                    />
+                                    {field.value && (
+                                        <button
+                                            type="button"
+                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                            onClick={() => field.onChange("")}
+                                        >
+                                            <X />
+                                        </button>
+                                    )}
+                                </div>
+                            </FormControl>
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="status"
+                    render={({ field, fieldState }) => (
+                        <FormItem>
                             <FormLabel>Status</FormLabel>
                             <FormControl>
                                 <div className="relative">
                                     <Input
                                         {...field}
+                                        placeholder="Pendente, aceito, confirmado, pago..."
                                         className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
                                     />
+                                    {field.value && (
+                                        <button
+                                            type="button"
+                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                            onClick={() => field.onChange("")}
+                                        >
+                                            <X />
+                                        </button>
+                                    )}
                                 </div>
                             </FormControl>
                         </FormItem>
                     )}
                 />
                 <div className="flex justify-end space-x-4">
-                    <Button type="button" variant="outline">
+                    <Button type="button" variant="outline" onClick={() => { form.reset(); router.back(); }}>
                         Cancelar
                     </Button>
-                    <Button type="submit">Enviar</Button>
+                    <Button type="submit">Confirmar edição</Button>
                 </div>
             </form>
         </Form>

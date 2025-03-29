@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
@@ -38,7 +37,7 @@ export const FormCustomer: React.FC<FormCustomerProps> = ({ customer }) => {
                                 <div className="relative">
                                     <Input
                                         {...field}
-                                        placeholder="ID"
+                                        readOnly={true}
                                         className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
                                     />
                                 </div>
@@ -57,7 +56,7 @@ export const FormCustomer: React.FC<FormCustomerProps> = ({ customer }) => {
                                 <div className="relative">
                                     <Input
                                         {...field}
-                                        placeholder="ID"
+                                        readOnly={true}
                                         className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
                                     />
                                 </div>
@@ -76,7 +75,7 @@ export const FormCustomer: React.FC<FormCustomerProps> = ({ customer }) => {
                                 <div className="relative">
                                     <Input
                                         {...field}
-                                        placeholder="ID"
+                                        readOnly={true}
                                         className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
                                     />
                                 </div>
@@ -95,7 +94,7 @@ export const FormCustomer: React.FC<FormCustomerProps> = ({ customer }) => {
                                 <div className="relative">
                                     <Input
                                         {...field}
-                                        placeholder="ID"
+                                        readOnly={true}
                                         className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
                                     />
                                 </div>
@@ -103,13 +102,6 @@ export const FormCustomer: React.FC<FormCustomerProps> = ({ customer }) => {
                         </FormItem>
                     )}
                 />
-
-                <div className="flex justify-end space-x-4">
-                    <Button type="button" variant="outline">
-                        Cancelar
-                    </Button>
-                    <Button type="submit">Enviar</Button>
-                </div>
             </form>
         </Form>
     );

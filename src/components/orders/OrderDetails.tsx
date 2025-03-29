@@ -3,7 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { FormOrder } from './Form-order';
 import { FormCustomer } from './Form-customer';
 import { FormBudget } from './Form-budget';
-import { CustomerInfo, Order } from '@/schemas/Orders';
+import { Budget, CustomerInfo, Order } from '@/schemas/Orders';
 
 interface OrderDetailsCardsProps {
     order: Order;
@@ -16,24 +16,35 @@ const exampleCustomer: CustomerInfo = {
     phone: "123456789",
 };
 
+const exampleBudget: Budget = {
+    eventType: "Wedding",
+    items: [
+        { id: "1", name: "Beer", price: 5, quantity: 10 },
+        { id: "2", name: "Wine", price: 15, quantity: 5 },
+    ],
+    barStructure: "Open Bar",
+    structurePrice: 200,
+    totalPrice: 275,
+};
+
 const OrderDetailsCards: React.FC<OrderDetailsCardsProps> = ({ order }) => {
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 mb-8">
             <div className="flex flex-col gap-4">
-                <Card>
+                <Card className='bg-white'>
                     <CardContent>
                         <FormOrder order={order} />
                     </CardContent>
                 </Card>
-                <Card>
+                <Card className='bg-white'>
                     <CardContent>
                         <FormCustomer customer={exampleCustomer} />
                     </CardContent>
                 </Card>
             </div>
-            <Card>
+            <Card className='bg-white'>
                 <CardContent>
-                    <FormBudget name={''} />
+                    <FormBudget budget={exampleBudget} />
                 </CardContent>
             </Card>
         </div>

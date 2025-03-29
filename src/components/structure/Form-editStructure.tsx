@@ -36,7 +36,7 @@ export const FormEditStructure: React.FC<FormEditStructureProps> = ({ open, setO
                 <DialogHeader>
                     <DialogTitle>Editando {structure.options}</DialogTitle>
                     <DialogDescription>
-                        Preencha os detalhes abaixo para adicionar um novo produto.
+                        Preencha os detalhes abaixo editar a estrutura.
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>

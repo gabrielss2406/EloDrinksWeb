@@ -34,7 +34,7 @@ export const FormEditProduct: React.FC<FormEditProductProps> = ({ open, setOpen,
                 <DialogHeader>
                     <DialogTitle>Editando {product.name}</DialogTitle>
                     <DialogDescription>
-                        Preencha os detalhes abaixo para adicionar um novo produto.
+                        Preencha os detalhes abaixo para editar o produto.
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>

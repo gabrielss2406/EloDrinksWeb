@@ -1,7 +1,7 @@
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Plus, X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { ProductInput, productInputSchema } from "@/schemas/Products";
@@ -86,7 +86,6 @@ export const FormNewProduct: React.FC = () => {
                                             className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
                                         />
                                     </FormControl>
-                                    <FormMessage />
                                 </FormItem>
                             )}
                         />

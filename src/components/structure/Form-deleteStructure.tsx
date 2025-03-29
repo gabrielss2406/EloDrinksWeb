@@ -1,22 +1,22 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Product } from "@/schemas/Products";
+import { Structure } from "@/schemas/Structures";
 
-interface FormDeleteProductProps {
+interface FormDeleteStructureProps {
     open: boolean;
     setOpen: (open: boolean) => void;
-    product: Product;
+    structure: Structure;
 }
 
-export const FormDeleteProduct: React.FC<FormDeleteProductProps> = ({ open, setOpen, product }) => {
+export const FormDeleteStructure: React.FC<FormDeleteStructureProps> = ({ open, setOpen, structure }) => {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="bg-white dark:bg-[#202020] dark:text-white">
                 <DialogHeader>
-                    <DialogTitle>Tem certeza que deseja excluir {product.name}?</DialogTitle>
+                    <DialogTitle>Tem certeza que deseja excluir {structure.options}?</DialogTitle>
                     <DialogDescription>
-                        Esta ação não pode ser desfeita. Isso removerá permanentemente {product.name}.
+                        Esta ação não pode ser desfeita. Isso removerá permanentemente {structure.options}.
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>

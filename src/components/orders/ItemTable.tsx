@@ -45,7 +45,7 @@ export const ItemTable: React.FC<ItemTableProps> = ({ items, addProduct, removeP
                                     type="number"
                                     value={item.quantity}
                                     onChange={(e) => handleQuantityChange(item.id, e.target.value)}
-                                    className="border rounded px-2 py-1 w-16"
+                                    className="border rounded px-2 py-1 w-16 [&::-webkit-inner-spin-button]:appearance-auto"
                                 />
                             </TableCell>
                             <TableCell className="text-red-500 cursor-pointer" onClick={() => removeProduct(item.id)}>

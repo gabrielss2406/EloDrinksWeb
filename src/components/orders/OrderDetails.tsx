@@ -31,18 +31,18 @@ const OrderDetailsCards: React.FC<OrderDetailsCardsProps> = ({ order }) => {
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 mb-8">
             <div className="flex flex-col gap-4">
-                <Card className='bg-white'>
+                <Card className='bg-white dark:bg-[#202020]'>
                     <CardContent>
                         <FormOrder order={order} />
                     </CardContent>
                 </Card>
-                <Card className='bg-white'>
+                <Card className='bg-white dark:bg-[#202020]'>
                     <CardContent>
                         <FormCustomer customer={exampleCustomer} />
                     </CardContent>
                 </Card>
             </div>
-            <Card className='bg-white'>
+            <Card className='bg-white dark:bg-[#202020]'>
                 <CardContent>
                     <FormBudget budget={exampleBudget} />
                 </CardContent>

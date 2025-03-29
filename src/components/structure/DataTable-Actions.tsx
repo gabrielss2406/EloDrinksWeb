@@ -5,15 +5,19 @@ import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuContent,
+    DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Structure } from "@/schemas/Structures"
+import { useState } from "react"
+import { FormEditStructure } from "./Form-editStructure"
+import { FormDeleteStructure } from "./Form-deleteStructure"
 
 export function StructureActions({ structure }: { structure: Structure }) {
-    // const [isDialogEditOpen, setIsDialogEditOpen] = useState(false);
-    // const [isDialogDeleteOpen, setIsDialogDeleteOpen] = useState(false);
+    const [isDialogEditOpen, setIsDialogEditOpen] = useState(false);
+    const [isDialogDeleteOpen, setIsDialogDeleteOpen] = useState(false);
 
     return (
         <>
@@ -27,7 +31,7 @@ export function StructureActions({ structure }: { structure: Structure }) {
                 <DropdownMenuContent align="end" className="bg-white dark:bg-[#202020] dark:text-white">
                     <DropdownMenuLabel>Ações em {structure.options}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    {/* <DropdownMenuItem
+                    <DropdownMenuItem
                         onClick={(e) => {
                             e.preventDefault();
                             setTimeout(() => setIsDialogEditOpen(true), 100);
@@ -36,7 +40,6 @@ export function StructureActions({ structure }: { structure: Structure }) {
                     >
                         Editar
                     </DropdownMenuItem>
-                    <DropdownMenuItem>Adicionar a pacote</DropdownMenuItem>
                     <DropdownMenuItem
                         onClick={(e) => {
                             e.preventDefault();
@@ -45,12 +48,12 @@ export function StructureActions({ structure }: { structure: Structure }) {
                         className="text-red-500 cursor-pointer"
                     >
                         Excluir
-                    </DropdownMenuItem> */}
+                    </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* <FormEditProduct open={isDialogEditOpen} setOpen={setIsDialogEditOpen} product={product} />
-            <FormDeleteProduct open={isDialogDeleteOpen} setOpen={setIsDialogDeleteOpen} product={product} /> */}
+            <FormEditStructure open={isDialogEditOpen} setOpen={setIsDialogEditOpen} structure={structure} />
+            <FormDeleteStructure open={isDialogDeleteOpen} setOpen={setIsDialogDeleteOpen} structure={structure} />
 
         </>
     );

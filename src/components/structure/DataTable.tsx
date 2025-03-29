@@ -31,7 +31,7 @@ import {
     DropdownMenuCheckboxItem
 } from "@/components/ui/dropdown-menu"
 import { DataTablePagination } from "@/components/orders/DataTable-Pagination"
-import { FormNewProduct } from "./Form-newProduct"
+import { FormNewStructure } from "./Form-newStructure"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -70,9 +70,9 @@ export function DataTable<TData, TValue>({
         <div className="bg-white dark:bg-[#202020] p-4 rounded-lg">
             <div className="flex items-center mb-4">
                 <Input
-                    placeholder="Filtrar por nome do produto..."
-                    value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
+                    placeholder="Filtrar pela opção..."
+                    value={(table.getColumn("options")?.getFilterValue() as string) ?? ""}
+                    onChange={(event) => table.getColumn("options")?.setFilterValue(event.target.value)}
                     className="max-w-sm" />
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -102,7 +102,7 @@ export function DataTable<TData, TValue>({
                             })}
                     </DropdownMenuContent>
                 </DropdownMenu>
-                <FormNewProduct />
+                <FormNewStructure />
             </div>
             <div className="rounded-lg border mb-2">
                 <Table>

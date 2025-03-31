@@ -11,11 +11,11 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Product } from "@/schemas/Products"
-import { FormEditProduct } from "./Form-editProduct"
-import { FormDeleteProduct } from "./Form-deleteProduct"
+import { Package } from "@/schemas/Packages"
+import { FormDeletePackage } from "./Form-deletePackage"
+import { FormEditPackage } from "./Form-editPackage"
 
-export function PackageActions({ product }: { product: Product }) {
+export function PackageActions({ pack }: { pack: Package }) {
     const [isDialogEditOpen, setIsDialogEditOpen] = useState(false);
     const [isDialogDeleteOpen, setIsDialogDeleteOpen] = useState(false);
 
@@ -29,7 +29,7 @@ export function PackageActions({ product }: { product: Product }) {
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="bg-white dark:bg-[#202020] dark:text-white">
-                    <DropdownMenuLabel>Ações em {product.name}</DropdownMenuLabel>
+                    <DropdownMenuLabel>Ações em {pack.name}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                         onClick={(e) => {
@@ -40,7 +40,7 @@ export function PackageActions({ product }: { product: Product }) {
                     >
                         Editar
                     </DropdownMenuItem>
-                    <DropdownMenuItem>Adicionar a pacote</DropdownMenuItem>
+                    {/* <DropdownMenuItem>Adicionar a pacote</DropdownMenuItem> */}
                     <DropdownMenuItem
                         onClick={(e) => {
                             e.preventDefault();
@@ -53,9 +53,9 @@ export function PackageActions({ product }: { product: Product }) {
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            <FormEditProduct open={isDialogEditOpen} setOpen={setIsDialogEditOpen} product={product} />
+            <FormEditPackage open={isDialogEditOpen} setOpen={setIsDialogEditOpen} pack={pack} />
             {/* <FormAddProductPackage open={isDialogEditOpen} setOpen={setIsDialogEditOpen} /> */}
-            <FormDeleteProduct open={isDialogDeleteOpen} setOpen={setIsDialogDeleteOpen} product={product} />
+            <FormDeletePackage open={isDialogDeleteOpen} setOpen={setIsDialogDeleteOpen} pack={pack} />
 
         </>
     );

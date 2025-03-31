@@ -4,37 +4,57 @@ import { Input } from "@/components/ui/input";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { X } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { Product, ProductInput, productInputSchema } from "@/schemas/Products";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Package, PackageInput, packageInputSchema, PackageProduct } from "@/schemas/Packages";
+import { ItemTable } from "./ItemTable";
 
-interface FormEditProductProps {
+interface FormEditPackageProps {
     open: boolean;
     setOpen: (open: boolean) => void;
-    product: Product;
+    pack: Package;
 }
 
-export const FormEditProduct: React.FC<FormEditProductProps> = ({ open, setOpen, product }) => {
+export const FormEditPackage: React.FC<FormEditPackageProps> = ({ open, setOpen, pack }) => {
 
-    const form = useForm<ProductInput>({
-        resolver: zodResolver(productInputSchema),
+    const form = useForm<PackageInput>({
+        resolver: zodResolver(packageInputSchema),
         defaultValues: {
-            name: "",
-            price: 0,
+            name: pack.name,
+            eventType: pack.eventType,
+            price: pack.price,
+            productsList: pack.productsList
         },
     });
 
-    const onSubmit = (data: ProductInput) => {
+    const addProduct = (product: PackageProduct) => {
+        form.setValue("productsList", [...form.getValues("productsList"), product]);
+    };
+
+    const removeProduct = (id: string) => {
+        const updatedList = form.getValues("productsList").filter((item) => item.id !== id);
+        form.setValue("productsList", updatedList);
+    };
+
+    const updateQuantity = (id: string, quantity: number) => {
+        const updatedList = form.getValues("productsList").map((item) =>
+            item.id === id ? { ...item, quantity } : item
+        );
+        form.setValue("productsList", updatedList);
+    };
+
+    const onSubmit = (data: PackageInput) => {
         console.log("Dados enviados:", data);
         form.reset();
+        setOpen(false);
     };
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="bg-white dark:bg-[#202020] dark:text-white">
                 <DialogHeader>
-                    <DialogTitle>Editando {product.name}</DialogTitle>
+                    <DialogTitle>Editando {pack.name}</DialogTitle>
                     <DialogDescription>
-                        Preencha os detalhes abaixo para adicionar um novo produto.
+                        Preencha os detalhes abaixo para editar o pacote.
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -44,19 +64,19 @@ export const FormEditProduct: React.FC<FormEditProductProps> = ({ open, setOpen,
                             name="name"
                             render={({ field, fieldState }) => (
                                 <FormItem>
-                                    <FormLabel>Nome do Produto</FormLabel>
+                                    <FormLabel>Nome</FormLabel>
                                     <FormControl>
                                         <div className="relative">
                                             <Input
                                                 {...field}
-                                                placeholder="Nome do produto"
+                                                placeholder="Nome do pacote"
                                                 className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
                                             />
                                             {field.value && (
                                                 <button
                                                     type="button"
                                                     className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                                                    onClick={() => field.onChange("")}
+                                                    onClick={() => field.onChange(pack.name)}
                                                 >
                                                     <X />
                                                 </button>
@@ -66,6 +86,35 @@ export const FormEditProduct: React.FC<FormEditProductProps> = ({ open, setOpen,
                                 </FormItem>
                             )}
                         />
+
+                        <FormField
+                            control={form.control}
+                            name="eventType"
+                            render={({ field, fieldState }) => (
+                                <FormItem>
+                                    <FormLabel>Tipo de evento</FormLabel>
+                                    <FormControl>
+                                        <div className="relative">
+                                            <Input
+                                                {...field}
+                                                placeholder="Casamento, aniversário, etc"
+                                                className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
+                                            />
+                                            {field.value && (
+                                                <button
+                                                    type="button"
+                                                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                                    onClick={() => field.onChange(pack.eventType)}
+                                                >
+                                                    <X />
+                                                </button>
+                                            )}
+                                        </div>
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+
                         <FormField
                             control={form.control}
                             name="price"
@@ -90,6 +139,13 @@ export const FormEditProduct: React.FC<FormEditProductProps> = ({ open, setOpen,
                                     <FormMessage />
                                 </FormItem>
                             )}
+                        />
+
+                        <ItemTable
+                            items={form.watch("productsList")}
+                            addProduct={addProduct}
+                            removeProduct={removeProduct}
+                            updateQuantity={updateQuantity}
                         />
 
                         <DialogFooter>

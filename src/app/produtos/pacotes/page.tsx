@@ -9,31 +9,36 @@ async function getData(): Promise<Package[]> {
             id: "1",
             name: "John Doe",
             price: 150,
-            eventType: "Wedding"
+            eventType: "Wedding",
+            productsList: []
         },
         {
             id: "2",
             name: "Jane Smith",
             price: 200,
-            eventType: "Wedding"
+            eventType: "Wedding",
+            productsList: []
         },
         {
             id: "3",
             name: "Alice Johnson",
             price: 300,
-            eventType: "Wedding"
+            eventType: "Wedding",
+            productsList: []
         },
         {
             id: "4",
             name: "Bob Brown",
             price: 250,
-            eventType: "Wedding"
+            eventType: "Wedding",
+            productsList: []
         },
         {
             id: "5",
             name: "Charlie Davis",
             price: 180,
-            eventType: "Wedding"
+            eventType: "Wedding",
+            productsList: []
         },
     ];
 }

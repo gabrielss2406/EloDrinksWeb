@@ -1,15 +1,16 @@
 import { z } from "zod";
 import { productSchema } from "./Products";
 
+export const packageProductSchema = productSchema.extend({
+    quantity: z.number().default(1)
+});
+
 export const packageSchema = z.object({
     id: z.string(),
     name: z.string(),
     price: z.number(),
-    eventType: z.string()
-});
-
-export const packageProductSchema = productSchema.extend({
-    quantity: z.number().default(1)
+    eventType: z.string(),
+    productsList: z.array(packageProductSchema)
 });
 
 export const packageInputSchema = z.object({

@@ -3,6 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTableColumnHeader } from "@/components/shared/DataTable-Header"
 import { Package } from "@/schemas/Packages"
+import { PackageActions } from "./DataTable-Actions"
 
 export const columns: ColumnDef<Package>[] = [
     {
@@ -25,15 +26,15 @@ export const columns: ColumnDef<Package>[] = [
         header: ({ column }) => <DataTableColumnHeader column={column} title="Tipo de evento" />,
         enableSorting: true,
     },
-    // {
-    //     id: "actions",
-    //     cell: ({ row }) => {
-    //         const product = row.original
+    {
+        id: "actions",
+        cell: ({ row }) => {
+            const pack = row.original
 
-    //         return (
-    //             <PackageActions product={product} />
-    //         )
-    //     },
-    // },
+            return (
+                <PackageActions pack={pack} />
+            )
+        },
+    },
 ]
 

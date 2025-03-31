@@ -36,7 +36,7 @@ export const ItemTable: React.FC<ItemTableProps> = ({ items, addProduct, removeP
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {items.map((item, index) => (
+                    {items && items.map((item, index) => (
                         <TableRow key={index}>
                             <TableCell>{item.name}</TableCell>
                             <TableCell>{item.price.toFixed(2)}</TableCell>

@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Package, PackageInput, packageInputSchema, PackageProduct } from "@/schemas/Packages";
 import { ItemTable } from "./ItemTable";
+import { StructureSelector } from "./Form-StructureSelector";
 
 interface FormEditPackageProps {
     open: boolean;
@@ -148,8 +149,10 @@ export const FormEditPackage: React.FC<FormEditPackageProps> = ({ open, setOpen,
                             updateQuantity={updateQuantity}
                         />
 
+                        <StructureSelector form={form} initialValue="option2" />
+
                         <DialogFooter>
-                            <Button type="button" variant="outline" onClick={() => { setOpen(false); form.reset() }}>
+                            <Button type="button" variant="outline" onClick={() => { form.reset(); setOpen(false) }}>
                                 Cancelar
                             </Button>
                             <Button type="submit">Criar</Button>

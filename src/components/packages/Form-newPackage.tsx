@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PackageInput, packageInputSchema, PackageProduct } from "@/schemas/Packages";
 import { useForm } from "react-hook-form";
 import { ItemTable } from "./ItemTable";
+import { StructureSelector } from "./Form-StructureSelector";
 
 export const FormNewPackage: React.FC = () => {
     const [open, setOpen] = useState(false);
@@ -145,6 +146,8 @@ export const FormNewPackage: React.FC = () => {
                             removeProduct={removeProduct}
                             updateQuantity={updateQuantity}
                         />
+
+                        <StructureSelector form={form} initialValue="" />
 
                         <DialogFooter>
                             <Button type="button" variant="outline" onClick={() => { setOpen(false); form.reset() }}>

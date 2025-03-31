@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { productSchema } from "./Products";
+import { structureSchema } from "./Structures";
 
 export const packageProductSchema = productSchema.extend({
     quantity: z.number().default(1)
@@ -17,7 +18,8 @@ export const packageInputSchema = z.object({
     name: z.string().min(1),
     price: z.number().min(0.1),
     eventType: z.string().min(1),
-    productsList: z.array(packageProductSchema)
+    productsList: z.array(packageProductSchema),
+    structure: structureSchema
 });
 
 export type Package = z.infer<typeof packageSchema>;

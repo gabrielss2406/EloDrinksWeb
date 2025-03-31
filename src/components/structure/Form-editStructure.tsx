@@ -46,7 +46,7 @@ export const FormEditStructure: React.FC<FormEditStructureProps> = ({ open, setO
                             name="options"
                             render={({ field, fieldState }) => (
                                 <FormItem>
-                                    <FormLabel>Nome do Produto</FormLabel>
+                                    <FormLabel>Nome</FormLabel>
                                     <FormControl>
                                         <div className="relative">
                                             <Input
@@ -104,12 +104,12 @@ export const FormEditStructure: React.FC<FormEditStructureProps> = ({ open, setO
                             name="description"
                             render={({ field, fieldState }) => (
                                 <FormItem>
-                                    <FormLabel>Nome do Produto</FormLabel>
+                                    <FormLabel>Descrição</FormLabel>
                                     <FormControl>
                                         <div className="relative">
                                             <Input
                                                 {...field}
-                                                placeholder="Nome da opção"
+                                                placeholder="Descrição da opção"
                                                 className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
                                             />
                                             {field.value && (

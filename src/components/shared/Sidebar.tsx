@@ -29,11 +29,12 @@ const Sidebar: React.FC = () => {
                             </SheetHeader>
                             <nav>
                                 <div className="flex flex-col items-center justify-between w-full gap-3">
-                                    <Link href={''}>Dashboard</Link>
-                                    <Link href={''}>Revenue</Link>
-                                    <Link href={''}>Orders</Link>
-                                    <Link href={''}>Products</Link>
-                                    <Link href={''}>Customers</Link>
+                                    <Link href={'/'} onClick={() => setIsSidebarOpen(false)}>Dashboard</Link>
+                                    <Link href={'/orcamentos'} onClick={() => setIsSidebarOpen(false)}>Orçamentos</Link>
+                                    <Link href={'/produtos'} onClick={() => setIsSidebarOpen(false)}>Produtos</Link>
+                                    <Link href={'/produtos/estrutura'} onClick={() => setIsSidebarOpen(false)}>Estrutura</Link>
+                                    <Link href={'/produtos/pacotes'} onClick={() => setIsSidebarOpen(false)}>Pacotes</Link>
+                                    <Link href={'/clientes'} onClick={() => setIsSidebarOpen(false)}>Clientes</Link>
                                 </div>
                             </nav>
                         </SheetContent>

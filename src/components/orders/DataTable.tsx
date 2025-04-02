@@ -43,9 +43,7 @@ export function DataTable<TData, TValue>({
     data,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-        []
-    )
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({})
     const [searchQuery, setSearchQuery] = useState("")
@@ -83,6 +81,11 @@ export function DataTable<TData, TValue>({
                     placeholder="Filtrar por nome do cliente..."
                     value={searchQuery}
                     onChange={(event) => setSearchQuery(event.target.value)}
+                    onKeyDown={(event) => {
+                        if (event.key === "Enter") {
+                            handleSearch();
+                        }
+                    }}
                     className="max-w-sm"
                 />
                 <Button variant="outline" onClick={handleSearch}>
@@ -161,7 +164,7 @@ export function DataTable<TData, TValue>({
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                                    No results.
+                                    Sem resultados
                                 </TableCell>
                             </TableRow>
                         )}

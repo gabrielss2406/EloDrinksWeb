@@ -31,7 +31,7 @@ import {
     DropdownMenuCheckboxItem
 } from "@/components/ui/dropdown-menu"
 import { DataTablePagination } from "@/components/orders/DataTable-Pagination"
-import { Search } from "lucide-react"
+import { Search, X } from "lucide-react"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -71,6 +71,11 @@ export function DataTable<TData, TValue>({
         table.getColumn("name")?.setFilterValue(searchQuery)
     }
 
+    const clearSearch = () => {
+        setSearchQuery("")
+        table.getColumn("name")?.setFilterValue("")
+    }
+
     return (
         <div className="bg-white dark:bg-[#202020] p-4 rounded-lg">
             <div className="flex items-center mb-4">
@@ -78,11 +83,21 @@ export function DataTable<TData, TValue>({
                     placeholder="Filtrar por nome do cliente..."
                     value={searchQuery}
                     onChange={(event) => setSearchQuery(event.target.value)}
+                    onKeyDown={(event) => {
+                        if (event.key === "Enter") {
+                            handleSearch();
+                        }
+                    }}
                     className="max-w-sm"
                 />
                 <Button variant="outline" onClick={handleSearch}>
                     <Search className="w-5 h-5" />
                 </Button>
+                {searchQuery && (
+                    <Button variant="outline" onClick={clearSearch}>
+                        <X className="w-5 h-5" />
+                    </Button>
+                )}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto">
@@ -149,7 +164,7 @@ export function DataTable<TData, TValue>({
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                                    No results.
+                                    Sem resultados
                                 </TableCell>
                             </TableRow>
                         )}

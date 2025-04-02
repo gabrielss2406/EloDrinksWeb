@@ -18,8 +18,8 @@ export const FormEditProduct: React.FC<FormEditProductProps> = ({ open, setOpen,
     const form = useForm<ProductInput>({
         resolver: zodResolver(productInputSchema),
         defaultValues: {
-            name: "",
-            price: 0,
+            name: product.name,
+            price: product.price,
         },
     });
 

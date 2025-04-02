@@ -40,7 +40,7 @@ export function ProductActions({ product }: { product: Product }) {
                     >
                         Editar
                     </DropdownMenuItem>
-                    <DropdownMenuItem>Adicionar a pacote</DropdownMenuItem>
+                    {/* <DropdownMenuItem>Adicionar a pacote</DropdownMenuItem> */}
                     <DropdownMenuItem
                         onClick={(e) => {
                             e.preventDefault();

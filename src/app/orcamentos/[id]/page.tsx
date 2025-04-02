@@ -11,7 +11,6 @@ const exampleOrder: Order = {
     startDate: "2023-01-10T12:00:00Z",
     endDate: "2023-01-15T12:00:00Z",
     local: "New York",
-    price: 500,
     guestNumber: 50,
     status: "pending",
 };

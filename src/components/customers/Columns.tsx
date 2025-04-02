@@ -2,9 +2,10 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTableColumnHeader } from "@/components/shared/DataTable-Header"
-import { Package } from "@/schemas/Packages"
+import { Customer } from "@/schemas/Customers"
+import { CustomerActions } from "./DataTable-Actions"
 
-export const columns: ColumnDef<Package>[] = [
+export const columns: ColumnDef<Customer>[] = [
     {
         accessorKey: "id",
         header: ({ column }) => <DataTableColumnHeader column={column} title="ID" />,
@@ -16,24 +17,29 @@ export const columns: ColumnDef<Package>[] = [
         enableSorting: true,
     },
     {
-        accessorKey: "price",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Preço" />,
+        accessorKey: "email",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
         enableSorting: true,
     },
     {
-        accessorKey: "eventType",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Tipo de evento" />,
+        accessorKey: "telephone",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Telefone" />,
         enableSorting: true,
     },
-    // {
-    //     id: "actions",
-    //     cell: ({ row }) => {
-    //         const product = row.original
+    {
+        accessorKey: "ordersAccount",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Orçamentos" />,
+        enableSorting: true,
+    },
+    {
+        id: "actions",
+        cell: ({ row }) => {
+            const customer = row.original
 
-    //         return (
-    //             <ProductActions product={product} />
-    //         )
-    //     },
-    // },
+            return (
+                <CustomerActions customer={customer} />
+            )
+        },
+    },
 ]
 

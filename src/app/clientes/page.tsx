@@ -1,39 +1,30 @@
 import { columns } from "@/components/customers/Columns"
 import { DataTable } from "@/components/customers/DataTable"
 import Header from "@/components/shared/Header";
-import { Package } from "@/schemas/Packages";
+import { Customer } from "@/schemas/Customers";
 
-async function getData(): Promise<Package[]> {
+async function getData(): Promise<Customer[]> {
     return [
         {
             id: "1",
             name: "John Doe",
-            price: 150,
-            eventType: "Wedding"
+            email: "john.doe@example.com",
+            telephone: "123-456-7890",
+            ordersAccount: 5,
         },
         {
             id: "2",
             name: "Jane Smith",
-            price: 200,
-            eventType: "Wedding"
+            email: "jane.smith@example.com",
+            telephone: "987-654-3210",
+            ordersAccount: 3,
         },
         {
             id: "3",
             name: "Alice Johnson",
-            price: 300,
-            eventType: "Wedding"
-        },
-        {
-            id: "4",
-            name: "Bob Brown",
-            price: 250,
-            eventType: "Wedding"
-        },
-        {
-            id: "5",
-            name: "Charlie Davis",
-            price: 180,
-            eventType: "Wedding"
+            email: "alice.johnson@example.com",
+            telephone: "555-123-4567",
+            ordersAccount: 8,
         },
     ];
 }

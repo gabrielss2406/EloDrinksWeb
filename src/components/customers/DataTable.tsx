@@ -21,7 +21,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import React from "react"
+import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -31,7 +31,7 @@ import {
     DropdownMenuCheckboxItem
 } from "@/components/ui/dropdown-menu"
 import { DataTablePagination } from "@/components/orders/DataTable-Pagination"
-import { FormNewProduct } from "./Form-newProduct"
+import { Search } from "lucide-react"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -48,6 +48,7 @@ export function DataTable<TData, TValue>({
     )
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({})
+    const [searchQuery, setSearchQuery] = useState("")
 
     const table = useReactTable({
         data,
@@ -66,14 +67,22 @@ export function DataTable<TData, TValue>({
         },
     })
 
+    const handleSearch = () => {
+        table.getColumn("name")?.setFilterValue(searchQuery)
+    }
+
     return (
         <div className="bg-white dark:bg-[#202020] p-4 rounded-lg">
             <div className="flex items-center mb-4">
                 <Input
-                    placeholder="Filtrar por nome do produto..."
-                    value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
-                    className="max-w-sm" />
+                    placeholder="Filtrar por nome do cliente..."
+                    value={searchQuery}
+                    onChange={(event) => setSearchQuery(event.target.value)}
+                    className="max-w-sm"
+                />
+                <Button variant="outline" onClick={handleSearch}>
+                    <Search className="w-5 h-5" />
+                </Button>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto">
@@ -102,7 +111,6 @@ export function DataTable<TData, TValue>({
                             })}
                     </DropdownMenuContent>
                 </DropdownMenu>
-                <FormNewProduct />
             </div>
             <div className="rounded-lg border mb-2">
                 <Table>

@@ -1,22 +1,22 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Product } from "@/schemas/Products";
+import { Customer } from "@/schemas/Customers";
 
-interface FormDeleteProductProps {
+interface FormDeleteCustomerProps {
     open: boolean;
     setOpen: (open: boolean) => void;
-    product: Product;
+    customer: Customer;
 }
 
-export const FormDeleteProduct: React.FC<FormDeleteProductProps> = ({ open, setOpen, product }) => {
+export const FormDeleteCustomer: React.FC<FormDeleteCustomerProps> = ({ open, setOpen, customer }) => {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="bg-white dark:bg-[#202020] dark:text-white">
                 <DialogHeader>
-                    <DialogTitle>Tem certeza que deseja excluir {product.name}?</DialogTitle>
+                    <DialogTitle>Tem certeza que deseja excluir {customer.name}?</DialogTitle>
                     <DialogDescription>
-                        Esta ação não pode ser desfeita. Isso removerá permanentemente {product.name}.
+                        Esta ação não pode ser desfeita. Isso removerá permanentemente {customer.name} da base de dados.
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>

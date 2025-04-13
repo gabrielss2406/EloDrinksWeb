@@ -34,6 +34,7 @@ const Sidebar: React.FC = () => {
                                     <Link href={'/produtos'} onClick={() => setIsSidebarOpen(false)}>Produtos</Link>
                                     <Link href={'/produtos/estrutura'} onClick={() => setIsSidebarOpen(false)}>Estrutura</Link>
                                     <Link href={'/produtos/pacotes'} onClick={() => setIsSidebarOpen(false)}>Pacotes</Link>
+                                    <Link href={'/produtos/promocoes'} onClick={() => setIsSidebarOpen(false)}>Promoções</Link>
                                     <Link href={'/clientes'} onClick={() => setIsSidebarOpen(false)}>Clientes</Link>
                                 </div>
                             </nav>

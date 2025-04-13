@@ -51,7 +51,7 @@ export const SidebarProductsRoutes: React.FC = () => {
                 flex flex-col items-start w-full pt-2
                 text-base font-medium transition-all 
                 bg-white dark:bg-[#202020] hover:bg-slate-300
-                ${pathname === '/produtos' || pathname === '/produtos/estrutura' || pathname === '/produtos/pacotes'
+                ${pathname === '/produtos' || pathname === '/produtos/estrutura' || pathname === '/produtos/pacotes' || pathname === '/produtos/promocoes'
                     ? 'text-[#ff7f00]'
                     : 'text-black dark:text-white'}
         `}>
@@ -64,6 +64,7 @@ export const SidebarProductsRoutes: React.FC = () => {
                 <SidebarRoutes pageName={'Produtos'} routeName={'/produtos'} />
                 <SidebarRoutes pageName={'Estrutura'} routeName={'/produtos/estrutura'} />
                 <SidebarRoutes pageName={'Pacotes'} routeName={'/produtos/pacotes'} />
+                <SidebarRoutes pageName={'Promoções'} routeName={'/produtos/promocoes'} />
             </CollapsibleContent>
         </Collapsible>
     );

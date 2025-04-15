@@ -33,6 +33,7 @@ import {
 import { DataTablePagination } from "./DataTable-Pagination"
 import { FormNewStructure } from "./Form-newStructure"
 import { Search, X } from "lucide-react"
+import Loading from "../shared/Loading"
 
 interface DataTableProps<TData> {
     data: TData[]
@@ -165,8 +166,8 @@ export function DataTable<TData>({
                     <TableBody>
                         {isLoading ? (
                             <TableRow>
-                                <TableCell colSpan={columns.length} className="text-center">
-                                    Carregando...
+                                <TableCell colSpan={columns.length} className="text-center py-6">
+                                    <Loading />
                                 </TableCell>
                             </TableRow>
                         ) : table.getRowModel().rows.length ? (

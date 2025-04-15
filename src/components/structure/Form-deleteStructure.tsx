@@ -14,9 +14,9 @@ export const FormDeleteStructure: React.FC<FormDeleteStructureProps> = ({ open, 
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="bg-white dark:bg-[#202020] dark:text-white">
                 <DialogHeader>
-                    <DialogTitle>Tem certeza que deseja excluir {structure.options}?</DialogTitle>
+                    <DialogTitle>Tem certeza que deseja excluir {structure.name}?</DialogTitle>
                     <DialogDescription>
-                        Esta ação não pode ser desfeita. Isso removerá permanentemente {structure.options}.
+                        Esta ação não pode ser desfeita. Isso removerá permanentemente {structure.name}.
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>

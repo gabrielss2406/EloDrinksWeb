@@ -14,9 +14,8 @@ export const FormNewStructure: React.FC = () => {
     const form = useForm<StructureInput>({
         resolver: zodResolver(structureInputSchema),
         defaultValues: {
-            options: "",
-            price: 0,
-            description: "",
+            name: "",
+            price: 0
         },
     });
 
@@ -41,7 +40,7 @@ export const FormNewStructure: React.FC = () => {
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         <FormField
                             control={form.control}
-                            name="options"
+                            name="name"
                             render={({ field, fieldState }) => (
                                 <FormItem>
                                     <FormLabel>Nome</FormLabel>
@@ -87,33 +86,6 @@ export const FormNewStructure: React.FC = () => {
                                             value={field.value || ''}
                                             className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
                                         />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="description"
-                            render={({ field, fieldState }) => (
-                                <FormItem>
-                                    <FormLabel>Descrição</FormLabel>
-                                    <FormControl>
-                                        <div className="relative">
-                                            <Input
-                                                {...field}
-                                                placeholder="Descrição da opção"
-                                                className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
-                                            />
-                                            {field.value && (
-                                                <button
-                                                    type="button"
-                                                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                                                    onClick={() => field.onChange("")}
-                                                >
-                                                    <X />
-                                                </button>
-                                            )}
-                                        </div>
                                     </FormControl>
                                 </FormItem>
                             )}

@@ -29,7 +29,7 @@ export function StructureActions({ structure }: { structure: Structure }) {
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="bg-white dark:bg-[#202020] dark:text-white">
-                    <DropdownMenuLabel>Ações em {structure.options}</DropdownMenuLabel>
+                    <DropdownMenuLabel>Ações em {structure.name}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                         onClick={(e) => {

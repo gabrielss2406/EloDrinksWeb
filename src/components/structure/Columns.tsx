@@ -12,18 +12,13 @@ export const columns: ColumnDef<Structure>[] = [
         enableSorting: true,
     },
     {
-        accessorKey: "options",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Opções" />,
+        accessorKey: "name",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Nome" />,
         enableSorting: true,
     },
     {
         accessorKey: "price",
         header: ({ column }) => <DataTableColumnHeader column={column} title="Preço" />,
-        enableSorting: true,
-    },
-    {
-        accessorKey: "description",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Descrição" />,
         enableSorting: true,
     },
     {

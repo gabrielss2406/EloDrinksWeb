@@ -7,21 +7,18 @@ async function getData(): Promise<Structure[]> {
     return [
         {
             id: "1",
-            options: "Option 1",
-            price: 100,
-            description: "Description for Structure 1",
+            name: "Option 1",
+            price: 100
         },
         {
             id: "2",
-            options: "Option 2",
-            price: 100,
-            description: "Description for Structure 2",
+            name: "Option 2",
+            price: 100
         },
         {
             id: "3",
-            options: "Option 3",
-            price: 100,
-            description: "Description for Structure 3",
+            name: "Option 3",
+            price: 100
         },
     ];
 }

@@ -6,11 +6,10 @@ import {
     flexRender,
     getCoreRowModel,
     getFilteredRowModel,
-    useReactTable,
-    getPaginationRowModel,
     getSortedRowModel,
-    VisibilityState,
     SortingState,
+    VisibilityState,
+    useReactTable,
 } from "@tanstack/react-table"
 
 import {
@@ -21,6 +20,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+
 import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -30,63 +30,81 @@ import {
     DropdownMenuTrigger,
     DropdownMenuCheckboxItem
 } from "@/components/ui/dropdown-menu"
-import { DataTablePagination } from "@/components/orders/DataTable-Pagination"
+import { DataTablePagination } from "./DataTable-Pagination"
 import { FormNewStructure } from "./Form-newStructure"
 import { Search, X } from "lucide-react"
 
-interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[]
+interface DataTableProps<TData> {
     data: TData[]
+    columns: ColumnDef<TData>[]
+    pageIndex: number
+    pageSize: number
+    setPageIndex: (index: number) => void
+    setPageSize: (size: number) => void
+    isLoading?: boolean
 }
 
-export function DataTable<TData, TValue>({
-    columns,
+export function DataTable<TData>({
     data,
-}: DataTableProps<TData, TValue>) {
-    const [sorting, setSorting] = React.useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-        []
-    )
-    const [columnVisibility, setColumnVisibility] =
-        React.useState<VisibilityState>({})
+    columns,
+    pageIndex,
+    pageSize,
+    setPageIndex,
+    setPageSize,
+    isLoading,
+}: DataTableProps<TData>) {
+    const [sorting, setSorting] = useState<SortingState>([])
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
     const [searchQuery, setSearchQuery] = useState("")
 
     const table = useReactTable({
         data,
         columns,
-        getCoreRowModel: getCoreRowModel(),
-        onSortingChange: setSorting,
-        getSortedRowModel: getSortedRowModel(),
-        onColumnFiltersChange: setColumnFilters,
-        getFilteredRowModel: getFilteredRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        onColumnVisibilityChange: setColumnVisibility,
+        manualPagination: true,
         state: {
+            pagination: {
+                pageIndex,
+                pageSize,
+            },
             sorting,
             columnFilters,
             columnVisibility,
         },
+        onPaginationChange: (updater) => {
+            const next = typeof updater === "function"
+                ? updater({ pageIndex, pageSize })
+                : updater
+            setPageIndex(next.pageIndex)
+            setPageSize(next.pageSize)
+        },
+        onSortingChange: setSorting,
+        onColumnFiltersChange: setColumnFilters,
+        onColumnVisibilityChange: setColumnVisibility,
+        getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
     })
 
     const handleSearch = () => {
-        table.getColumn("options")?.setFilterValue(searchQuery)
+        table.getColumn("name")?.setFilterValue(searchQuery)
     }
 
     const clearSearch = () => {
         setSearchQuery("")
-        table.getColumn("options")?.setFilterValue("")
+        table.getColumn("name")?.setFilterValue("")
     }
 
     return (
         <div className="bg-white dark:bg-[#202020] p-4 rounded-lg">
-            <div className="flex items-center mb-4">
+            <div className="flex items-center mb-4 gap-2">
                 <Input
                     placeholder="Filtrar pela opção..."
                     value={searchQuery}
                     onChange={(event) => setSearchQuery(event.target.value)}
                     onKeyDown={(event) => {
                         if (event.key === "Enter") {
-                            handleSearch();
+                            handleSearch()
                         }
                     }}
                     className="max-w-sm"
@@ -99,7 +117,6 @@ export function DataTable<TData, TValue>({
                         <X className="w-5 h-5" />
                     </Button>
                 )}
-
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto">
@@ -109,49 +126,50 @@ export function DataTable<TData, TValue>({
                     <DropdownMenuContent align="end" className="z-50 bg-white">
                         {table
                             .getAllColumns()
-                            .filter(
-                                (column) => column.getCanHide()
-                            )
-                            .map((column) => {
-                                return (
-                                    <DropdownMenuCheckboxItem
-                                        key={column.id}
-                                        className="capitalize"
-                                        checked={column.getIsVisible()}
-                                        onCheckedChange={(value: unknown) =>
-                                            column.toggleVisibility(!!value)
-                                        }
-                                    >
-                                        {column.id}
-                                    </DropdownMenuCheckboxItem>
-                                )
-                            })}
+                            .filter((column) => column.getCanHide())
+                            .map((column) => (
+                                <DropdownMenuCheckboxItem
+                                    key={column.id}
+                                    className="capitalize"
+                                    checked={column.getIsVisible()}
+                                    onCheckedChange={(value: unknown) =>
+                                        column.toggleVisibility(!!value)
+                                    }
+                                >
+                                    {column.id}
+                                </DropdownMenuCheckboxItem>
+                            ))}
                     </DropdownMenuContent>
                 </DropdownMenu>
                 <FormNewStructure />
             </div>
+
             <div className="rounded-lg border mb-2">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => {
-                                    return (
-                                        <TableHead key={header.id} className="text-center">
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                        </TableHead>
-                                    )
-                                })}
+                                {headerGroup.headers.map((header) => (
+                                    <TableHead key={header.id} className="text-center">
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                    </TableHead>
+                                ))}
                             </TableRow>
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows?.length ? (
+                        {isLoading ? (
+                            <TableRow>
+                                <TableCell colSpan={columns.length} className="text-center">
+                                    Carregando...
+                                </TableCell>
+                            </TableRow>
+                        ) : table.getRowModel().rows.length ? (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
@@ -174,6 +192,7 @@ export function DataTable<TData, TValue>({
                     </TableBody>
                 </Table>
             </div>
+
             <DataTablePagination table={table} />
         </div>
     )

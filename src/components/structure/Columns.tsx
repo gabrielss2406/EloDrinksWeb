@@ -27,7 +27,7 @@ export const columns: ColumnDef<Structure>[] = [
             const structure = row.original
 
             return (
-                <StructureActions structure={structure} />
+                <StructureActions key={structure.id} structure={structure} />
             )
         },
     },

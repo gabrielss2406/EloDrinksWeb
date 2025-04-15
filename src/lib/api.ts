@@ -1,20 +1,20 @@
 import axios from 'axios';
 
 export const api = axios.create({
-    baseURL: "",
+    baseURL: "https://elo-drinks-backend.vercel.app",
     headers: {
         "Content-Type": "application/json",
     },
 });
 
-api.interceptors.request.use((request) => {
-    const headers = request.headers ?? {};
-    const token = localStorage.getItem('token');
+// api.interceptors.request.use((request) => {
+//     const headers = request.headers ?? {};
+//     const token = localStorage.getItem('token');
 
-    if (token) {
-        headers.Authorization = `Bearer ${token}`;
-    }
+//     if (token) {
+//         headers.Authorization = `Bearer ${token}`;
+//     }
 
-    request.headers = headers;
-    return request;
-});
+//     request.headers = headers;
+//     return request;
+// });

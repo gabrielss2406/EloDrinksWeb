@@ -6,6 +6,9 @@ import { X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Structure, StructureInput, structureInputSchema } from "@/schemas/Structures";
+import { useUpdateStructure } from "@/hooks/useStructures";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 interface FormEditStructureProps {
     open: boolean;
@@ -14,6 +17,7 @@ interface FormEditStructureProps {
 }
 
 export const FormEditStructure: React.FC<FormEditStructureProps> = ({ open, setOpen, structure }) => {
+    const { mutate, isSuccess, isError, isPending } = useUpdateStructure();
 
     const form = useForm<StructureInput>({
         resolver: zodResolver(structureInputSchema),
@@ -24,10 +28,25 @@ export const FormEditStructure: React.FC<FormEditStructureProps> = ({ open, setO
     });
 
     const onSubmit = (data: StructureInput) => {
-        console.log("Dados enviados:", data);
-        form.reset();
-        setOpen(false);
+        mutate({
+            id: structure.id,
+            data
+        }, {
+            onSuccess: () => {
+                form.reset();
+                setOpen(false);
+            }
+        })
     };
+
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success("Estrutura criada com sucesso!");
+        }
+        if (isError) {
+            toast.error("Ocorreu um erro ao criar a estrutura.");
+        }
+    }, [isSuccess, isError]);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -102,7 +121,7 @@ export const FormEditStructure: React.FC<FormEditStructureProps> = ({ open, setO
                             <Button type="button" variant="outline" onClick={() => { setOpen(false); form.reset() }}>
                                 Cancelar
                             </Button>
-                            <Button type="submit">Criar</Button>
+                            <Button type="submit" disabled={isPending}>Editar</Button>
                         </DialogFooter>
                     </form>
                 </Form>

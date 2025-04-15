@@ -1,36 +1,30 @@
+'use client'
+
 import { columns } from "@/components/structure/Columns"
 import { DataTable } from "@/components/structure/DataTable"
 import Header from "@/components/shared/Header";
-import { Structure } from "@/schemas/Structures";
+import { useStructures } from "@/hooks/useStructures";
+import { useState } from "react";
 
-async function getData(): Promise<Structure[]> {
-    return [
-        {
-            id: "1",
-            name: "Option 1",
-            price: 100
-        },
-        {
-            id: "2",
-            name: "Option 2",
-            price: 100
-        },
-        {
-            id: "3",
-            name: "Option 3",
-            price: 100
-        },
-    ];
-}
+export default function Products() {
+    const [pageIndex, setPageIndex] = useState(0)
+    const [pageSize, setPageSize] = useState(10)
 
-export default async function Products() {
-    const data = await getData()
+    const { data = [], isLoading } = useStructures(pageIndex + 1, pageSize)
 
     return (
         <>
             <Header name={"Estrutura"} />
             <div className="container mx-auto px-3">
-                <DataTable columns={columns} data={data} />
+                <DataTable
+                    data={data}
+                    columns={columns}
+                    pageIndex={pageIndex}
+                    pageSize={pageSize}
+                    setPageIndex={setPageIndex}
+                    setPageSize={setPageSize}
+                    isLoading={isLoading}
+                />
             </div>
         </>
     )

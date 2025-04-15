@@ -4,12 +4,16 @@ import { Input } from "@/components/ui/input";
 import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Plus, X } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { StructureInput, structureInputSchema } from "@/schemas/Structures";
+import { useCreateStructure } from "@/hooks/useStructures";
+import { toast } from "sonner";
 
 export const FormNewStructure: React.FC = () => {
     const [open, setOpen] = useState(false);
+
+    const { mutate, isSuccess, isError, isPending } = useCreateStructure();
 
     const form = useForm<StructureInput>({
         resolver: zodResolver(structureInputSchema),
@@ -20,9 +24,22 @@ export const FormNewStructure: React.FC = () => {
     });
 
     const onSubmit = (data: StructureInput) => {
-        console.log("Dados enviados:", data);
-        form.reset();
+        mutate(data, {
+            onSuccess: () => {
+                form.reset();
+                setOpen(false);
+            },
+        });
     };
+
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success("Estrutura criada com sucesso!");
+        }
+        if (isError) {
+            toast.error("Ocorreu um erro ao criar a estrutura.");
+        }
+    }, [isSuccess, isError]);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -95,7 +112,7 @@ export const FormNewStructure: React.FC = () => {
                             <Button type="button" variant="outline" onClick={() => { setOpen(false); form.reset() }}>
                                 Cancelar
                             </Button>
-                            <Button type="submit">Criar</Button>
+                            <Button type="submit" disabled={isPending}>Criar</Button>
                         </DialogFooter>
                     </form>
                 </Form>

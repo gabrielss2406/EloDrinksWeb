@@ -8,8 +8,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, LoginType } from '@/schemas/User';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { useLogin } from '@/hooks/useAuth';
 
 export const FormLogin: React.FC = () => {
+    const { mutate, isPending } = useLogin();
+
     const router = useRouter();
 
     const form = useForm<LoginType>({
@@ -21,12 +24,15 @@ export const FormLogin: React.FC = () => {
     });
 
     const onSubmit = (data: LoginType) => {
-        // TODO - hook for login
-        console.log(data)
-        toast.success("Bem-vindo(a)!", {
-            description: "Logado com sucesso!",
+        mutate(data, {
+            onSuccess: () => {
+                toast.success("Login realizado com sucesso!");
+                router.push("/clientes");
+            },
+            onError: () => {
+                toast.error("Erro ao realizar login, verifique suas credenciais.");
+            }
         });
-        router.push("/")
     };
 
     return (
@@ -74,6 +80,7 @@ export const FormLogin: React.FC = () => {
                     type="submit"
                     variant={'default'}
                     className='w-full'
+                    disabled={isPending}
                 >
                     Login
                 </Button>

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Cookies from 'js-cookie'
 
 export const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -8,14 +9,22 @@ export const api = axios.create({
     },
 });
 
-// api.interceptors.request.use((request) => {
-//     const headers = request.headers ?? {};
-//     const token = localStorage.getItem('token');
+export const apiFormData = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+    headers: {
+        'Content-Type': 'multipart/form-data',
+        'X-API-Key': process.env.NEXT_PUBLIC_API_KEY,
+    },
+})
 
-//     if (token) {
-//         headers.Authorization = `Bearer ${token}`;
-//     }
+api.interceptors.request.use((request) => {
+    const headers = request.headers ?? {};
+    const token = Cookies.get('token');
 
-//     request.headers = headers;
-//     return request;
-// });
+    if (token) {
+        headers.Authorization = `Bearer ${token}`;
+    }
+
+    request.headers = headers;
+    return request;
+});

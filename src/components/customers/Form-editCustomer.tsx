@@ -5,7 +5,10 @@ import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/
 import { X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Customer, customerSchema } from "@/schemas/Customers";
+import { Customer, CustomerInput, customerInputSchema } from "@/schemas/Customers";
+import { useUpdateCustomer } from "@/hooks/useCustomers";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 interface FormEditCustomerProps {
     open: boolean;
@@ -14,22 +17,37 @@ interface FormEditCustomerProps {
 }
 
 export const FormEditCustomer: React.FC<FormEditCustomerProps> = ({ open, setOpen, customer }) => {
+    const { mutate, isSuccess, isError, isPending } = useUpdateCustomer();
 
-    const form = useForm<Customer>({
-        resolver: zodResolver(customerSchema),
+    const form = useForm<CustomerInput>({
+        resolver: zodResolver(customerInputSchema),
         defaultValues: {
-            id: customer.id,
             name: customer.name,
             email: customer.email,
-            telephone: customer.telephone,
-            ordersAccount: customer.ordersAccount
+            telephone: customer.telephone
         },
     });
 
-    const onSubmit = (data: Customer) => {
-        console.log("Dados enviados:", data);
-        form.reset();
+    const onSubmit = (data: CustomerInput) => {
+        mutate({
+            id: customer.id,
+            data
+        }, {
+            onSuccess: () => {
+                form.reset();
+                setOpen(false);
+            }
+        })
     };
+
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success("Cliente editado com sucesso!");
+        }
+        if (isError) {
+            toast.error("Ocorreu um erro ao editado o cliente.");
+        }
+    }, [isSuccess, isError]);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -39,25 +57,6 @@ export const FormEditCustomer: React.FC<FormEditCustomerProps> = ({ open, setOpe
                 </DialogHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                        <FormField
-                            control={form.control}
-                            name="id"
-                            render={({ field, fieldState }) => (
-                                <FormItem>
-                                    <FormLabel>ID</FormLabel>
-                                    <FormControl>
-                                        <div className="relative">
-                                            <Input
-                                                {...field}
-                                                readOnly={true}
-                                                className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
-                                            />
-                                        </div>
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-
                         <FormField
                             control={form.control}
                             name="name"
@@ -146,7 +145,9 @@ export const FormEditCustomer: React.FC<FormEditCustomerProps> = ({ open, setOpe
                             <Button type="button" variant="outline" onClick={() => { setOpen(false); form.reset() }}>
                                 Cancelar
                             </Button>
-                            <Button type="submit">Criar</Button>
+                            <Button type="submit" disabled={isPending}>
+                                Editar
+                            </Button>
                         </DialogFooter>
                     </form>
                 </Form>

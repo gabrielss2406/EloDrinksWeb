@@ -41,10 +41,10 @@ export const FormEditStructure: React.FC<FormEditStructureProps> = ({ open, setO
 
     useEffect(() => {
         if (isSuccess) {
-            toast.success("Estrutura criada com sucesso!");
+            toast.success("Estrutura editada com sucesso!");
         }
         if (isError) {
-            toast.error("Ocorreu um erro ao criar a estrutura.");
+            toast.error("Ocorreu um erro ao editar a estrutura.");
         }
     }, [isSuccess, isError]);
 

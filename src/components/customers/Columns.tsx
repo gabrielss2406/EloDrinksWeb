@@ -37,7 +37,7 @@ export const columns: ColumnDef<Customer>[] = [
             const customer = row.original
 
             return (
-                <CustomerActions customer={customer} />
+                <CustomerActions key={customer.id} customer={customer} />
             )
         },
     },

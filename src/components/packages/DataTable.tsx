@@ -30,7 +30,7 @@ import {
     DropdownMenuTrigger,
     DropdownMenuCheckboxItem
 } from "@/components/ui/dropdown-menu"
-import { DataTablePagination } from "@/components/orders/DataTable-Pagination"
+import { DataTablePagination } from "@/components/shared/DataTable-Pagination"
 import { FormNewPackage } from "./Form-newPackage"
 import { Search, X } from "lucide-react"
 

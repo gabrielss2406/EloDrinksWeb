@@ -28,7 +28,7 @@ import {
     DropdownMenuTrigger,
     DropdownMenuCheckboxItem
 } from "@/components/ui/dropdown-menu"
-import { DataTablePagination } from "@/components/orders/DataTable-Pagination"
+import { DataTablePagination } from "@/components/shared/DataTable-Pagination"
 import Loading from "../shared/Loading"
 import { SearchFilter } from "./SearchFilter"
 import { useSearchCustomers } from "@/hooks/useCustomers"

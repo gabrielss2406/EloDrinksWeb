@@ -30,7 +30,7 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { DataTablePagination } from "@/components/orders/DataTable-Pagination"
+import { DataTablePagination } from "@/components/shared/DataTable-Pagination"
 import { Search, X } from "lucide-react"
 
 interface DataTableProps<TData, TValue> {

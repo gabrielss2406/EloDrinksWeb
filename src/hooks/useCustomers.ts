@@ -9,7 +9,7 @@ export function useCustomers(page: number, pageSize: number) {
         queryKey: ["customers", page, pageSize],
         queryFn: async () => {
             try {
-                const response = await api.get("/costumer", {
+                const response = await api.get("/customer", {
                     params: {
                         page,
                         size: pageSize,
@@ -17,10 +17,26 @@ export function useCustomers(page: number, pageSize: number) {
                 });
                 return response.data as Customer[];
             } catch (error: unknown) {
-                console.error("Error fetching costumers:", error);
+                console.error("Error fetching customers:", error);
                 throw error;
             }
         }
+    });
+}
+
+export function useSearchCustomers(email: string) {
+    return useQuery<Customer[]>({
+        queryKey: ["customers-search", email],
+        queryFn: async () => {
+            try {
+                const response = await api.get(`/customer/search/?email=${email}`);
+                return response.data as Customer[];
+            } catch (error: unknown) {
+                console.error("Error fetching customers:", error);
+                throw error;
+            }
+        },
+        enabled: !!email,
     });
 }
 
@@ -30,15 +46,16 @@ export function useUpdateCustomer() {
     return useMutation<Customer, unknown, { id: string; data: CustomerInput }>({
         mutationFn: async ({ id, data }) => {
             try {
-                const response = await api.put(`/costumer/${id}`, data);
+                const response = await api.put(`/customer/${id}`, data);
                 return response.data as Customer;
             } catch (error: unknown) {
-                console.error("Error updating costumer:", error);
+                console.error("Error updating customer:", error);
                 throw error;
             }
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["customers"] });
+            queryClient.invalidateQueries({ queryKey: ["customers-search"] });
         }
     });
 }
@@ -49,7 +66,7 @@ export function useDeleteCustomer() {
     return useMutation<void, unknown, string>({
         mutationFn: async (customerId: string) => {
             try {
-                await api.delete(`/costumer/${customerId}`);
+                await api.delete(`/customer/${customerId}`);
             } catch (error: unknown) {
                 console.error("Error deleting customer:", error);
                 throw error;
@@ -57,6 +74,7 @@ export function useDeleteCustomer() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["customers"] });
+            queryClient.invalidateQueries({ queryKey: ["customers-search"] });
         }
     });
 }

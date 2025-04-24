@@ -5,9 +5,11 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Package, PackageInput, packageInputSchema, PackageProduct } from "@/schemas/Packages";
-import { ItemTable } from "./ItemTable";
+import { Package, PackageInput, packageInputSchema } from "@/schemas/Packages";
 import { StructureSelector } from "./Form-StructureSelector";
+import { useUpdatePackage } from "@/hooks/usePackages";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 interface FormEditPackageProps {
     open: boolean;
@@ -16,38 +18,56 @@ interface FormEditPackageProps {
 }
 
 export const FormEditPackage: React.FC<FormEditPackageProps> = ({ open, setOpen, pack }) => {
+    const { mutate, isSuccess, isError, isPending } = useUpdatePackage();
 
     const form = useForm<PackageInput>({
         resolver: zodResolver(packageInputSchema),
         defaultValues: {
             name: pack.name,
-            eventType: pack.eventType,
             price: pack.price,
-            productsList: pack.productsList
+            event_type: pack.event_type,
+            guest_count: pack.guest_count,
+            structure_id: pack.structure_id,
+            // productsList: pack.productsList
         },
     });
 
-    const addProduct = (product: PackageProduct) => {
-        form.setValue("productsList", [...form.getValues("productsList"), product]);
-    };
+    // const addProduct = (product: PackageProduct) => {
+    //     form.setValue("productsList", [...form.getValues("productsList"), product]);
+    // };
 
-    const removeProduct = (id: string) => {
-        const updatedList = form.getValues("productsList").filter((item) => item.id !== id);
-        form.setValue("productsList", updatedList);
-    };
+    // const removeProduct = (id: string) => {
+    //     const updatedList = form.getValues("productsList").filter((item) => item.id !== id);
+    //     form.setValue("productsList", updatedList);
+    // };
 
-    const updateQuantity = (id: string, quantity: number) => {
-        const updatedList = form.getValues("productsList").map((item) =>
-            item.id === id ? { ...item, quantity } : item
-        );
-        form.setValue("productsList", updatedList);
-    };
+    // const updateQuantity = (id: string, quantity: number) => {
+    //     const updatedList = form.getValues("productsList").map((item) =>
+    //         item.id === id ? { ...item, quantity } : item
+    //     );
+    //     form.setValue("productsList", updatedList);
+    // };
 
     const onSubmit = (data: PackageInput) => {
-        console.log("Dados enviados:", data);
-        form.reset();
-        setOpen(false);
+        mutate({
+            id: pack.id,
+            data
+        }, {
+            onSuccess: () => {
+                form.reset();
+                setOpen(false);
+            }
+        })
     };
+
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success("Pacote editado com sucesso!");
+        }
+        if (isError) {
+            toast.error("Ocorreu um erro ao editar o pacote.");
+        }
+    }, [isSuccess, isError]);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -90,7 +110,7 @@ export const FormEditPackage: React.FC<FormEditPackageProps> = ({ open, setOpen,
 
                         <FormField
                             control={form.control}
-                            name="eventType"
+                            name="event_type"
                             render={({ field, fieldState }) => (
                                 <FormItem>
                                     <FormLabel>Tipo de evento</FormLabel>
@@ -105,7 +125,7 @@ export const FormEditPackage: React.FC<FormEditPackageProps> = ({ open, setOpen,
                                                 <button
                                                     type="button"
                                                     className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                                                    onClick={() => field.onChange(pack.eventType)}
+                                                    onClick={() => field.onChange(pack.event_type)}
                                                 >
                                                     <X />
                                                 </button>
@@ -142,20 +162,20 @@ export const FormEditPackage: React.FC<FormEditPackageProps> = ({ open, setOpen,
                             )}
                         />
 
-                        <ItemTable
+                        {/* <ItemTable
                             items={form.watch("productsList")}
                             addProduct={addProduct}
                             removeProduct={removeProduct}
                             updateQuantity={updateQuantity}
-                        />
+                        /> */}
 
-                        <StructureSelector form={form} initialValue="option2" />
+                        <StructureSelector form={form} />
 
                         <DialogFooter>
                             <Button type="button" variant="outline" onClick={() => { form.reset(); setOpen(false) }}>
                                 Cancelar
                             </Button>
-                            <Button type="submit">Criar</Button>
+                            <Button type="submit" disabled={isPending}>Criar</Button>
                         </DialogFooter>
                     </form>
                 </Form>

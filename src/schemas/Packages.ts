@@ -1,6 +1,5 @@
 import { z } from "zod";
 // import { productSchema } from "./Products";
-import { structureSchema } from "./Structures";
 
 // export const packageProductSchema = productSchema.extend({
 //     quantity: z.number().default(1)
@@ -9,18 +8,19 @@ import { structureSchema } from "./Structures";
 export const packageSchema = z.object({
     id: z.string(),
     name: z.string(),
-    eventType: z.string(),
-    guest_count: z.string(),
+    event_type: z.string(),
+    guest_count: z.number(),
     price: z.number(),
-    structureId: z.number()
+    structure_id: z.number()
     // productsList: z.array(packageProductSchema)
 });
 
 export const packageInputSchema = z.object({
     name: z.string().min(1),
+    event_type: z.string().min(1),
+    guest_count: z.number().min(1).int(),
     price: z.number().min(0.1),
-    eventType: z.string().min(1),
-    structure: structureSchema
+    structure_id: z.number().int()
     // productsList: z.array(packageProductSchema),
 });
 

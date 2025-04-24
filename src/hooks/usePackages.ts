@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from "@/lib/api";
-import { Package } from "@/schemas/Packages";
+import { Package, PackageInput } from "@/schemas/Packages";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -41,61 +41,61 @@ export function useSearchPackages(name: string) {
     });
 }
 
-// export function useCreateStructure() {
-//     const queryClient = useQueryClient();
+export function useCreatePackage() {
+    const queryClient = useQueryClient();
 
-//     return useMutation<Structure, unknown, StructureInput>({
-//         mutationFn: async (newStructure: StructureInput) => {
-//             try {
-//                 const response = await api.post("/structure", newStructure);
-//                 return response.data as Structure;
-//             } catch (error: unknown) {
-//                 console.error("Error creating structure:", error);
-//                 throw error;
-//             }
-//         },
-//         onSuccess: () => {
-//             queryClient.invalidateQueries({ queryKey: ["structures"] });
-//             queryClient.invalidateQueries({ queryKey: ["structures-search"] });
-//         }
-//     });
-// }
+    return useMutation<Package, unknown, PackageInput>({
+        mutationFn: async (newPackage: PackageInput) => {
+            try {
+                const response = await api.post("/packs", newPackage);
+                return response.data as Package;
+            } catch (error: unknown) {
+                console.error("Error creating package:", error);
+                throw error;
+            }
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["packages"] });
+            queryClient.invalidateQueries({ queryKey: ["packages-search"] });
+        }
+    });
+}
 
-// export function useUpdateStructure() {
-//     const queryClient = useQueryClient();
+export function useUpdatePackage() {
+    const queryClient = useQueryClient();
 
-//     return useMutation<Structure, unknown, { id: string; data: StructureInput }>({
-//         mutationFn: async ({ id, data }) => {
-//             try {
-//                 const response = await api.put(`/structure/${id}`, data);
-//                 return response.data as Structure;
-//             } catch (error: unknown) {
-//                 console.error("Error updating structure:", error);
-//                 throw error;
-//             }
-//         },
-//         onSuccess: () => {
-//             queryClient.invalidateQueries({ queryKey: ["structures"] });
-//             queryClient.invalidateQueries({ queryKey: ["structures-search"] });
-//         }
-//     });
-// }
+    return useMutation<Package, unknown, { id: string; data: PackageInput }>({
+        mutationFn: async ({ id, data }) => {
+            try {
+                const response = await api.put(`/packs/${id}`, data);
+                return response.data as Package;
+            } catch (error: unknown) {
+                console.error("Error updating structure:", error);
+                throw error;
+            }
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["packages"] });
+            queryClient.invalidateQueries({ queryKey: ["packages-search"] });
+        }
+    });
+}
 
-// export function useDeleteStructure() {
-//     const queryClient = useQueryClient();
+export function useDeletePackage() {
+    const queryClient = useQueryClient();
 
-//     return useMutation<void, unknown, string>({
-//         mutationFn: async (structureId: string) => {
-//             try {
-//                 await api.delete(`/structure/${structureId}`);
-//             } catch (error: unknown) {
-//                 console.error("Error deleting structure:", error);
-//                 throw error;
-//             }
-//         },
-//         onSuccess: () => {
-//             queryClient.invalidateQueries({ queryKey: ["structures"] });
-//             queryClient.invalidateQueries({ queryKey: ["structures-search"] });
-//         }
-//     });
-// }
+    return useMutation<void, unknown, string>({
+        mutationFn: async (packageId: string) => {
+            try {
+                await api.delete(`/packs/${packageId}`);
+            } catch (error: unknown) {
+                console.error("Error deleting package:", error);
+                throw error;
+            }
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["packages"] });
+            queryClient.invalidateQueries({ queryKey: ["packages-search"] });
+        }
+    });
+}

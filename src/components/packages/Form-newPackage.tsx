@@ -3,47 +3,64 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Plus, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PackageInput, packageInputSchema, PackageProduct } from "@/schemas/Packages";
+import { PackageInput, packageInputSchema } from "@/schemas/Packages";
 import { useForm } from "react-hook-form";
-import { ItemTable } from "./ItemTable";
 import { StructureSelector } from "./Form-StructureSelector";
+import { useCreatePackage } from "@/hooks/usePackages";
+import { toast } from "sonner";
 
 export const FormNewPackage: React.FC = () => {
     const [open, setOpen] = useState(false);
+
+    const { mutate, isSuccess, isError, isPending } = useCreatePackage();
 
     const form = useForm<PackageInput>({
         resolver: zodResolver(packageInputSchema),
         defaultValues: {
             name: "",
             price: 0,
-            eventType: "",
-            productsList: [],
+            event_type: "",
+            guest_count: 0,
+            structure_id: 0,
+            // productsList: [],
         },
     });
 
-    const addProduct = (product: PackageProduct) => {
-        form.setValue("productsList", [...form.getValues("productsList"), product]);
-    };
+    // const addProduct = (product: PackageProduct) => {
+    //     form.setValue("productsList", [...form.getValues("productsList"), product]);
+    // };
 
-    const removeProduct = (id: string) => {
-        const updatedList = form.getValues("productsList").filter((item) => item.id !== id);
-        form.setValue("productsList", updatedList);
-    };
+    // const removeProduct = (id: string) => {
+    //     const updatedList = form.getValues("productsList").filter((item) => item.id !== id);
+    //     form.setValue("productsList", updatedList);
+    // };
 
-    const updateQuantity = (id: string, quantity: number) => {
-        const updatedList = form.getValues("productsList").map((item) =>
-            item.id === id ? { ...item, quantity } : item
-        );
-        form.setValue("productsList", updatedList);
-    };
+    // const updateQuantity = (id: string, quantity: number) => {
+    //     const updatedList = form.getValues("productsList").map((item) =>
+    //         item.id === id ? { ...item, quantity } : item
+    //     );
+    //     form.setValue("productsList", updatedList);
+    // };
 
     const onSubmit = (data: PackageInput) => {
-        console.log("Dados enviados:", data);
-        form.reset();
-        setOpen(false);
+        mutate(data, {
+            onSuccess: () => {
+                form.reset();
+                setOpen(false);
+            },
+        });
     };
+
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success("Pacote criado com sucesso!");
+        }
+        if (isError) {
+            toast.error("Ocorreu um erro ao criar o pacote.");
+        }
+    }, [isSuccess, isError]);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -114,7 +131,7 @@ export const FormNewPackage: React.FC = () => {
 
                         <FormField
                             control={form.control}
-                            name="eventType"
+                            name="event_type"
                             render={({ field, fieldState }) => (
                                 <FormItem>
                                     <FormLabel>Tipo de evento</FormLabel>
@@ -140,20 +157,45 @@ export const FormNewPackage: React.FC = () => {
                             )}
                         />
 
-                        <ItemTable
+                        <FormField
+                            control={form.control}
+                            name="guest_count"
+                            render={({ field, fieldState }) => (
+                                <FormItem>
+                                    <FormLabel>Quantidade de convidados</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            type="number"
+                                            placeholder="0"
+                                            min={0}
+                                            step="1"
+                                            onChange={(e) => {
+                                                const value = parseInt(e.target.value, 10);
+                                                field.onChange(isNaN(value) ? '' : value);
+                                            }}
+                                            value={field.value || ''}
+                                            className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
+                                        />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+
+                        {/* <ItemTable
                             items={form.watch("productsList")}
                             addProduct={addProduct}
                             removeProduct={removeProduct}
                             updateQuantity={updateQuantity}
-                        />
+                        /> */}
 
-                        <StructureSelector form={form} initialValue="" />
+                        <StructureSelector form={form} />
 
                         <DialogFooter>
                             <Button type="button" variant="outline" onClick={() => { setOpen(false); form.reset() }}>
                                 Cancelar
                             </Button>
-                            <Button type="submit">Criar</Button>
+                            <Button type="submit" disabled={isPending}>Criar</Button>
                         </DialogFooter>
                     </form>
                 </Form>

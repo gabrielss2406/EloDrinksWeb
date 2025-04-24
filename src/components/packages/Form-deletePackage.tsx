@@ -1,6 +1,9 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Package } from "@/schemas/Packages";
+import { useDeletePackage } from "@/hooks/usePackages";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 interface FormDeletePackageProps {
     open: boolean;
@@ -9,11 +12,25 @@ interface FormDeletePackageProps {
 }
 
 export const FormDeletePackage: React.FC<FormDeletePackageProps> = ({ open, setOpen, pack }) => {
+    const { mutate, isSuccess, isError, isPending } = useDeletePackage();
 
-    const handleDelete = () => {
-        console.log("Dados enviados:", pack.id);
-        setOpen(false);
+    const handleDelete = async () => {
+        try {
+            mutate(pack.id);
+            setOpen(false);
+        } catch (error) {
+            console.error("Failed to delete structure:", error);
+        }
     };
+
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success("Estrutura excluída com sucesso!");
+        }
+        if (isError) {
+            toast.error("Ocorreu um erro ao excluir a estrutura.");
+        }
+    }, [isSuccess, isError]);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -26,7 +43,7 @@ export const FormDeletePackage: React.FC<FormDeletePackageProps> = ({ open, setO
                 </DialogHeader>
                 <DialogFooter>
                     <Button type="submit" variant={"outline"} onClick={() => setOpen(false)}>Cancelar</Button>
-                    <Button type="submit" className="bg-red-500" onClick={handleDelete}>Excluir</Button>
+                    <Button type="submit" className="bg-red-500" onClick={handleDelete} disabled={isPending}>Excluir</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

@@ -6,10 +6,10 @@ import {
     flexRender,
     getCoreRowModel,
     getFilteredRowModel,
-    getSortedRowModel,
-    SortingState,
-    VisibilityState,
     useReactTable,
+    getSortedRowModel,
+    VisibilityState,
+    SortingState,
 } from "@tanstack/react-table"
 
 import {
@@ -20,20 +20,20 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuTrigger,
     DropdownMenuCheckboxItem
 } from "@/components/ui/dropdown-menu"
-import { DataTablePagination } from "../shared/DataTable-Pagination"
-import { FormNewStructure } from "./Form-newStructure"
-import { Search, X } from "lucide-react"
+import { DataTablePagination } from "@/components/shared/DataTable-Pagination"
 import Loading from "../shared/Loading"
+import { Structure } from "@/schemas/Structures"
+import { SearchFilter } from "../shared/SearchFilter"
+import { useSearchStructures } from "@/hooks/useStructures"
+import { FormNewStructure } from "./Form-newStructure"
 
 interface DataTableProps<TData> {
     data: TData[]
@@ -45,7 +45,7 @@ interface DataTableProps<TData> {
     isLoading?: boolean
 }
 
-export function DataTable<TData>({
+export function DataTable({
     data,
     columns,
     pageIndex,
@@ -53,14 +53,26 @@ export function DataTable<TData>({
     setPageIndex,
     setPageSize,
     isLoading,
-}: DataTableProps<TData>) {
+}: DataTableProps<Structure>) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
     const [searchQuery, setSearchQuery] = useState("")
 
+    const { data: filteredData = [], refetch, isLoading: isFetching } = useSearchStructures(searchQuery)
+
+    useEffect(() => {
+        if (searchQuery === "") {
+            refetch()
+        }
+    }, [searchQuery, refetch])
+
+    const handleSearch = (query: string) => {
+        setSearchQuery(query)
+    }
+
     const table = useReactTable({
-        data,
+        data: searchQuery !== "" ? filteredData : data,
         columns,
         manualPagination: true,
         state: {
@@ -87,37 +99,10 @@ export function DataTable<TData>({
         getFilteredRowModel: getFilteredRowModel(),
     })
 
-    const handleSearch = () => {
-        table.getColumn("name")?.setFilterValue(searchQuery)
-    }
-
-    const clearSearch = () => {
-        setSearchQuery("")
-        table.getColumn("name")?.setFilterValue("")
-    }
-
     return (
         <div className="bg-white dark:bg-[#202020] p-4 rounded-lg">
             <div className="flex items-center mb-4 gap-2">
-                <Input
-                    placeholder="Filtrar pela opção..."
-                    value={searchQuery}
-                    onChange={(event) => setSearchQuery(event.target.value)}
-                    onKeyDown={(event) => {
-                        if (event.key === "Enter") {
-                            handleSearch()
-                        }
-                    }}
-                    className="max-w-sm"
-                />
-                <Button variant="outline" onClick={handleSearch}>
-                    <Search className="w-5 h-5" />
-                </Button>
-                {searchQuery && (
-                    <Button variant="outline" onClick={clearSearch}>
-                        <X className="w-5 h-5" />
-                    </Button>
-                )}
+                <SearchFilter onSearch={handleSearch} field="nome" />
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto">
@@ -164,7 +149,7 @@ export function DataTable<TData>({
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {isLoading ? (
+                        {isLoading || isFetching ? (
                             <TableRow>
                                 <TableCell colSpan={columns.length} className="text-center py-6">
                                     <Loading />

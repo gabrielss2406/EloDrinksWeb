@@ -25,6 +25,22 @@ export function useStructures(page: number, pageSize: number) {
     });
 }
 
+export function useSearchStructures(name: string) {
+    return useQuery<Structure[]>({
+        queryKey: ["structures-search", name],
+        queryFn: async () => {
+            try {
+                const response = await api.get(`/structure/search/?name=${name}`);
+                return response.data as Structure[];
+            } catch (error: unknown) {
+                console.error("Error fetching structures:", error);
+                throw error;
+            }
+        },
+        enabled: !!name,
+    });
+}
+
 export function useCreateStructure() {
     const queryClient = useQueryClient();
 
@@ -40,6 +56,7 @@ export function useCreateStructure() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["structures"] });
+            queryClient.invalidateQueries({ queryKey: ["structures-search"] });
         }
     });
 }
@@ -59,6 +76,7 @@ export function useUpdateStructure() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["structures"] });
+            queryClient.invalidateQueries({ queryKey: ["structures-search"] });
         }
     });
 }
@@ -77,6 +95,7 @@ export function useDeleteStructure() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["structures"] });
+            queryClient.invalidateQueries({ queryKey: ["structures-search"] });
         }
     });
 }

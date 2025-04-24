@@ -5,10 +5,11 @@ import { useEffect, useMemo, useState } from "react"
 import debounce from "lodash/debounce"
 
 interface SearchFilterProps {
+    field: string;
     onSearch: (value: string) => void
 }
 
-export function SearchFilter({ onSearch }: SearchFilterProps) {
+export function SearchFilter({ field, onSearch }: SearchFilterProps) {
     const [query, setQuery] = useState("")
 
     const debounced = useMemo(
@@ -29,7 +30,7 @@ export function SearchFilter({ onSearch }: SearchFilterProps) {
     return (
         <div className="flex items-center gap-2 mb-4">
             <Input
-                placeholder="Filtrar por e-mail..."
+                placeholder={`Filtrar por ${field}...`}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 className="max-w-sm"

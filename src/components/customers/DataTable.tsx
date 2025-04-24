@@ -30,9 +30,9 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { DataTablePagination } from "@/components/shared/DataTable-Pagination"
 import Loading from "../shared/Loading"
-import { SearchFilter } from "./SearchFilter"
 import { useSearchCustomers } from "@/hooks/useCustomers"
 import { Customer } from "@/schemas/Customers"
+import { SearchFilter } from "../shared/SearchFilter"
 
 interface DataTableProps<TData> {
     data: TData[]
@@ -101,7 +101,7 @@ export function DataTable({
     return (
         <div className="bg-white dark:bg-[#202020] p-4 rounded-lg">
             <div className="flex items-center mb-4 gap-2">
-                <SearchFilter onSearch={handleSearch} />
+                <SearchFilter onSearch={handleSearch} field="email" />
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto">

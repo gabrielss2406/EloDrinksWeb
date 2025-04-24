@@ -1,56 +1,37 @@
+'use client'
+
 import { columns } from "@/components/packages/Columns"
 import { DataTable } from "@/components/packages/DataTable"
 import Header from "@/components/shared/Header";
-import { Package } from "@/schemas/Packages";
+import { usePackages } from "@/hooks/usePackages";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
-async function getData(): Promise<Package[]> {
-    return [
-        {
-            id: "1",
-            name: "John Doe",
-            price: 150,
-            eventType: "Wedding",
-            productsList: []
-        },
-        {
-            id: "2",
-            name: "Jane Smith",
-            price: 200,
-            eventType: "Wedding",
-            productsList: []
-        },
-        {
-            id: "3",
-            name: "Alice Johnson",
-            price: 300,
-            eventType: "Wedding",
-            productsList: []
-        },
-        {
-            id: "4",
-            name: "Bob Brown",
-            price: 250,
-            eventType: "Wedding",
-            productsList: []
-        },
-        {
-            id: "5",
-            name: "Charlie Davis",
-            price: 180,
-            eventType: "Wedding",
-            productsList: []
-        },
-    ];
-}
+export default function Products() {
+    const [pageIndex, setPageIndex] = useState(0)
+    const [pageSize, setPageSize] = useState(10)
 
-export default async function Products() {
-    const data = await getData()
+    const { data = [], isLoading, isError } = usePackages(pageIndex + 1, pageSize)
+
+    useEffect(() => {
+        if (isError) {
+            toast.error("Erro ao carregar pacotes.");
+        }
+    }, [isError]);
 
     return (
         <>
             <Header name={"Pacotes"} />
             <div className="container mx-auto p-3">
-                <DataTable columns={columns} data={data} />
+                <DataTable
+                    data={data}
+                    columns={columns}
+                    pageIndex={pageIndex}
+                    pageSize={pageSize}
+                    setPageIndex={setPageIndex}
+                    setPageSize={setPageSize}
+                    isLoading={isLoading}
+                />
             </div>
         </>
     )

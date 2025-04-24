@@ -22,8 +22,13 @@ export const columns: ColumnDef<Package>[] = [
         enableSorting: true,
     },
     {
-        accessorKey: "eventType",
+        accessorKey: "event_type",
         header: ({ column }) => <DataTableColumnHeader column={column} title="Tipo de evento" />,
+        enableSorting: true,
+    },
+    {
+        accessorKey: "guest_count",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Nº de convidados" />,
         enableSorting: true,
     },
     {
@@ -32,7 +37,7 @@ export const columns: ColumnDef<Package>[] = [
             const pack = row.original
 
             return (
-                <PackageActions pack={pack} />
+                <PackageActions key={pack.id} pack={pack} />
             )
         },
     },

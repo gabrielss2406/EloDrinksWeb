@@ -1,9 +1,9 @@
 import { z } from "zod";
-// import { productSchema } from "./Products";
+import { productSchema } from "./Products";
 
-// export const packageProductSchema = productSchema.extend({
-//     quantity: z.number().default(1)
-// });
+export const packageProductSchema = productSchema.extend({
+    quantity: z.number().default(1)
+});
 
 export const packageSchema = z.object({
     id: z.string(),
@@ -25,5 +25,5 @@ export const packageInputSchema = z.object({
 });
 
 export type Package = z.infer<typeof packageSchema>;
-// export type PackageProduct = z.infer<typeof packageProductSchema>;
+export type PackageProduct = z.infer<typeof packageProductSchema>;
 export type PackageInput = z.infer<typeof packageInputSchema>;

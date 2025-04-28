@@ -5,24 +5,44 @@ import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/
 import { Plus, X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { ProductInput, productInputSchema } from "@/schemas/Products";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
+import { useCreateProduct } from "@/hooks/useProduts";
+import { toast } from "sonner";
 
 export const FormNewProduct: React.FC = () => {
     const [open, setOpen] = useState(false);
+
+    const { mutate, isSuccess, isError, isPending } = useCreateProduct();
 
     const form = useForm<ProductInput>({
         resolver: zodResolver(productInputSchema),
         defaultValues: {
             name: "",
             price: 0,
+            category: "",
+            img_file: undefined,
         },
     });
 
     const onSubmit = (data: ProductInput) => {
-        console.log("Dados enviados:", data);
-        form.reset();
+        mutate(data, {
+            onSuccess: () => {
+                form.reset();
+                setOpen(false);
+            },
+        });
     };
+
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success("Estrutura criada com sucesso!");
+        }
+        if (isError) {
+            toast.error("Ocorreu um erro ao criar a estrutura.");
+        }
+    }, [isSuccess, isError]);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -65,6 +85,7 @@ export const FormNewProduct: React.FC = () => {
                                 </FormItem>
                             )}
                         />
+
                         <FormField
                             control={form.control}
                             name="price"
@@ -90,11 +111,70 @@ export const FormNewProduct: React.FC = () => {
                             )}
                         />
 
+                        <FormField
+                            control={form.control}
+                            name="category"
+                            render={({ field, fieldState }) => (
+                                <FormItem>
+                                    <FormLabel>Categoria do Produto</FormLabel>
+                                    <FormControl>
+                                        <div className="relative">
+                                            <Input
+                                                {...field}
+                                                className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
+                                            />
+                                            {field.value && (
+                                                <button
+                                                    type="button"
+                                                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                                    onClick={() => field.onChange("")}
+                                                >
+                                                    <X />
+                                                </button>
+                                            )}
+                                        </div>
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="img_file"
+                            render={({ field, fieldState }) => (
+                                <FormItem>
+                                    <FormLabel>Imagem do Produto</FormLabel>
+                                    <FormControl>
+                                        <div className="space-y-2">
+                                            <Input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => {
+                                                    const file = e.target.files?.[0];
+                                                    field.onChange(file);
+                                                }}
+                                                className={`bg-gray-200 file:${fieldState.invalid ? 'border-red-500' : ''} file:text-black dark:file:text-white`}
+                                            />
+                                            {field.value && typeof field.value === "object" && (
+                                                <Image
+                                                    src={URL.createObjectURL(field.value)}
+                                                    width={152}
+                                                    height={152}
+                                                    className="object-cover border rounded"
+                                                    alt={"Image preview"}
+                                                />
+                                            )}
+                                        </div>
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+
                         <DialogFooter>
                             <Button type="button" variant="outline" onClick={() => { setOpen(false); form.reset() }}>
                                 Cancelar
                             </Button>
-                            <Button type="submit">Criar</Button>
+                            <Button type="submit" disabled={isPending}>Criar</Button>
                         </DialogFooter>
                     </form>
                 </Form>

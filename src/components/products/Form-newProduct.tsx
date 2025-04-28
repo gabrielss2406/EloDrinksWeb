@@ -37,10 +37,10 @@ export const FormNewProduct: React.FC = () => {
 
     useEffect(() => {
         if (isSuccess) {
-            toast.success("Estrutura criada com sucesso!");
+            toast.success("Produto criado com sucesso!");
         }
         if (isError) {
-            toast.error("Ocorreu um erro ao criar a estrutura.");
+            toast.error("Ocorreu um erro ao criar o produto.");
         }
     }, [isSuccess, isError]);
 

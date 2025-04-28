@@ -7,6 +7,9 @@ import { useForm } from "react-hook-form";
 import { Product, ProductInput, productInputSchema } from "@/schemas/Products";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import { useEffect } from "react";
+import { toast } from "sonner";
+import { useUpdateProduct } from "@/hooks/useProduts";
 
 interface FormEditProductProps {
     open: boolean;
@@ -15,6 +18,7 @@ interface FormEditProductProps {
 }
 
 export const FormEditProduct: React.FC<FormEditProductProps> = ({ open, setOpen, product }) => {
+    const { mutate, isSuccess, isError, isPending } = useUpdateProduct();
 
     const form = useForm<ProductInput>({
         resolver: zodResolver(productInputSchema),
@@ -23,13 +27,40 @@ export const FormEditProduct: React.FC<FormEditProductProps> = ({ open, setOpen,
             price: product.price,
             category: product.category,
             img_url: product.img_url,
+            img_file: undefined
         },
     });
 
+    useEffect(() => {
+        const fetchImage = async () => {
+            const response = await fetch(product.img_url);
+            const blob = await response.blob();
+            form.setValue("img_file", new File([blob], "image.jpg", { type: blob.type }));
+        };
+
+        fetchImage();
+    }, [product.img_url, form]);
+
     const onSubmit = (data: ProductInput) => {
-        console.log("Dados enviados:", data);
-        form.reset();
+        mutate({
+            id: product.id,
+            data
+        }, {
+            onSuccess: () => {
+                form.reset();
+                setOpen(false);
+            }
+        })
     };
+
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success("Produto editado com sucesso!");
+        }
+        if (isError) {
+            toast.error("Ocorreu um erro ao editar o produto.");
+        }
+    }, [isSuccess, isError]);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -125,43 +156,30 @@ export const FormEditProduct: React.FC<FormEditProductProps> = ({ open, setOpen,
 
                         <FormField
                             control={form.control}
-                            name="img_url"
-                            render={({ field }) => (
+                            name="img_file"
+                            render={({ field, fieldState }) => (
                                 <FormItem>
-                                    <FormLabel>URL da Imagem</FormLabel>
+                                    <FormLabel>Imagem do Produto</FormLabel>
                                     <FormControl>
                                         <div className="space-y-2">
-                                            {field.value && (
-                                                <Image
-                                                    src={field.value}
-                                                    alt={product.name}
-                                                    width={132}
-                                                    height={132}
-                                                    style={{ objectFit: "cover" }}
-                                                />
-                                            )}
-                                            {/* <Input
-                                                {...field}
-                                                placeholder="URL da imagem"
-                                                className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
-                                            /> */}
-                                            <input
+                                            <Input
                                                 type="file"
                                                 accept="image/*"
                                                 onChange={(e) => {
                                                     const file = e.target.files?.[0];
-                                                    if (file) {
-                                                        const reader = new FileReader();
-                                                        reader.onload = () => {
-                                                            if (reader.result) {
-                                                                field.onChange(reader.result.toString());
-                                                            }
-                                                        };
-                                                        reader.readAsDataURL(file);
-                                                    }
+                                                    field.onChange(file);
                                                 }}
-                                                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
+                                                className={`bg-gray-200 file:${fieldState.invalid ? 'border-red-500' : ''} file:text-black dark:file:text-white`}
                                             />
+                                            {field.value && typeof field.value === "object" && (
+                                                <Image
+                                                    src={URL.createObjectURL(field.value)}
+                                                    width={152}
+                                                    height={152}
+                                                    className="object-cover border rounded"
+                                                    alt={"Image preview"}
+                                                />
+                                            )}
                                         </div>
                                     </FormControl>
                                 </FormItem>
@@ -172,7 +190,7 @@ export const FormEditProduct: React.FC<FormEditProductProps> = ({ open, setOpen,
                             <Button type="button" variant="outline" onClick={() => { setOpen(false); form.reset() }}>
                                 Cancelar
                             </Button>
-                            <Button type="submit">Criar</Button>
+                            <Button type="submit" disabled={isPending}>Criar</Button>
                         </DialogFooter>
                     </form>
                 </Form>

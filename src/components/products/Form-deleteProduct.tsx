@@ -26,10 +26,10 @@ export const FormDeleteProduct: React.FC<FormDeleteProductProps> = ({ open, setO
 
     useEffect(() => {
         if (isSuccess) {
-            toast.success("Estrutura excluída com sucesso!");
+            toast.success("Produto excluído com sucesso!");
         }
         if (isError) {
-            toast.error("Ocorreu um erro ao excluir a estrutura.");
+            toast.error("Ocorreu um erro ao excluir o produto.");
         }
     }, [isSuccess, isError]);
 

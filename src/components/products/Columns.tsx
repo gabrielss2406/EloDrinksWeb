@@ -32,7 +32,7 @@ export const columns: ColumnDef<Product>[] = [
             const product = row.original
 
             return (
-                <ProductActions product={product} />
+                <ProductActions key={product.id} product={product} />
             )
         },
     },

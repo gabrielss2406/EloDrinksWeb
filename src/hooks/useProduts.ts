@@ -69,25 +69,35 @@ export function useCreateProduct() {
     });
 }
 
-// export function useUpdateCustomer() {
-//     const queryClient = useQueryClient();
+export function useUpdateProduct() {
+    const queryClient = useQueryClient();
 
-//     return useMutation<Customer, unknown, { id: string; data: CustomerInput }>({
-//         mutationFn: async ({ id, data }) => {
-//             try {
-//                 const response = await api.put(`/customer/${id}`, data);
-//                 return response.data as Customer;
-//             } catch (error: unknown) {
-//                 console.error("Error updating customer:", error);
-//                 throw error;
-//             }
-//         },
-//         onSuccess: () => {
-//             queryClient.invalidateQueries({ queryKey: ["customers"] });
-//             queryClient.invalidateQueries({ queryKey: ["customers-search"] });
-//         }
-//     });
-// }
+    return useMutation<Product, unknown, { id: string; data: ProductInput }>({
+        mutationFn: async ({ id, data }) => {
+            try {
+                const formData = new FormData();
+                formData.append("name", data.name);
+                formData.append("price", data.price.toString());
+                formData.append("category", data.category);
+                if (data.img_file) {
+                    formData.append("img_file", data.img_file);
+                }
+
+                const response = await apiFormData.put(`/product/${id}`, formData);
+                console.log(response.data);
+
+                return response.data as Product;
+            } catch (error: unknown) {
+                console.error("Error updating product:", error);
+                throw error;
+            }
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["products"] });
+            queryClient.invalidateQueries({ queryKey: ["products-search"] });
+        }
+    });
+}
 
 export function useDeleteProduct() {
     const queryClient = useQueryClient();

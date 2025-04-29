@@ -19,8 +19,8 @@ const exampleCustomer: CustomerInfo = {
 const exampleBudget: Budget = {
     eventType: "Wedding",
     items: [
-        { id: "1", name: "Beer", price: 5, quantity: 10 },
-        { id: "2", name: "Wine", price: 15, quantity: 5 },
+        // { id: "1", name: "Beer", price: 5, quantity: 10 },
+        // { id: "2", name: "Wine", price: 15, quantity: 5 },
     ],
     barStructure: "Open Bar",
     structurePrice: 200,

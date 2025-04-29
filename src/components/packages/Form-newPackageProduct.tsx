@@ -12,13 +12,13 @@ export const FormNewPackageProduct: React.FC<FormNewPackageProductProps> = ({ ad
     const [open, setOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [products] = useState<PackageProduct[]>([
-        { id: "1", name: "Coca-Cola", price: 5.0, quantity: 1 },
-        { id: "2", name: "Pepsi", price: 4.5, quantity: 1 },
-        { id: "3", name: "Guaraná", price: 4.0, quantity: 1 },
-        { id: "4", name: "Água Mineral", price: 2.0, quantity: 1 },
-        { id: "5", name: "Suco de Laranja", price: 6.0, quantity: 1 },
-        { id: "6", name: "Chá Gelado", price: 3.5, quantity: 1 },
-        { id: "7", name: "Energético", price: 8.0, quantity: 1 },
+        // { id: "1", name: "Coca-Cola", price: 5.0, quantity: 1 },
+        // { id: "2", name: "Pepsi", price: 4.5, quantity: 1 },
+        // { id: "3", name: "Guaraná", price: 4.0, quantity: 1 },
+        // { id: "4", name: "Água Mineral", price: 2.0, quantity: 1 },
+        // { id: "5", name: "Suco de Laranja", price: 6.0, quantity: 1 },
+        // { id: "6", name: "Chá Gelado", price: 3.5, quantity: 1 },
+        // { id: "7", name: "Energético", price: 8.0, quantity: 1 },
     ]);
 
     const filteredProducts = products.filter(product =>

@@ -8,13 +8,15 @@ import { ProductInput, productInputSchema } from "@/schemas/Products";
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { useCreateProduct } from "@/hooks/useProduts";
+import { useCreateProduct, useProductsCategories } from "@/hooks/useProduts";
 import { toast } from "sonner";
+import Loading from "../shared/Loading";
 
 export const FormNewProduct: React.FC = () => {
     const [open, setOpen] = useState(false);
 
-    const { mutate, isSuccess, isError, isPending } = useCreateProduct();
+    const { data: categories = [], isLoading: isLoadingCategories, isError: isErrorCategories } = useProductsCategories();
+    const { mutate: createProduct, isSuccess: isProductCreated, isError: isProductCreationError, isPending: isCreatingProduct } = useCreateProduct();
 
     const form = useForm<ProductInput>({
         resolver: zodResolver(productInputSchema),
@@ -27,7 +29,7 @@ export const FormNewProduct: React.FC = () => {
     });
 
     const onSubmit = (data: ProductInput) => {
-        mutate(data, {
+        createProduct(data, {
             onSuccess: () => {
                 form.reset();
                 setOpen(false);
@@ -36,13 +38,16 @@ export const FormNewProduct: React.FC = () => {
     };
 
     useEffect(() => {
-        if (isSuccess) {
+        if (isProductCreated) {
             toast.success("Produto criado com sucesso!");
         }
-        if (isError) {
+        if (isProductCreationError) {
             toast.error("Ocorreu um erro ao criar o produto.");
         }
-    }, [isSuccess, isError]);
+        if (isErrorCategories) {
+            toast.error("Ocorreu um erro ao carregar as categorias.");
+        }
+    }, [isProductCreated, isProductCreationError, isErrorCategories]);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -114,28 +119,53 @@ export const FormNewProduct: React.FC = () => {
                         <FormField
                             control={form.control}
                             name="category"
-                            render={({ field, fieldState }) => (
-                                <FormItem>
-                                    <FormLabel>Categoria do Produto</FormLabel>
-                                    <FormControl>
-                                        <div className="relative">
-                                            <Input
-                                                {...field}
-                                                className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
-                                            />
-                                            {field.value && (
-                                                <button
-                                                    type="button"
-                                                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                                                    onClick={() => field.onChange("")}
-                                                >
-                                                    <X />
-                                                </button>
-                                            )}
-                                        </div>
-                                    </FormControl>
-                                </FormItem>
-                            )}
+                            render={({ field, fieldState }) => {
+                                const isOther = field.value && !categories.includes(field.value) && field.value !== "Outros";
+                                return (
+                                    <FormItem>
+                                        <FormLabel>Categoria do Produto</FormLabel>
+                                        <FormControl>
+                                            <div className="relative">
+                                                {isLoadingCategories ? (
+                                                    <Loading />
+                                                ) : (
+                                                    <>
+                                                        <select
+                                                            value={categories.includes(field.value) ? field.value : (isOther ? "Outros" : "")}
+                                                            onChange={(e) => {
+                                                                const value = e.target.value;
+                                                                if (value !== "Outros") {
+                                                                    field.onChange(value);
+                                                                } else {
+                                                                    field.onChange("");
+                                                                }
+                                                            }}
+                                                            className={`bg-gray-200 w-full p-2 rounded-md dark:bg-[#252525] border border-input ${fieldState.invalid ? "border-red-500" : "border-gray-300"
+                                                                }`}
+                                                        >
+                                                            <option value="Outros">Outros</option>
+                                                            {categories.map((category) => (
+                                                                <option key={category} value={category}>
+                                                                    {category}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+
+                                                        {(field.value === "" || isOther) && (
+                                                            <Input
+                                                                placeholder="Digite uma nova categoria"
+                                                                className="mt-2 bg-gray-200"
+                                                                value={field.value}
+                                                                onChange={(e) => field.onChange(e.target.value)}
+                                                            />
+                                                        )}
+                                                    </>
+                                                )}
+                                            </div>
+                                        </FormControl>
+                                    </FormItem>
+                                );
+                            }}
                         />
 
                         <FormField
@@ -174,7 +204,7 @@ export const FormNewProduct: React.FC = () => {
                             <Button type="button" variant="outline" onClick={() => { setOpen(false); form.reset() }}>
                                 Cancelar
                             </Button>
-                            <Button type="submit" disabled={isPending}>Criar</Button>
+                            <Button type="submit" disabled={isCreatingProduct}>Criar</Button>
                         </DialogFooter>
                     </form>
                 </Form>

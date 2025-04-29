@@ -40,6 +40,21 @@ export function useSearchProducts(name: string) {
     });
 }
 
+export function useProductsCategories() {
+    return useQuery<string[]>({
+        queryKey: ["products-categories"],
+        queryFn: async () => {
+            try {
+                const response = await api.get("/product/categories");
+                return response.data as string[];
+            } catch (error: unknown) {
+                console.error("Error fetching products:", error);
+                throw error;
+            }
+        }
+    });
+}
+
 export function useCreateProduct() {
     const queryClient = useQueryClient();
 
@@ -65,6 +80,7 @@ export function useCreateProduct() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["products"] });
             queryClient.invalidateQueries({ queryKey: ["products-search"] });
+            queryClient.invalidateQueries({ queryKey: ["products-categories"] });
         }
     });
 }
@@ -95,6 +111,7 @@ export function useUpdateProduct() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["products"] });
             queryClient.invalidateQueries({ queryKey: ["products-search"] });
+            queryClient.invalidateQueries({ queryKey: ["products-categories"] });
         }
     });
 }
@@ -114,6 +131,7 @@ export function useDeleteProduct() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["products"] });
             queryClient.invalidateQueries({ queryKey: ["products-search"] });
+            queryClient.invalidateQueries({ queryKey: ["products-categories"] });
         }
     });
 }

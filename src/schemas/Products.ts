@@ -11,7 +11,7 @@ export const productSchema = z.object({
 export const productInputSchema = z.object({
     name: z.string().min(1),
     price: z.number(),
-    category: z.string(),
+    category: z.string().min(1),
     img_url: z.string().optional(),
     img_file: z.instanceof(File).optional(),
 });

@@ -23,7 +23,7 @@ export function useLogin() {
             const response = await apiFormData.post('/login', formData)
             const { access_token, token_type } = response.data
 
-            Cookies.set('token', access_token)
+            Cookies.set('elodrinks_token', access_token)
 
             return { access_token, token_type }
         }

@@ -38,7 +38,7 @@ export const SidebarProductsRoutes: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-        if (pathname === '/produtos' || pathname === '/produtos/estrutura' || pathname === '/produtos/pacotes') setIsOpen(true);
+        if (pathname === '/produtos' || pathname === '/produtos/estrutura' || pathname === '/produtos/pacotes' || pathname === '/produtos/promocoes') setIsOpen(true);
         else setIsOpen(false);
     }, [pathname]);
 

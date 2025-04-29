@@ -4,28 +4,33 @@ import { LineChart, Line, PieChart, Pie, Cell, Tooltip, Legend } from "recharts"
 import { Card, CardContent } from "@/components/ui/card";
 import Header from "@/components/shared/Header";
 
+// Dados de exemplo
 const revenueData = [
-  { date: "01/01", revenue: 1000 },
-  { date: "01/02", revenue: 1200 },
-  { date: "01/03", revenue: 800 },
-  { date: "01/04", revenue: 1000 },
+  { date: "01/01", revenue: 0 },
+  { date: "01/02", revenue: 0 },
+  { date: "01/03", revenue: 0 },
+  { date: "01/04", revenue: 0 },
 ];
 
 const productData = [
-  { name: "Product 01", value: 33.3, color: "#007bff" },
-  { name: "Product 02", value: 22.2, color: "#ff7300" },
-  { name: "Product 03", value: 22.2, color: "#ffcc00" },
-  { name: "Product 04", value: 22.2, color: "#28a745" },
+  { name: "Product 01", value: 0, color: "#007bff" },
+  { name: "Product 02", value: 0, color: "#ff7300" },
+  { name: "Product 03", value: 0, color: "#ffcc00" },
+  { name: "Product 04", value: 0, color: "#28a745" },
 ];
 
 export default function Dashboard() {
-
   return (
     <div className="flex min-h-screen">
       {/* Main Content */}
       <div className="flex-1">
         <Header name={"Dashboard"} />
         <div className="pl-6">
+          {/* Aviso sobre dados de exemplo */}
+          <p className="text-sm text-gray-500 mb-4">
+            Todos os dados apresentados são apenas exemplos.
+          </p>
+
           {/* Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
             <Card>

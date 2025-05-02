@@ -3,6 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTableColumnHeader } from "@/components/shared/DataTable-Header"
 import { Sales } from "@/schemas/Sales"
+import { SalesActions } from "./DataTable-Actions"
 
 export const columns: ColumnDef<Sales>[] = [
     {
@@ -26,5 +27,26 @@ export const columns: ColumnDef<Sales>[] = [
         header: ({ column }) => <DataTableColumnHeader column={column} title="Data de Expiração" />,
         enableSorting: true,
         cell: ({ row }) => new Date(row.getValue<string>("expire_date")).toLocaleDateString(),
+    },
+    {
+        accessorKey: "promotion_type",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Tipo de Promoção" />,
+        enableSorting: false,
+        cell: ({ row }) => {
+            console.log(row.original)
+            const productId = row.original.product_id;
+            const packId = row.original.pack_id;
+            return productId ? "Produto" : packId ? "Pacote" : "Indefinido";
+        },
+    },
+    {
+        id: "actions",
+        cell: ({ row }) => {
+            const sales = row.original
+
+            return (
+                <SalesActions key={sales.id} sales={sales} />
+            )
+        },
     },
 ]

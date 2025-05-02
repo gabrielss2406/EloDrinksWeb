@@ -1,63 +1,67 @@
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
-import { Plus, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { toast } from "sonner";
-import { SalesInput, salesInputSchema } from "@/schemas/Sales";
-import { useCreateSales } from "@/hooks/useSales";
-import { Calendar } from "@/components/ui/calendar"
+import { Sales, SalesInput, salesInputSchema } from "@/schemas/Sales";
+import { useUpdateSales } from "@/hooks/useSales";
 import { getTemplateLocale } from "@/utils/locale";
+import { Calendar } from "../ui/calendar";
 import { PackageSelector } from "./Form-packageSelector";
 import { ProductSelector } from "./Form-productSelector";
 
-export const FormNewSales: React.FC = () => {
-    const [open, setOpen] = useState(false);
+interface FormEditSalesProps {
+    open: boolean;
+    setOpen: (open: boolean) => void;
+    sales: Sales;
+}
 
-    const { mutate: createSales, isSuccess: isSalesCreated, isError: isSalesCreationError, isPending: isCreatingSales } = useCreateSales();
+export const FormEditSales: React.FC<FormEditSalesProps> = ({ open, setOpen, sales }) => {
+    const { mutate, isSuccess, isError, isPending } = useUpdateSales();
 
     const form = useForm<SalesInput>({
         resolver: zodResolver(salesInputSchema),
         defaultValues: {
-            name: "",
-            discount_percentage: 0,
-            expire_date: new Date(),
-            product_id: -1,
-            pack_id: -1
+            name: sales.name,
+            discount_percentage: sales.discount_percentage,
+            expire_date: sales.expire_date ? new Date(sales.expire_date) : new Date(),
+            product_id: sales.product_id || -1,
+            pack_id: sales.pack_id || -1,
         },
     });
 
     const onSubmit = (data: SalesInput) => {
-        createSales(data, {
+        mutate({
+            id: sales.id,
+            data
+        }, {
             onSuccess: () => {
                 form.reset();
                 setOpen(false);
-            },
-        });
+            }
+        })
     };
 
     useEffect(() => {
-        if (isSalesCreated) {
-            toast.success("Promoção criada com sucesso!");
+        if (isSuccess) {
+            toast.success("Produto editado com sucesso!");
         }
-        if (isSalesCreationError) {
-            toast.error("Ocorreu um erro ao criar a promoção.");
+        if (isError) {
+            toast.error("Ocorreu um erro ao editar o produto.");
         }
-    }, [isSalesCreated, isSalesCreationError]);
+    }, [isSuccess, isError]);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                <Button type="button" className="ml-1">Criar nova promoção <Plus /></Button>
-            </DialogTrigger>
             <DialogContent className="bg-white dark:bg-[#202020] dark:text-white max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle>Criar novo produto</DialogTitle>
+                    <DialogTitle>Editando {sales.name}</DialogTitle>
                     <DialogDescription>
-                        Preencha os detalhes abaixo para adicionar uma nova promoção.
+                        Preencha os detalhes abaixo para editar a promoção.
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -72,14 +76,14 @@ export const FormNewSales: React.FC = () => {
                                         <div className="relative">
                                             <Input
                                                 {...field}
-                                                placeholder="Nome do promoção"
+                                                placeholder="Nome da promoção"
                                                 className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
                                             />
                                             {field.value && (
                                                 <button
                                                     type="button"
                                                     className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                                                    onClick={() => field.onChange("")}
+                                                    onClick={() => field.onChange(sales.name)}
                                                 >
                                                     <X />
                                                 </button>
@@ -95,7 +99,7 @@ export const FormNewSales: React.FC = () => {
                             name="discount_percentage"
                             render={({ field, fieldState }) => (
                                 <FormItem>
-                                    <FormLabel>Porcentagem do desconto (%)</FormLabel>
+                                    <FormLabel>Porcentagem de desconto</FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}
@@ -125,15 +129,24 @@ export const FormNewSales: React.FC = () => {
                                         <div className="relative">
                                             <Calendar
                                                 mode="single"
-                                                selected={field.value ? new Date(field.value) : undefined}
+                                                selected={new Date(field.value)}
                                                 onSelect={field.onChange}
                                                 className="rounded-md border bg-gray-200 dark:bg-[#2c2c2c]"
                                                 locale={getTemplateLocale()}
                                             />
                                             {field.value && (
-                                                <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                                                    Data selecionada: {field.value.toLocaleDateString()}
-                                                </p>
+                                                <div>
+                                                    <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                                                        Data selecionada: {new Date(field.value).toLocaleDateString()}
+                                                    </p>
+                                                    <button
+                                                        type="button"
+                                                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                                        onClick={() => field.onChange(sales.expire_date)}
+                                                    >
+                                                        <X />
+                                                    </button>
+                                                </div>
                                             )}
                                         </div>
                                     </FormControl>
@@ -165,6 +178,16 @@ export const FormNewSales: React.FC = () => {
                             >
                                 Escolher Produto
                             </Button>
+                            <button
+                                type="button"
+                                className="text-gray-500 hover:text-gray-700"
+                                onClick={() => {
+                                    form.setValue("product_id", sales.product_id || -1);
+                                    form.setValue("pack_id", sales.pack_id || -1);
+                                }}
+                            >
+                                <X />
+                            </button>
                         </div>
 
                         {form.watch("pack_id") !== -1 && (
@@ -178,7 +201,7 @@ export const FormNewSales: React.FC = () => {
                             <Button type="button" variant="outline" onClick={() => { setOpen(false); form.reset() }}>
                                 Cancelar
                             </Button>
-                            <Button type="submit" disabled={isCreatingSales || (form.watch("product_id") === -1 && form.watch("pack_id") === -1)}>Criar</Button>
+                            <Button type="submit" disabled={isPending}>Editar</Button>
                         </DialogFooter>
                     </form>
                 </Form>

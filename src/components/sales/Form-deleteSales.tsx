@@ -1,26 +1,26 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Product } from "@/schemas/Products";
-import { useDeleteProduct } from "@/hooks/useProduts";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { Sales } from "@/schemas/Sales";
+import { useDeleteSales } from "@/hooks/useSales";
 
-interface FormDeleteProductProps {
+interface FormDeleteSalesProps {
     open: boolean;
     setOpen: (open: boolean) => void;
-    product: Product;
+    sales: Sales;
 }
 
-export const FormDeleteProduct: React.FC<FormDeleteProductProps> = ({ open, setOpen, product }) => {
+export const FormDeleteSales: React.FC<FormDeleteSalesProps> = ({ open, setOpen, sales }) => {
 
-    const { mutate, isSuccess, isError, isPending } = useDeleteProduct();
+    const { mutate, isSuccess, isError, isPending } = useDeleteSales();
 
     const handleDelete = async () => {
         try {
-            mutate(product.id);
+            mutate(sales.id);
             setOpen(false);
         } catch (error) {
-            console.error("Failed to delete product:", error);
+            console.error("Failed to delete sales:", error);
         }
     };
 
@@ -37,9 +37,9 @@ export const FormDeleteProduct: React.FC<FormDeleteProductProps> = ({ open, setO
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="bg-white dark:bg-[#202020] dark:text-white">
                 <DialogHeader>
-                    <DialogTitle>Tem certeza que deseja excluir {product.name}?</DialogTitle>
+                    <DialogTitle>Tem certeza que deseja excluir {sales.name}?</DialogTitle>
                     <DialogDescription>
-                        Esta ação não pode ser desfeita. Isso removerá permanentemente {product.name}.
+                        Esta ação não pode ser desfeita. Isso removerá permanentemente {sales.name}.
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>

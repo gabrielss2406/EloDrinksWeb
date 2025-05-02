@@ -74,41 +74,52 @@ export function useCreateSales() {
 
 }
 
-// export function useUpdatePackage() {
-//     const queryClient = useQueryClient();
+export function useUpdateSales() {
+    const queryClient = useQueryClient();
 
-//     return useMutation<Package, unknown, { id: string; data: PackageInput }>({
-//         mutationFn: async ({ id, data }) => {
-//             try {
-//                 const response = await api.put(`/packs/${id}`, data);
-//                 return response.data as Package;
-//             } catch (error: unknown) {
-//                 console.error("Error updating structure:", error);
-//                 throw error;
-//             }
-//         },
-//         onSuccess: () => {
-//             queryClient.invalidateQueries({ queryKey: ["packages"] });
-//             queryClient.invalidateQueries({ queryKey: ["packages-search"] });
-//         }
-//     });
-// }
+    return useMutation<Sales, unknown, { id: string; data: SalesInput }>({
+        mutationFn: async ({ id, data }) => {
+            try {
+                const formattedData = {
+                    ...data,
+                    expire_date: new Date(data.expire_date).toISOString().split('T')[0],
+                };
 
-// export function useDeletePackage() {
-//     const queryClient = useQueryClient();
+                ["product_id", "pack_id"].forEach((key) => {
+                    if (formattedData[key as keyof typeof formattedData] === -1) {
+                        delete formattedData[key as keyof typeof formattedData];
+                    }
+                });
 
-//     return useMutation<void, unknown, string>({
-//         mutationFn: async (packageId: string) => {
-//             try {
-//                 await api.delete(`/packs/${packageId}`);
-//             } catch (error: unknown) {
-//                 console.error("Error deleting package:", error);
-//                 throw error;
-//             }
-//         },
-//         onSuccess: () => {
-//             queryClient.invalidateQueries({ queryKey: ["packages"] });
-//             queryClient.invalidateQueries({ queryKey: ["packages-search"] });
-//         }
-//     });
-// }
+                const response = await api.put(`/sales/${id}`, formattedData);
+                return response.data as Sales;
+            } catch (error: unknown) {
+                console.error("Error updating sales:", error);
+                throw error;
+            }
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["sales"] });
+            queryClient.invalidateQueries({ queryKey: ["sales-search"] });
+        }
+    });
+}
+
+export function useDeleteSales() {
+    const queryClient = useQueryClient();
+
+    return useMutation<void, unknown, string>({
+        mutationFn: async (salesId: string) => {
+            try {
+                await api.delete(`/sales/${salesId}`);
+            } catch (error: unknown) {
+                console.error("Error deleting sales:", error);
+                throw error;
+            }
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["sales"] });
+            queryClient.invalidateQueries({ queryKey: ["sales-search"] });
+        }
+    });
+}

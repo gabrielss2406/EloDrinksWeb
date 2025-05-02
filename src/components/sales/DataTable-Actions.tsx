@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from "react"
 import { MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -11,11 +10,12 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Product } from "@/schemas/Products"
-import { FormEditProduct } from "./Form-editProduct"
-import { FormDeleteProduct } from "./Form-deleteProduct"
+import { Sales } from "@/schemas/Sales"
+import { FormDeleteSales } from "./Form-deleteSales"
+import { useState } from "react"
+import { FormEditSales } from "./Form-editSales"
 
-export function ProductActions({ product }: { product: Product }) {
+export function SalesActions({ sales }: { sales: Sales }) {
     const [isDialogEditOpen, setIsDialogEditOpen] = useState(false);
     const [isDialogDeleteOpen, setIsDialogDeleteOpen] = useState(false);
 
@@ -29,7 +29,7 @@ export function ProductActions({ product }: { product: Product }) {
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="bg-white dark:bg-[#202020] dark:text-white">
-                    <DropdownMenuLabel>Ações em {product.name}</DropdownMenuLabel>
+                    <DropdownMenuLabel>Ações em {sales.name}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                         onClick={(e) => {
@@ -40,7 +40,6 @@ export function ProductActions({ product }: { product: Product }) {
                     >
                         Editar
                     </DropdownMenuItem>
-                    {/* <DropdownMenuItem>Adicionar a pacote</DropdownMenuItem> */}
                     <DropdownMenuItem
                         onClick={(e) => {
                             e.preventDefault();
@@ -53,9 +52,8 @@ export function ProductActions({ product }: { product: Product }) {
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            <FormEditProduct open={isDialogEditOpen} setOpen={setIsDialogEditOpen} product={product} />
-            {/* <FormAddProductPackage open={isDialogEditOpen} setOpen={setIsDialogEditOpen} /> */}
-            <FormDeleteProduct open={isDialogDeleteOpen} setOpen={setIsDialogDeleteOpen} product={product} />
+            <FormEditSales open={isDialogEditOpen} setOpen={setIsDialogEditOpen} sales={sales} />
+            <FormDeleteSales open={isDialogDeleteOpen} setOpen={setIsDialogDeleteOpen} sales={sales} />
 
         </>
     );

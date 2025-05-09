@@ -24,6 +24,21 @@ export function useProducts(page: number, pageSize: number) {
     });
 }
 
+export function useProduct(productId: string) {
+    return useQuery<Product>({
+        queryKey: ["product", productId],
+        queryFn: async () => {
+            try {
+                const response = await api.get(`/product/${productId}`);
+                return response.data as Product;
+            } catch (error: unknown) {
+                console.error("Error fetching product:", error);
+                throw error;
+            }
+        }
+    });
+}
+
 export function useSearchProducts(name: string) {
     return useQuery<Product[]>({
         queryKey: ["products-search", name],

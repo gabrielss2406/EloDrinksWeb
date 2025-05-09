@@ -2,30 +2,19 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
-import { PackageProduct } from "@/schemas/Packages";
+import { useSearchProducts } from "@/hooks/useProduts";
+import { Product } from "@/schemas/Products";
 
 interface FormNewPackageProductProps {
-    addProduct: (product: PackageProduct) => void;
+    addProduct: (product: Product) => void;
 }
 
 export const FormNewPackageProduct: React.FC<FormNewPackageProductProps> = ({ addProduct }) => {
     const [open, setOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-    const [products] = useState<PackageProduct[]>([
-        // { id: "1", name: "Coca-Cola", price: 5.0, quantity: 1 },
-        // { id: "2", name: "Pepsi", price: 4.5, quantity: 1 },
-        // { id: "3", name: "Guaraná", price: 4.0, quantity: 1 },
-        // { id: "4", name: "Água Mineral", price: 2.0, quantity: 1 },
-        // { id: "5", name: "Suco de Laranja", price: 6.0, quantity: 1 },
-        // { id: "6", name: "Chá Gelado", price: 3.5, quantity: 1 },
-        // { id: "7", name: "Energético", price: 8.0, quantity: 1 },
-    ]);
+    const { data: products = [] } = useSearchProducts(searchQuery)
 
-    const filteredProducts = products.filter(product =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    const handleProductClick = (product: PackageProduct) => {
+    const handleProductClick = (product: Product) => {
         addProduct(product);
         setOpen(false);
     };
@@ -54,7 +43,7 @@ export const FormNewPackageProduct: React.FC<FormNewPackageProductProps> = ({ ad
                     />
                     {searchQuery && (
                         <ul className="mt-4">
-                            {filteredProducts.map((product) => (
+                            {products.map((product) => (
                                 <li
                                     key={product.id}
                                     className="flex justify-between p-2 border-b dark:border-[#404040] cursor-pointer hover:bg-gray-100 dark:hover:bg-[#303030]"

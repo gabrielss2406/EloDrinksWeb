@@ -10,6 +10,8 @@ import { useForm } from "react-hook-form";
 import { StructureSelector } from "./Form-StructureSelector";
 import { useCreatePackage } from "@/hooks/usePackages";
 import { toast } from "sonner";
+import { ItemTable } from "./ItemTable";
+import { Product } from "@/schemas/Products";
 
 export const FormNewPackage: React.FC = () => {
     const [open, setOpen] = useState(false);
@@ -24,25 +26,28 @@ export const FormNewPackage: React.FC = () => {
             event_type: "",
             guest_count: 0,
             structure_id: 0,
-            // productsList: [],
+            products: [],
         },
     });
 
-    // const addProduct = (product: PackageProduct) => {
-    //     form.setValue("productsList", [...form.getValues("productsList"), product]);
-    // };
+    const addProduct = (product: Product) => {
+        form.setValue("products", [...form.getValues("products"), {
+            id: Number(product.id),
+            quantity: 0
+        }]);
+    };
 
-    // const removeProduct = (id: string) => {
-    //     const updatedList = form.getValues("productsList").filter((item) => item.id !== id);
-    //     form.setValue("productsList", updatedList);
-    // };
+    const removeProduct = (id: string) => {
+        const updatedList = form.getValues("products").filter((item) => String(item.id) !== id);
+        form.setValue("products", updatedList);
+    };
 
-    // const updateQuantity = (id: string, quantity: number) => {
-    //     const updatedList = form.getValues("productsList").map((item) =>
-    //         item.id === id ? { ...item, quantity } : item
-    //     );
-    //     form.setValue("productsList", updatedList);
-    // };
+    const updateQuantity = (id: string, quantity: number) => {
+        const updatedList = form.getValues("products").map((item) =>
+            String(item.id) === id ? { ...item, quantity } : item
+        );
+        form.setValue("products", updatedList);
+    };
 
     const onSubmit = (data: PackageInput) => {
         mutate(data, {
@@ -182,12 +187,12 @@ export const FormNewPackage: React.FC = () => {
                             )}
                         />
 
-                        {/* <ItemTable
-                            items={form.watch("productsList")}
+                        <ItemTable
+                            items={form.watch("products")}
                             addProduct={addProduct}
                             removeProduct={removeProduct}
                             updateQuantity={updateQuantity}
-                        /> */}
+                        />
 
                         <StructureSelector form={form} />
 

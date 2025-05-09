@@ -1,12 +1,12 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { FormNewPackageProduct } from "./Form-newPackageProduct";
-import { X } from "lucide-react";
 import { PackageProduct } from "@/schemas/Packages";
-import { Input } from "../ui/input";
+import { Product } from "@/schemas/Products";
+import { TableItem } from "./TableItem";
 
 interface ItemTableProps {
     items: PackageProduct[],
-    addProduct: (product: PackageProduct) => void,
+    addProduct: (product: Product) => void,
     removeProduct: (id: string) => void,
     updateQuantity: (id: string, quantity: number) => void
 }
@@ -29,6 +29,7 @@ export const ItemTable: React.FC<ItemTableProps> = ({ items, addProduct, removeP
             <Table>
                 <TableHeader>
                     <TableRow>
+                        <TableHead className="font-semibold"></TableHead>
                         <TableHead className="font-semibold">Nome</TableHead>
                         <TableHead className="font-semibold">Preço</TableHead>
                         <TableHead className="font-semibold">Quantidade</TableHead>
@@ -37,21 +38,12 @@ export const ItemTable: React.FC<ItemTableProps> = ({ items, addProduct, removeP
                 </TableHeader>
                 <TableBody>
                     {items && items.map((item, index) => (
-                        <TableRow key={index}>
-                            <TableCell>{item.name}</TableCell>
-                            <TableCell>{item.price.toFixed(2)}</TableCell>
-                            <TableCell>
-                                <Input
-                                    type="number"
-                                    value={item.quantity}
-                                    onChange={(e) => handleQuantityChange(item.id, e.target.value)}
-                                    className="border rounded px-2 py-1 w-16"
-                                />
-                            </TableCell>
-                            <TableCell className="text-red-500 cursor-pointer" onClick={() => removeProduct(item.id)}>
-                                <X color="red" />
-                            </TableCell>
-                        </TableRow>
+                        <TableItem
+                            key={index}
+                            itemId={item.id}
+                            removeProduct={removeProduct}
+                            handleQuantityChange={handleQuantityChange}
+                        />
                     ))}
                 </TableBody>
             </Table>

@@ -11,7 +11,6 @@ export default function Customers() {
     const [pageSize, setPageSize] = useState(10)
 
     const { data = [], isLoading } = useCustomers(pageIndex + 1, pageSize)
-    console.log(data)
 
     return (
         <>

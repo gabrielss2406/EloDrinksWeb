@@ -33,7 +33,6 @@ export const columns: ColumnDef<Sales>[] = [
         header: ({ column }) => <DataTableColumnHeader column={column} title="Tipo de Promoção" />,
         enableSorting: false,
         cell: ({ row }) => {
-            console.log(row.original)
             const productId = row.original.product_id;
             const packId = row.original.pack_id;
             return productId ? "Produto" : packId ? "Pacote" : "Indefinido";

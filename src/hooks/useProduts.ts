@@ -75,7 +75,6 @@ export function useCreateProduct() {
 
     return useMutation<Product, unknown, ProductInput>({
         mutationFn: async (newProduct: ProductInput) => {
-            console.log(newProduct)
             try {
                 const formData = new FormData();
                 formData.append("name", newProduct.name);
@@ -115,7 +114,6 @@ export function useUpdateProduct() {
                 }
 
                 const response = await apiFormData.put(`/product/${id}`, formData);
-                console.log(response.data);
 
                 return response.data as Product;
             } catch (error: unknown) {

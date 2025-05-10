@@ -31,24 +31,52 @@ export const FormNewPackage: React.FC = () => {
     });
 
     const addProduct = (product: Product) => {
-        form.setValue("products", [...form.getValues("products"), {
-            id: Number(product.id),
-            quantity: 0
-        }]);
+        const currentProducts = form.getValues("products");
+
+        const existingProduct = currentProducts.find((item) => Number(item.id) === Number(product.id));
+
+        if (existingProduct) {
+            const updatedProducts = currentProducts.map((item) =>
+                Number(item.id) === Number(product.id)
+                    ? {
+                        ...item,
+                        quantity: item.quantity + 1,
+                        product,
+                    }
+                    : item
+            );
+            form.setValue("products", updatedProducts);
+        } else {
+            form.setValue("products", [
+                ...currentProducts,
+                {
+                    id: Number(product.id),
+                    quantity: 1
+                },
+            ]);
+        }
+    };
+
+    const updateQuantity = (id: string, quantity: number) => {
+        const currentProducts = form.getValues("products");
+
+        const updatedList = currentProducts.map((item) => {
+            if (String(item.id) === String(id)) {
+                return {
+                    ...item,
+                    quantity,
+                };
+            }
+            return item;
+        });
+
+        form.setValue("products", updatedList);
     };
 
     const removeProduct = (id: string) => {
         const updatedList = form.getValues("products").filter((item) => String(item.id) !== id);
         form.setValue("products", updatedList);
     };
-
-    const updateQuantity = (id: string, quantity: number) => {
-        const updatedList = form.getValues("products").map((item) =>
-            String(item.id) === id ? { ...item, quantity } : item
-        );
-        form.setValue("products", updatedList);
-    };
-
     const onSubmit = (data: PackageInput) => {
         mutate(data, {
             onSuccess: () => {

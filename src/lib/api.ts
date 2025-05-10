@@ -7,7 +7,7 @@ export const api = axios.create({
     headers: {
         'Content-Type': 'application/json',
         'X-API-Key': process.env.NEXT_PUBLIC_API_KEY,
-    },
+    }
 })
 
 export const apiFormData = axios.create({

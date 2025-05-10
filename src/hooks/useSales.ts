@@ -51,8 +51,6 @@ export function useCreateSales() {
                     expire_date: new Date(newSales.expire_date).toISOString().split('T')[0],
                 };
 
-                console.log("Formatted Data:", formattedData);
-
                 ["product_id", "pack_id"].forEach((key) => {
                     if (formattedData[key as keyof typeof formattedData] === -1) {
                         delete formattedData[key as keyof typeof formattedData];

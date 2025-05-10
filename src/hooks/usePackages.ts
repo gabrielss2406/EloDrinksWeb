@@ -16,7 +16,6 @@ export function usePackages(page: number, pageSize: number) {
                         size: pageSize,
                     },
                 });
-                console.log(response.data)
                 return response.data as Package[];
             } catch (error: unknown) {
                 console.error("Error fetching packages:", error);
@@ -48,8 +47,7 @@ export function useCreatePackage() {
     return useMutation<Package, unknown, PackageInput>({
         mutationFn: async (newPackage: PackageInput) => {
             try {
-                console.log(newPackage)
-                const response = await api.post("/packs");
+                const response = await api.post("/packs", newPackage);
                 return response.data as Package;
             } catch (error: unknown) {
                 console.error("Error creating package:", error);

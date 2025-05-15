@@ -77,6 +77,7 @@ export const FormNewPackage: React.FC = () => {
         const updatedList = form.getValues("products").filter((item) => String(item.id) !== id);
         form.setValue("products", updatedList);
     };
+
     const onSubmit = (data: PackageInput) => {
         mutate(data, {
             onSuccess: () => {

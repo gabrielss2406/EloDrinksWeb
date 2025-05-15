@@ -5,9 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Budget, BudgetProduct, budgetSchema } from "@/schemas/Orders";
+import { Budget, budgetSchema } from "@/schemas/Orders";
 import { X } from "lucide-react";
-import { ItemTable } from "./ItemTable";
 import { useRouter } from 'next/navigation';
 
 interface FormBudgetProps {
@@ -28,21 +27,21 @@ export const FormBudget: React.FC<FormBudgetProps> = ({ budget }) => {
         },
     });
 
-    const addProduct = (product: BudgetProduct) => {
-        form.setValue("items", [...form.getValues("items"), product]);
-    };
+    // const addProduct = (product: BudgetProduct) => {
+    //     form.setValue("items", [...form.getValues("items"), product]);
+    // };
 
-    const removeProduct = (id: string) => {
-        const updatedList = form.getValues("items").filter((item) => item.id !== id);
-        form.setValue("items", updatedList);
-    };
+    // const removeProduct = (id: string) => {
+    //     const updatedList = form.getValues("items").filter((item) => item.id !== id);
+    //     form.setValue("items", updatedList);
+    // };
 
-    const updateQuantity = (id: string, quantity: number) => {
-        const updatedList = form.getValues("items").map((item) =>
-            item.id === id ? { ...item, quantity } : item
-        );
-        form.setValue("items", updatedList);
-    };
+    // const updateQuantity = (id: string, quantity: number) => {
+    //     const updatedList = form.getValues("items").map((item) =>
+    //         item.id === id ? { ...item, quantity } : item
+    //     );
+    //     form.setValue("items", updatedList);
+    // };
 
 
     const onSubmit = (data: Budget) => {
@@ -81,12 +80,12 @@ export const FormBudget: React.FC<FormBudgetProps> = ({ budget }) => {
                     )}
                 />
 
-                <ItemTable
+                {/* <ItemTable
                     items={form.watch("items")}
                     addProduct={addProduct}
                     removeProduct={removeProduct}
                     updateQuantity={updateQuantity}
-                />
+                /> */}
 
                 <FormField
                     control={form.control}

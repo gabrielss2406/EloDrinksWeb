@@ -18,6 +18,7 @@ export const ItemTable: React.FC<ItemTableProps> = ({ items, addProduct, removeP
             updateQuantity(id, quantity);
         }
     };
+    console.log(items)
 
     return (
         <div className="border rounded-lg p-4 shadow-md bg-white dark:bg-[#252525] ">
@@ -40,6 +41,7 @@ export const ItemTable: React.FC<ItemTableProps> = ({ items, addProduct, removeP
                     {items && items.map((item, index) => (
                         <TableItem
                             key={index}
+                            itemQuantity={item.quantity}
                             itemId={item.id}
                             removeProduct={removeProduct}
                             handleQuantityChange={handleQuantityChange}

@@ -21,7 +21,30 @@ export function usePackages(page: number, pageSize: number) {
                 console.error("Error fetching packages:", error);
                 throw error;
             }
-        }
+        },
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        refetchOnMount: false,
+        staleTime: 1000 * 60 * 5
+    });
+}
+
+export function usePackage(id: string) {
+    return useQuery<Package>({
+        queryKey: ["package", id],
+        queryFn: async () => {
+            try {
+                const response = await api.get(`/packs/${id}`);
+                return response.data as Package;
+            } catch (error: unknown) {
+                console.error("Error fetching package:", error);
+                throw error;
+            }
+        },
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        refetchOnMount: false,
+        staleTime: 1000 * 60 * 5
     });
 }
 
@@ -37,6 +60,10 @@ export function useSearchPackages(name: string) {
                 throw error;
             }
         },
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        refetchOnMount: false,
+        staleTime: 1000 * 60 * 5,
         enabled: !!name,
     });
 }

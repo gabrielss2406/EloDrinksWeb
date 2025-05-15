@@ -8,12 +8,13 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 
 interface TableItemProps {
-    itemId: number
+    itemId: number,
+    itemQuantity?: number,
     removeProduct: (id: string) => void,
     handleQuantityChange: (id: string, value: string) => void
 }
 
-export const TableItem: React.FC<TableItemProps> = ({ itemId, removeProduct, handleQuantityChange }) => {
+export const TableItem: React.FC<TableItemProps> = ({ itemId, itemQuantity, removeProduct, handleQuantityChange }) => {
     const { data, isLoading, isError } = useProduct(String(itemId))
 
     useEffect(() => {
@@ -44,6 +45,7 @@ export const TableItem: React.FC<TableItemProps> = ({ itemId, removeProduct, han
                 <TableCell>{data.price.toFixed(2)}</TableCell>
                 <TableCell>
                     <Input
+                        value={itemQuantity}
                         type="number"
                         onChange={(e) => handleQuantityChange(data.id, e.target.value)}
                         className="border rounded px-2 py-1 w-16"

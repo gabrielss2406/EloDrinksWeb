@@ -7,9 +7,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Package, PackageInput, packageInputSchema } from "@/schemas/Packages";
 import { StructureSelector } from "./Form-StructureSelector";
-import { useUpdatePackage } from "@/hooks/usePackages";
+import { usePackage, useUpdatePackage } from "@/hooks/usePackages";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { ItemTable } from "./ItemTable";
+import { Product } from "@/schemas/Products";
+import Loading from "../shared/Loading";
 
 interface FormEditPackageProps {
     open: boolean;
@@ -19,6 +22,7 @@ interface FormEditPackageProps {
 
 export const FormEditPackage: React.FC<FormEditPackageProps> = ({ open, setOpen, pack }) => {
     const { mutate, isSuccess, isError, isPending } = useUpdatePackage();
+    const { data, isLoading } = usePackage(pack.id);
 
     const form = useForm<PackageInput>({
         resolver: zodResolver(packageInputSchema),
@@ -28,25 +32,77 @@ export const FormEditPackage: React.FC<FormEditPackageProps> = ({ open, setOpen,
             event_type: pack.event_type,
             guest_count: pack.guest_count,
             structure_id: pack.structure_id,
-            // productsList: pack.productsList
+            products: pack.products
         },
     });
 
-    // const addProduct = (product: PackageProduct) => {
-    //     form.setValue("productsList", [...form.getValues("productsList"), product]);
-    // };
+    useEffect(() => {
+        if (data?.products) {
+            const normalizedProducts = data.products.map((product) => ({
+                ...product,
+                id: product.id,
+                quantity: product.quantity ?? 1,
+            }));
 
-    // const removeProduct = (id: string) => {
-    //     const updatedList = form.getValues("productsList").filter((item) => item.id !== id);
-    //     form.setValue("productsList", updatedList);
-    // };
+            form.setValue("products", normalizedProducts);
+        }
+    }, [data?.products, form]);
 
-    // const updateQuantity = (id: string, quantity: number) => {
-    //     const updatedList = form.getValues("productsList").map((item) =>
-    //         item.id === id ? { ...item, quantity } : item
-    //     );
-    //     form.setValue("productsList", updatedList);
-    // };
+
+    const addProduct = (product: Product) => {
+        const currentProducts = form.getValues("products");
+
+        const existingProduct = currentProducts.find((item) => Number(item.id) === Number(product.id));
+
+        if (existingProduct) {
+            const updatedProducts = currentProducts.map((item) =>
+                Number(item.id) === Number(product.id)
+                    ? {
+                        ...item,
+                        quantity: item.quantity + 1,
+                        product,
+                    }
+                    : item
+            );
+            form.setValue("products", updatedProducts);
+        } else {
+            form.setValue("products", [
+                ...currentProducts,
+                {
+                    id: Number(product.id),
+                    quantity: 1
+                },
+            ]);
+        }
+    };
+
+    const updateQuantity = (id: string, quantity: number) => {
+        const currentProducts = form.getValues("products");
+
+        const updatedList = currentProducts.map((item) => {
+            if (String(item.id) === String(id)) {
+                return {
+                    ...item,
+                    quantity,
+                };
+            }
+            return item;
+        });
+
+        form.setValue("products", updatedList);
+    };
+
+    const removeProduct = (id: string) => {
+        const numericId = Number(id);
+        const currentList = form.getValues("products") || [];
+
+        const updatedList = currentList.filter((item) => item.id !== numericId);
+
+        form.setValue("products", updatedList, {
+            shouldDirty: true,
+            shouldValidate: true,
+        });
+    };
 
     const onSubmit = (data: PackageInput) => {
         mutate({
@@ -162,12 +218,42 @@ export const FormEditPackage: React.FC<FormEditPackageProps> = ({ open, setOpen,
                             )}
                         />
 
-                        {/* <ItemTable
-                            items={form.watch("productsList")}
-                            addProduct={addProduct}
-                            removeProduct={removeProduct}
-                            updateQuantity={updateQuantity}
-                        /> */}
+                        <FormField
+                            control={form.control}
+                            name="guest_count"
+                            render={({ field, fieldState }) => (
+                                <FormItem>
+                                    <FormLabel>Número de convidados</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            type="number"
+                                            placeholder="0"
+                                            min={0}
+                                            step="1"
+                                            onChange={(e) => {
+                                                const value = parseFloat(e.target.value);
+                                                field.onChange(isNaN(value) ? '' : value);
+                                            }}
+                                            value={field.value || ''}
+                                            className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        {isLoading ? (
+                            <Loading />
+                        ) : (
+                            <ItemTable
+                                items={form.watch("products")}
+                                addProduct={addProduct}
+                                removeProduct={removeProduct}
+                                updateQuantity={updateQuantity}
+                            />
+                        )}
 
                         <StructureSelector form={form} />
 
@@ -176,6 +262,26 @@ export const FormEditPackage: React.FC<FormEditPackageProps> = ({ open, setOpen,
                                 Cancelar
                             </Button>
                             <Button type="submit" disabled={isPending}>Criar</Button>
+                            <Button
+                                type="button"
+                                variant="secondary"
+                                onClick={async () => {
+                                    const result = await form.trigger(); // dispara a validação
+                                    console.log(form.getValues())
+
+                                    if (!result) {
+                                        console.group("❌ Erros de validação:");
+                                        Object.entries(form.formState.errors).forEach(([key, error]) => {
+                                            console.log(`${key}:`, error);
+                                        });
+                                        console.groupEnd();
+                                    } else {
+                                        console.log("✅ Dados válidos:", form.getValues());
+                                    }
+                                }}
+                            >
+                                Debug Schema
+                            </Button>
                         </DialogFooter>
                     </form>
                 </Form>

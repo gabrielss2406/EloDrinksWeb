@@ -127,7 +127,7 @@ export const FormEditPackage: React.FC<FormEditPackageProps> = ({ open, setOpen,
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="bg-white dark:bg-[#202020] dark:text-white">
+            <DialogContent className="bg-white dark:bg-[#202020] dark:text-white max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>Editando {pack.name}</DialogTitle>
                     <DialogDescription>
@@ -261,27 +261,7 @@ export const FormEditPackage: React.FC<FormEditPackageProps> = ({ open, setOpen,
                             <Button type="button" variant="outline" onClick={() => { form.reset(); setOpen(false) }}>
                                 Cancelar
                             </Button>
-                            <Button type="submit" disabled={isPending}>Criar</Button>
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                onClick={async () => {
-                                    const result = await form.trigger(); // dispara a validação
-                                    console.log(form.getValues())
-
-                                    if (!result) {
-                                        console.group("❌ Erros de validação:");
-                                        Object.entries(form.formState.errors).forEach(([key, error]) => {
-                                            console.log(`${key}:`, error);
-                                        });
-                                        console.groupEnd();
-                                    } else {
-                                        console.log("✅ Dados válidos:", form.getValues());
-                                    }
-                                }}
-                            >
-                                Debug Schema
-                            </Button>
+                            <Button type="submit" disabled={isPending}>Editar</Button>
                         </DialogFooter>
                     </form>
                 </Form>

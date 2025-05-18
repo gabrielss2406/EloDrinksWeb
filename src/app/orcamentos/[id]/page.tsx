@@ -20,6 +20,7 @@ const exampleOrder: Order = {
     guest_count: 213,
     location: "Ytghhuy",
     order_status: "pending",
+    details: "detalhes",
     budget: {
         total_value: 566,
         bar_structure: {

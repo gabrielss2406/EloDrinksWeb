@@ -26,7 +26,8 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
             location: order.location,
             date: order.date,
             guest_count: order.guest_count,
-            order_status: order.order_status
+            order_status: order.order_status,
+            details: order.details
         },
     });
 
@@ -202,6 +203,38 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
                         </FormItem>
                     )}
                 />
+
+                {order.details && (
+                    <FormField
+                        control={form.control}
+                        name="details"
+                        render={({ field, fieldState }) => (
+                            <FormItem>
+                                <FormLabel>Detalhes</FormLabel>
+                                <FormControl>
+                                    <div className="relative">
+                                        <textarea
+                                            {...field}
+                                            rows={4}
+                                            placeholder="Detalhes do pedido..."
+                                            className={`bg-gray-200 w-full rounded-md border p-2 shadow-sm text-sm resize-none dark:bg-[#2c2c2c] ${fieldState.invalid ? 'border-red-500' : ''
+                                                }`}
+                                        />
+                                        {field.value !== order.details && (
+                                            <button
+                                                type="button"
+                                                className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
+                                                onClick={() => field.onChange(order.details)}
+                                            >
+                                                <X className="w-4 h-4" />
+                                            </button>
+                                        )}
+                                    </div>
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                )}
 
                 <FormField
                     control={form.control}

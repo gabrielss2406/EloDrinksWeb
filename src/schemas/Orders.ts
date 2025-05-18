@@ -42,6 +42,7 @@ export const OrderSchema = z.object({
     budget: BudgetSchema,
     created_at: z.string().datetime(),
     updated_at: z.string().datetime(),
+    details: z.string().optional(),
     id: z.string(),
 });
 

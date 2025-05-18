@@ -1,54 +1,64 @@
 import { columns } from "@/components/orders/Columns"
 import { DataTable } from "@/components/orders/DataTable"
 import Header from "@/components/shared/Header";
-import { OrderTemp } from "@/schemas/Orders";
+import { Order } from "@/schemas/Orders";
 
-async function getData(): Promise<OrderTemp[]> {
+async function getData(): Promise<Order[]> {
     return [
         {
-            id: "1",
-            customer: "John Doe",
-            price: 150,
-            status: "payed",
-            startDate: "2023-01-01",
-            endDate: "2023-01-05",
-            createdAt: "2025-01-01T10:00:00Z",
-        },
-        {
-            id: "2",
-            customer: "Jane Smith",
-            price: 200,
-            status: "pending",
-            startDate: "2023-02-01",
-            endDate: "2023-02-10",
-            createdAt: "2025-02-01T12:00:00Z",
-        },
-        {
-            id: "3",
-            customer: "Alice Johnson",
-            price: 300,
-            status: "accepted",
-            startDate: "2023-03-01",
-            endDate: "2023-03-15",
-            createdAt: "2025-03-01T14:00:00Z",
-        },
-        {
-            id: "4",
-            customer: "Bob Brown",
-            price: 250,
-            status: "confirm",
-            startDate: "2023-04-01",
-            endDate: "2023-04-20",
-            createdAt: "2025-03-01T16:00:00Z",
-        },
-        {
-            id: "5",
-            customer: "Charlie Davis",
-            price: 180,
-            status: "pending",
-            startDate: "2023-05-01",
-            endDate: "2023-05-10",
-            createdAt: "2025-03-01T18:00:00Z",
+            id: "682924bc54866918009ec3fc",
+            customer: {
+                id: 1,
+                name: "testing update customer",
+                email: "teste@example.com",
+                phone: 912345678,
+            },
+            date: {
+                start: "2025-05-18T00:02:24.946Z",
+                end: "2025-05-18T02:02:24.946Z",
+            },
+            guest_count: 213,
+            location: "Ytghhuy",
+            order_status: "pending",
+            budget: {
+                total_value: 566,
+                bar_structure: {
+                    id: 4,
+                    name: "teste",
+                    price: 99.99,
+                },
+                items: [
+                    {
+                        id: 3,
+                        name: "pisco",
+                        quantity: 9,
+                        unit_price: 55,
+                        img_url:
+                            "https://res.cloudinary.com/duxmkrglm/image/upload/v1745630681/meu_projeto/cu5wiadtyksdztrpgc5t.jpg",
+                        category: "tropical drinks",
+                    },
+                    {
+                        id: 21,
+                        name: "CPG 2024",
+                        quantity: 1,
+                        unit_price: 10,
+                        img_url:
+                            "https://res.cloudinary.com/duxmkrglm/image/upload/v1746828748/meu_projeto/fivihtu59gg1addzhayh.png",
+                        category: "Nova categoria",
+                    },
+                    {
+                        id: 2,
+                        name: "pina colada",
+                        quantity: 4,
+                        unit_price: 50,
+                        img_url:
+                            "https://res.cloudinary.com/duxmkrglm/image/upload/v1745885693/meu_projeto/gaa08eswzec6uwaqxous.jpg",
+                        category: "tropical drinks",
+                    },
+                ],
+            },
+            created_at: "2025-05-18T00:07:24.032Z",
+            updated_at: "2025-05-18T00:07:24.032Z",
         },
     ];
 }

@@ -1,47 +1,56 @@
-import { z } from 'zod';
-import { productSchema } from './Products';
+import { z } from "zod";
 
-export const orderTempSchema = z.object({
-    id: z.string(),
-    customer: z.string(),
-    price: z.number(),
-    status: z.enum(["pending", "accepted", "confirm", "payed"]),
-    startDate: z.string(),
-    endDate: z.string(),
-    createdAt: z.string(),
-});
-
-export const orderSchema = z.object({
-    id: z.string(),
-    createdAt: z.string(),
-    startDate: z.string(),
-    endDate: z.string(),
-    local: z.string(),
-    guestNumber: z.number(),
-    status: z.enum(["pending", "accepted", "confirm", "payed"]),
-});
-
-export const customerSchema = z.object({
-    id: z.string(),
+export const CustomerSchema = z.object({
+    id: z.number(),
     name: z.string(),
     email: z.string(),
-    phone: z.string(),
+    phone: z.number(),
 });
 
-export const budgetProductSchema = productSchema.extend({
-    quantity: z.number().default(1)
+export const DateRangeSchema = z.object({
+    start: z.string().datetime(),
+    end: z.string().datetime(),
 });
 
-export const budgetSchema = z.object({
-    eventType: z.string(),
-    items: z.array(budgetProductSchema),
-    barStructure: z.string(),
-    structurePrice: z.number(),
-    totalPrice: z.number(),
+export const BarStructureSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+    price: z.number(),
 });
 
-export type OrderTemp = z.infer<typeof orderTempSchema>;
-export type Order = z.infer<typeof orderSchema>;
-export type CustomerInfo = z.infer<typeof customerSchema>;
-export type BudgetProduct = z.infer<typeof budgetProductSchema>;
-export type Budget = z.infer<typeof budgetSchema>;
+export const BudgetItemSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+    quantity: z.number(),
+    unit_price: z.number(),
+    img_url: z.string(),
+    category: z.string(),
+});
+
+export const BudgetSchema = z.object({
+    total_value: z.number(),
+    bar_structure: BarStructureSchema,
+    items: z.array(BudgetItemSchema),
+});
+
+export const OrderSchema = z.object({
+    customer: CustomerSchema,
+    date: DateRangeSchema,
+    guest_count: z.number(),
+    location: z.string(),
+    order_status: z.string(),
+    budget: BudgetSchema,
+    created_at: z.string().datetime(),
+    updated_at: z.string().datetime(),
+    id: z.string(),
+});
+
+export const OrdersSchema = z.array(OrderSchema);
+
+export type Customer = z.infer<typeof CustomerSchema>;
+export type DateRange = z.infer<typeof DateRangeSchema>;
+export type BarStructure = z.infer<typeof BarStructureSchema>;
+export type BudgetItem = z.infer<typeof BudgetItemSchema>;
+export type Budget = z.infer<typeof BudgetSchema>;
+export type Order = z.infer<typeof OrderSchema>;
+export type Orders = z.infer<typeof OrdersSchema>;

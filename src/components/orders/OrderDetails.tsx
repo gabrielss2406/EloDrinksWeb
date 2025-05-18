@@ -3,29 +3,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { FormOrder } from './Form-order';
 import { FormCustomer } from './Form-customer';
 import { FormBudget } from './Form-budget';
-import { Budget, CustomerInfo, Order } from '@/schemas/Orders';
+import { Order } from '@/schemas/Orders';
 
 interface OrderDetailsCardsProps {
     order: Order;
 }
-
-const exampleCustomer: CustomerInfo = {
-    id: "12345",
-    name: "John Doe",
-    email: "example@email.com",
-    phone: "123456789",
-};
-
-const exampleBudget: Budget = {
-    eventType: "Wedding",
-    items: [
-        // { id: "1", name: "Beer", price: 5, quantity: 10 },
-        // { id: "2", name: "Wine", price: 15, quantity: 5 },
-    ],
-    barStructure: "Open Bar",
-    structurePrice: 200,
-    totalPrice: 275,
-};
 
 const OrderDetailsCards: React.FC<OrderDetailsCardsProps> = ({ order }) => {
     return (
@@ -33,18 +15,21 @@ const OrderDetailsCards: React.FC<OrderDetailsCardsProps> = ({ order }) => {
             <div className="flex flex-col gap-4">
                 <Card className='bg-white dark:bg-[#202020]'>
                     <CardContent>
+                        <h1 className='mb-5 text-2xl font-bold'>Dados do pedido</h1>
                         <FormOrder order={order} />
                     </CardContent>
                 </Card>
                 <Card className='bg-white dark:bg-[#202020]'>
                     <CardContent>
-                        <FormCustomer customer={exampleCustomer} />
+                        <h1 className='mb-5 text-2xl font-bold'>Dados do cliente</h1>
+                        <FormCustomer customer={order.customer} />
                     </CardContent>
                 </Card>
             </div>
             <Card className='bg-white dark:bg-[#202020]'>
                 <CardContent>
-                    <FormBudget budget={exampleBudget} />
+                    <h1 className='mb-5 text-2xl font-bold'>Detalhes do pedido</h1>
+                    <FormBudget budget={order.budget} />
                 </CardContent>
             </Card>
         </div>

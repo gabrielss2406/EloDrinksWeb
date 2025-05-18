@@ -2,10 +2,14 @@ import { Input } from "@/components/ui/input";
 import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Order, orderSchema } from "@/schemas/Orders";
+import { Order, OrderSchema } from "@/schemas/Orders";
 import { X } from "lucide-react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import dayjs from "dayjs";
+import { getTemplateLocale } from "@/utils/locale";
+import DatePicker from "react-datepicker";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 interface FormOrderProps {
     order: Order;
@@ -15,15 +19,14 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
     const router = useRouter();
 
     const form = useForm<Order>({
-        resolver: zodResolver(orderSchema),
+        resolver: zodResolver(OrderSchema),
         defaultValues: {
             id: order.id,
-            createdAt: order.createdAt,
-            startDate: order.startDate,
-            endDate: order.endDate,
-            local: order.local,
-            guestNumber: order.guestNumber,
-            status: order.status,
+            created_at: order.created_at,
+            location: order.location,
+            date: order.date,
+            guest_count: order.guest_count,
+            order_status: order.order_status
         },
     });
 
@@ -56,14 +59,14 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
 
                 <FormField
                     control={form.control}
-                    name="createdAt"
+                    name="created_at"
                     render={({ field, fieldState }) => (
                         <FormItem>
                             <FormLabel>Data de criação</FormLabel>
                             <FormControl>
                                 <div className="relative">
                                     <Input
-                                        {...field}
+                                        value={dayjs(field.value).format("DD/MM/YYYY HH:mm")}
                                         readOnly={true}
                                         className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
                                     />
@@ -73,26 +76,33 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
                     )}
                 />
 
+
                 <FormField
                     control={form.control}
-                    name="startDate"
-                    render={({ field, fieldState }) => (
+                    name="date.start"
+                    render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Inicio do evento</FormLabel>
+                            <FormLabel>Início do evento</FormLabel>
                             <FormControl>
                                 <div className="relative">
-                                    <Input
-                                        {...field}
-                                        placeholder="dd/mm/yyyy - hh:mm"
-                                        className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
+                                    <DatePicker
+                                        selected={field.value ? new Date(field.value) : null}
+                                        onChange={(date) => field.onChange(date?.toISOString())}
+                                        showTimeSelect
+                                        timeFormat="HH:mm"
+                                        timeIntervals={15}
+                                        dateFormat="dd/MM/yyyy HH:mm"
+                                        placeholderText="dd/mm/yyyy - hh:mm"
+                                        locale={getTemplateLocale()}
+                                        className="dark:bg-[#2c2c2c] w-full bg-gray-200 px-3 py-2 rounded-md border border-input shadow-sm text-sm focus:outline-none focus:ring-1 focus:ring-ring"
                                     />
                                     {field.value && (
                                         <button
                                             type="button"
                                             className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                                            onClick={() => field.onChange("")}
+                                            onClick={() => field.onChange(order.date.start)}
                                         >
-                                            <X />
+                                            <X className="w-4 h-4" />
                                         </button>
                                     )}
                                 </div>
@@ -103,24 +113,30 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
 
                 <FormField
                     control={form.control}
-                    name="endDate"
-                    render={({ field, fieldState }) => (
+                    name="date.end"
+                    render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Final do evento</FormLabel>
+                            <FormLabel>Início do evento</FormLabel>
                             <FormControl>
                                 <div className="relative">
-                                    <Input
-                                        {...field}
-                                        placeholder="dd/mm/yyyy - hh:mm"
-                                        className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
+                                    <DatePicker
+                                        selected={field.value ? new Date(field.value) : null}
+                                        onChange={(date) => field.onChange(date?.toISOString())}
+                                        showTimeSelect
+                                        timeFormat="HH:mm"
+                                        timeIntervals={15}
+                                        dateFormat="dd/MM/yyyy HH:mm"
+                                        placeholderText="dd/mm/yyyy - hh:mm"
+                                        locale={getTemplateLocale()}
+                                        className="dark:bg-[#2c2c2c] w-full bg-gray-200 px-3 py-2 rounded-md border border-input shadow-sm text-sm focus:outline-none focus:ring-1 focus:ring-ring"
                                     />
                                     {field.value && (
                                         <button
                                             type="button"
                                             className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                                            onClick={() => field.onChange("")}
+                                            onClick={() => field.onChange(order.date.end)}
                                         >
-                                            <X />
+                                            <X className="w-4 h-4" />
                                         </button>
                                     )}
                                 </div>
@@ -131,7 +147,7 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
 
                 <FormField
                     control={form.control}
-                    name="local"
+                    name="location"
                     render={({ field, fieldState }) => (
                         <FormItem>
                             <FormLabel>Local</FormLabel>
@@ -142,11 +158,11 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
                                         placeholder="Local do evento"
                                         className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
                                     />
-                                    {field.value && (
+                                    {field.value !== order.location && (
                                         <button
                                             type="button"
                                             className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                                            onClick={() => field.onChange("")}
+                                            onClick={() => field.onChange(order.location)}
                                         >
                                             <X />
                                         </button>
@@ -159,7 +175,7 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
 
                 <FormField
                     control={form.control}
-                    name="guestNumber"
+                    name="guest_count"
                     render={({ field, fieldState }) => (
                         <FormItem>
                             <FormLabel>Número de convidados</FormLabel>
@@ -172,11 +188,11 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
                                         className={`bg-gray-200 appearance-none [&::-webkit-inner-spin-button]:appearance-none ${fieldState.invalid ? 'border-red-500' : ''}`}
                                         onWheel={(e) => e.currentTarget.blur()}
                                     />
-                                    {field.value && (
+                                    {field.value !== order.guest_count && (
                                         <button
                                             type="button"
                                             className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                                            onClick={() => field.onChange("")}
+                                            onClick={() => field.onChange(order.guest_count)}
                                         >
                                             <X />
                                         </button>
@@ -189,31 +205,31 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
 
                 <FormField
                     control={form.control}
-                    name="status"
-                    render={({ field, fieldState }) => (
+                    name="order_status"
+                    render={({ field }) => (
                         <FormItem>
                             <FormLabel>Status</FormLabel>
                             <FormControl>
-                                <div className="relative">
-                                    <Input
-                                        {...field}
-                                        placeholder="Pendente, aceito, confirmado, pago..."
-                                        className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
-                                    />
-                                    {field.value && (
-                                        <button
-                                            type="button"
-                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                                            onClick={() => field.onChange("")}
-                                        >
-                                            <X />
-                                        </button>
-                                    )}
-                                </div>
+                                <Select
+                                    onValueChange={field.onChange}
+                                    value={field.value}
+                                    defaultValue={order.order_status}
+                                >
+                                    <SelectTrigger className="rounded-md border bg-gray-200 dark:bg-[#2c2c2c]">
+                                        <SelectValue placeholder="Selecione o status" />
+                                    </SelectTrigger>
+                                    <SelectContent
+                                        className="rounded-md border bg-gray-200 dark:bg-[#2c2c2c] dark:text-gray-200">
+                                        <SelectItem value="pending">Pending</SelectItem>
+                                        <SelectItem value="cancelled">Cancelled</SelectItem>
+                                        <SelectItem value="confirmed">Confirmed</SelectItem>
+                                    </SelectContent>
+                                </Select>
                             </FormControl>
                         </FormItem>
                     )}
                 />
+
                 <div className="flex justify-end space-x-4">
                     <Button type="button" variant="outline" onClick={() => { form.reset(); router.back(); }}>
                         Cancelar

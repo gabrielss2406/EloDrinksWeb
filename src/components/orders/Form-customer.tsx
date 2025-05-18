@@ -2,15 +2,15 @@ import { Input } from "@/components/ui/input";
 import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CustomerInfo, customerSchema } from "@/schemas/Orders";
+import { Customer, CustomerSchema } from "@/schemas/Orders";
 
 interface FormCustomerProps {
-    customer: CustomerInfo;
+    customer: Customer;
 }
 
 export const FormCustomer: React.FC<FormCustomerProps> = ({ customer }) => {
-    const form = useForm<CustomerInfo>({
-        resolver: zodResolver(customerSchema),
+    const form = useForm<Customer>({
+        resolver: zodResolver(CustomerSchema),
         defaultValues: {
             id: customer.id,
             name: customer.name,
@@ -19,14 +19,9 @@ export const FormCustomer: React.FC<FormCustomerProps> = ({ customer }) => {
         },
     });
 
-    const onSubmit = (data: CustomerInfo) => {
-        console.log("Dados enviados:", data);
-        form.reset();
-    };
-
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form className="space-y-4">
                 <FormField
                     control={form.control}
                     name="id"

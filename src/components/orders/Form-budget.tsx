@@ -1,13 +1,13 @@
 // 'use client';
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Budget, budgetSchema } from "@/schemas/Orders";
-import { X } from "lucide-react";
 import { useRouter } from 'next/navigation';
+import { Budget, BudgetSchema } from "@/schemas/Orders";
+import { Input } from "../ui/input";
+import { X } from "lucide-react";
 
 interface FormBudgetProps {
     budget: Budget;
@@ -17,13 +17,11 @@ export const FormBudget: React.FC<FormBudgetProps> = ({ budget }) => {
     const router = useRouter();
 
     const form = useForm<Budget>({
-        resolver: zodResolver(budgetSchema),
+        resolver: zodResolver(BudgetSchema),
         defaultValues: {
-            eventType: budget.eventType,
-            items: budget.items || [],
-            barStructure: budget.barStructure,
-            structurePrice: budget.structurePrice,
-            totalPrice: budget.totalPrice,
+            bar_structure: budget.bar_structure,
+            items: budget.items,
+            total_value: budget.total_value
         },
     });
 
@@ -52,34 +50,6 @@ export const FormBudget: React.FC<FormBudgetProps> = ({ budget }) => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <FormField
-                    control={form.control}
-                    name="eventType"
-                    render={({ field, fieldState }) => (
-                        <FormItem>
-                            <FormLabel>Tipo de evento</FormLabel>
-                            <FormControl>
-                                <div className="relative">
-                                    <Input
-                                        {...field}
-                                        placeholder="Casamento, festa de 15 anos, etc"
-                                        className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
-                                    />
-                                    {field.value && (
-                                        <button
-                                            type="button"
-                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                                            onClick={() => field.onChange("")}
-                                        >
-                                            <X />
-                                        </button>
-                                    )}
-                                </div>
-                            </FormControl>
-                        </FormItem>
-                    )}
-                />
-
                 {/* <ItemTable
                     items={form.watch("items")}
                     addProduct={addProduct}
@@ -89,7 +59,7 @@ export const FormBudget: React.FC<FormBudgetProps> = ({ budget }) => {
 
                 <FormField
                     control={form.control}
-                    name="barStructure"
+                    name="bar_structure.name"
                     render={({ field, fieldState }) => (
                         <FormItem>
                             <FormLabel>Estrutura do bar</FormLabel>
@@ -97,14 +67,14 @@ export const FormBudget: React.FC<FormBudgetProps> = ({ budget }) => {
                                 <div className="relative">
                                     <Input
                                         {...field}
-                                        placeholder="Bar comum ou premium"
+                                        placeholder={budget.bar_structure.name}
                                         className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
                                     />
                                     {field.value && (
                                         <button
                                             type="button"
                                             className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                                            onClick={() => field.onChange("")}
+                                            onClick={() => field.onChange(budget.bar_structure.name)}
                                         >
                                             <X />
                                         </button>
@@ -117,7 +87,7 @@ export const FormBudget: React.FC<FormBudgetProps> = ({ budget }) => {
 
                 <FormField
                     control={form.control}
-                    name="structurePrice"
+                    name="bar_structure.price"
                     render={({ field, fieldState }) => (
                         <FormItem>
                             <FormLabel>Preço da estrutura</FormLabel>
@@ -137,7 +107,7 @@ export const FormBudget: React.FC<FormBudgetProps> = ({ budget }) => {
 
                 <FormField
                     control={form.control}
-                    name="totalPrice"
+                    name="total_value"
                     render={({ field, fieldState }) => (
                         <FormItem>
                             <FormLabel>Preço total</FormLabel>

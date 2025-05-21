@@ -7,7 +7,7 @@ import { Order } from "@/schemas/Orders"
 
 export const columns: ColumnDef<Order>[] = [
     {
-        accessorKey: "id",
+        accessorKey: "_id",
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="ID" />
         ),
@@ -37,7 +37,7 @@ export const columns: ColumnDef<Order>[] = [
             const status = row.getValue("order_status");
             const translated = {
                 pending: "Pendente",
-                canceled: "Cancelado",
+                cancelled: "Cancelado",
                 confirmed: "Confirmado",
             }[status as string] || status;
 

@@ -43,7 +43,7 @@ export const OrderSchema = z.object({
     created_at: z.string().datetime(),
     updated_at: z.string().datetime(),
     details: z.string().optional(),
-    id: z.string(),
+    _id: z.string(),
 });
 
 export const OrdersSchema = z.array(OrderSchema);

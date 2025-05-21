@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { getTemplateLocale } from "@/utils/locale";
 import DatePicker from "react-datepicker";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 interface FormOrderProps {
     order: Order;
@@ -21,7 +20,7 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
     const form = useForm<Order>({
         resolver: zodResolver(OrderSchema),
         defaultValues: {
-            id: order.id,
+            _id: order._id,
             created_at: order.created_at,
             location: order.location,
             date: order.date,
@@ -41,7 +40,7 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
                     control={form.control}
-                    name="id"
+                    name="_id"
                     render={({ field, fieldState }) => (
                         <FormItem>
                             <FormLabel>ID</FormLabel>
@@ -76,7 +75,6 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
                         </FormItem>
                     )}
                 />
-
 
                 <FormField
                     control={form.control}
@@ -239,25 +237,17 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
                 <FormField
                     control={form.control}
                     name="order_status"
-                    render={({ field }) => (
+                    render={({ field, fieldState }) => (
                         <FormItem>
-                            <FormLabel>Status</FormLabel>
+                            <FormLabel>Email</FormLabel>
                             <FormControl>
-                                <Select
-                                    onValueChange={field.onChange}
-                                    value={field.value}
-                                    defaultValue={order.order_status}
-                                >
-                                    <SelectTrigger className="rounded-md border bg-gray-200 dark:bg-[#2c2c2c]">
-                                        <SelectValue placeholder="Selecione o status" />
-                                    </SelectTrigger>
-                                    <SelectContent
-                                        className="rounded-md border bg-gray-200 dark:bg-[#2c2c2c] dark:text-gray-200">
-                                        <SelectItem value="pending">Pending</SelectItem>
-                                        <SelectItem value="cancelled">Cancelled</SelectItem>
-                                        <SelectItem value="confirmed">Confirmed</SelectItem>
-                                    </SelectContent>
-                                </Select>
+                                <div className="relative">
+                                    <Input
+                                        {...field}
+                                        readOnly={true}
+                                        className={`bg-gray-200 ${fieldState.invalid ? 'border-red-500' : ''}`}
+                                    />
+                                </div>
                             </FormControl>
                         </FormItem>
                     )}

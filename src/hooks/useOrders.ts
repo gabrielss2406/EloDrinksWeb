@@ -41,19 +41,21 @@ export function useOrder(orderId: string) {
 }
 
 export function useSearchOrders(id: string) {
+    const isValidId = /^\d+$/.test(id); // só aceita se for composto apenas por números
+
     return useQuery<Order[]>({
         queryKey: ["orders-search", id],
         queryFn: async () => {
             try {
                 const response = await api.get(`/orders/customer/${id}`);
-                console.log(response.data)
+                console.log(response.data);
                 return response.data as Order[];
             } catch (error: unknown) {
                 console.error("Error fetching orders customer:", error);
                 throw error;
             }
         },
-        enabled: !!id,
+        enabled: isValidId,
     });
 }
 
@@ -103,7 +105,6 @@ export function useConfirmOrder() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["orders"] });
             queryClient.invalidateQueries({ queryKey: ["orders-search"] });
-            queryClient.invalidateQueries({ queryKey: ["orders-categories"] });
         }
     });
 }
@@ -123,7 +124,6 @@ export function useDeleteOrder() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["orders"] });
             queryClient.invalidateQueries({ queryKey: ["orders-search"] });
-            queryClient.invalidateQueries({ queryKey: ["orders-categories"] });
         }
     });
 }

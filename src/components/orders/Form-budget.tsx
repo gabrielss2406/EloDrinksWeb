@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { Budget, BudgetSchema } from "@/schemas/Orders";
 import { Input } from "../ui/input";
 import { X } from "lucide-react";
+import { ItemTable } from "./ItemTable";
 
 interface FormBudgetProps {
     budget: Budget;
@@ -41,6 +42,8 @@ export const FormBudget: React.FC<FormBudgetProps> = ({ budget }) => {
     //     form.setValue("items", updatedList);
     // };
 
+    console.log(budget.bar_structure.name)
+
 
     const onSubmit = (data: Budget) => {
         console.log("Dados enviados:", data);
@@ -50,12 +53,9 @@ export const FormBudget: React.FC<FormBudgetProps> = ({ budget }) => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                {/* <ItemTable
+                <ItemTable
                     items={form.watch("items")}
-                    addProduct={addProduct}
-                    removeProduct={removeProduct}
-                    updateQuantity={updateQuantity}
-                /> */}
+                />
 
                 <FormField
                     control={form.control}

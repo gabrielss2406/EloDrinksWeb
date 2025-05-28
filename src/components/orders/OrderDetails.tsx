@@ -7,6 +7,7 @@ import { Order } from '@/schemas/Orders';
 import { toast } from 'sonner';
 import { useConfirmOrder, useDeleteOrder } from '@/hooks/useOrders';
 import { Button } from '../ui/button';
+import { useCreateNotification } from '@/hooks/useNotifications';
 
 interface OrderDetailsCardsProps {
     order: Order;
@@ -15,6 +16,7 @@ interface OrderDetailsCardsProps {
 const OrderDetailsCards: React.FC<OrderDetailsCardsProps> = ({ order }) => {
     const { mutate: mutateConfirm, isSuccess: isSuccessConfirm, isError: isErrorConfirm } = useConfirmOrder();
     const { mutate: mutateDelete, isSuccess: isSuccessDelete, isError: isErrorDelete } = useDeleteOrder();
+    const { mutate: mutateNotification } = useCreateNotification();
 
     const handleDelete = async () => {
         try {
@@ -26,6 +28,12 @@ const OrderDetailsCards: React.FC<OrderDetailsCardsProps> = ({ order }) => {
 
     const handleConfirm = async () => {
         try {
+            mutateNotification({
+                customer_id: order.customer.id,
+                title: `Pedido #${order._id} confirmado`,
+                content: `Seu pedido para o dia ${order.date.start} foi confirmado com sucesso!`,
+                page: `/(drawer)/(tabs)/history/${order._id}`,
+            })
             mutateConfirm(order._id);
         } catch (error) {
             console.error("Failed to confirm order:", error);

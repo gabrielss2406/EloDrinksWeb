@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import { columns } from "@/components/orders/Columns"
 import { DataTable } from "@/components/orders/DataTable"

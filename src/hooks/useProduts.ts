@@ -40,10 +40,13 @@ export function useProduct(productId: string) {
 }
 
 export function useSearchProducts(name: string) {
+    const isEnabled = !!name && name.trim() !== "";
+
     return useQuery<Product[]>({
         queryKey: ["products-search", name],
         queryFn: async () => {
             try {
+                if (!isEnabled) return [];
                 const response = await api.get(`/product/search?name=${name}`);
                 return response.data as Product[];
             } catch (error: unknown) {
@@ -51,7 +54,7 @@ export function useSearchProducts(name: string) {
                 throw error;
             }
         },
-        enabled: !!name,
+        enabled: isEnabled
     });
 }
 

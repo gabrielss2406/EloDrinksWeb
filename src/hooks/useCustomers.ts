@@ -25,10 +25,13 @@ export function useCustomers(page: number, pageSize: number) {
 }
 
 export function useSearchCustomers(email: string) {
+    const isEnabled = !!email && email.trim() !== "";
+
     return useQuery<Customer[]>({
         queryKey: ["customers-search", email],
         queryFn: async () => {
             try {
+                if (!isEnabled) return [];
                 const response = await api.get(`/customer/search/?email=${email}`);
                 return response.data as Customer[];
             } catch (error: unknown) {
@@ -36,7 +39,7 @@ export function useSearchCustomers(email: string) {
                 throw error;
             }
         },
-        enabled: !!email,
+        enabled: email.trim() !== "",
     });
 }
 

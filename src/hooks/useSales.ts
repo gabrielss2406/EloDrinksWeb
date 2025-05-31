@@ -25,18 +25,21 @@ export function useSales(page: number, pageSize: number) {
 }
 
 export function useSearchSales(name: string) {
+    const isEnabled = !!name && name.trim() !== "";
+
     return useQuery<Sales[]>({
         queryKey: ["sales-search", name],
         queryFn: async () => {
             try {
+                if (!isEnabled) return [];
                 const response = await api.get(`/sales/search/?name=${name}`);
                 return response.data as Sales[];
             } catch (error: unknown) {
-                console.error("Error fetching search sales:", error);
+                console.error("Error fetching structures:", error);
                 throw error;
             }
         },
-        enabled: !!name,
+        enabled: isEnabled
     });
 }
 

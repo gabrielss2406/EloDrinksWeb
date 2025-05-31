@@ -26,10 +26,13 @@ export function useStructures(page: number, pageSize: number) {
 }
 
 export function useSearchStructures(name: string) {
+    const isEnabled = !!name && name.trim() !== "";
+
     return useQuery<Structure[]>({
         queryKey: ["structures-search", name],
         queryFn: async () => {
             try {
+                if (!isEnabled) return [];
                 const response = await api.get(`/structure/search/?name=${name}`);
                 return response.data as Structure[];
             } catch (error: unknown) {
@@ -37,7 +40,7 @@ export function useSearchStructures(name: string) {
                 throw error;
             }
         },
-        enabled: !!name,
+        enabled: isEnabled
     });
 }
 

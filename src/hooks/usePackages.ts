@@ -49,10 +49,13 @@ export function usePackage(id: string) {
 }
 
 export function useSearchPackages(name: string) {
+    const isEnabled = !!name && name.trim() !== "";
+
     return useQuery<Package[]>({
         queryKey: ["packages-search", name],
         queryFn: async () => {
             try {
+                if (!isEnabled) return [];
                 const response = await api.get(`/packs/search/?name=${name}`);
                 return response.data as Package[];
             } catch (error: unknown) {
@@ -64,7 +67,7 @@ export function useSearchPackages(name: string) {
         refetchOnReconnect: false,
         refetchOnMount: false,
         staleTime: 1000 * 60 * 5,
-        enabled: !!name,
+        enabled: isEnabled
     });
 }
 

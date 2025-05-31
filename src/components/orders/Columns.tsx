@@ -103,7 +103,7 @@ export const columns: ColumnDef<Order>[] = [
         ),
         cell: ({ row }) => {
             const createdAt = row.getValue<Date>("created_at")
-            return <span>{getDaysSincePost(createdAt)} atrás</span>
+            return <span>{getDaysSincePost(createdAt)}</span>
         },
         enableSorting: true,
     },

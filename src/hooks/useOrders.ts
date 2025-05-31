@@ -47,8 +47,8 @@ export function useSearchOrders(id: string) {
         queryKey: ["orders-search", id],
         queryFn: async () => {
             try {
+                if (!isValidId) return [];
                 const response = await api.get(`/orders/customer/${id}`);
-                console.log(response.data);
                 return response.data as Order[];
             } catch (error: unknown) {
                 console.error("Error fetching orders customer:", error);

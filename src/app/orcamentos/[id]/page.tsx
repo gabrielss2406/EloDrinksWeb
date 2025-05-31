@@ -14,7 +14,7 @@ export default function OrderDetails() {
     return (
         <>
             <Header name={`Orçamento / ${id}`} />
-            {isLoading
+            {(isLoading && !id)
                 ? <Loading />
                 : <OrderDetailsCards order={data as Order} />
             }

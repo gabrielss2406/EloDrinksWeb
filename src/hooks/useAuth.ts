@@ -29,3 +29,7 @@ export function useLogin() {
         }
     })
 }
+
+export function useLogout() {
+    Cookies.remove('elodrinks_token')
+}

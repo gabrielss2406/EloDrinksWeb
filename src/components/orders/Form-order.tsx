@@ -115,7 +115,7 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
                     name="date.end"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Início do evento</FormLabel>
+                            <FormLabel>Fim do evento</FormLabel>
                             <FormControl>
                                 <div className="relative">
                                     <DatePicker
@@ -239,7 +239,7 @@ export const FormOrder: React.FC<FormOrderProps> = ({ order }) => {
                     name="order_status"
                     render={({ field, fieldState }) => (
                         <FormItem>
-                            <FormLabel>Email</FormLabel>
+                            <FormLabel>Status do pedido</FormLabel>
                             <FormControl>
                                 <div className="relative">
                                     <Input

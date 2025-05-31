@@ -27,11 +27,6 @@ export const columns: ColumnDef<Customer>[] = [
         enableSorting: true,
     },
     {
-        accessorKey: "ordersAccount",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Orçamentos" />,
-        enableSorting: true,
-    },
-    {
         id: "actions",
         cell: ({ row }) => {
             const customer = row.original

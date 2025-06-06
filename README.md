@@ -1,5 +1,5 @@
 # Elo Drinks Web
-Frontend of the Elo Drinks project developed in nextjs.
+Frontend of the Elo Drinks project developed in Nextjs.
 
 To run this project locally ou will need the [backend project](https://github.com/markinh00/EloDrinksBackend)
 

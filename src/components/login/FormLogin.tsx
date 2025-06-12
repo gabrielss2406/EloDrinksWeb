@@ -27,7 +27,7 @@ export const FormLogin: React.FC = () => {
         mutate(data, {
             onSuccess: () => {
                 toast.success("Login realizado com sucesso!");
-                router.push("/clientes");
+                router.push("/");
             },
             onError: () => {
                 toast.error("Erro ao realizar login, verifique suas credenciais.");

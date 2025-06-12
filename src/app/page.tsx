@@ -57,7 +57,7 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Valor médio do pedido (mês)</p>
-                  <h2 className="text-2xl font-bold text-orange-700">{data.avg_order_value}</h2>
+                  <h2 className="text-2xl font-bold text-orange-700">R$ {data.avg_order_value.toFixed(2)}</h2>
                 </div>
               </CardContent>
             </Card>
@@ -106,7 +106,7 @@ export default function Dashboard() {
                     </Pie>
                     <Tooltip
                       wrapperClassName="text-sm"
-                      formatter={(value: number) => [`${value} pedidos`, 'Quantidade']}
+                      formatter={(value: number) => [`${value}`, 'Quantidade']}
                     />
                     <Legend verticalAlign="bottom" height={36} />
                   </PieChart>

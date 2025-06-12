@@ -59,35 +59,20 @@ export function useSearchOrders(id: string) {
     });
 }
 
-// export function useUpdateProduct() {
-//     const queryClient = useQueryClient();
-
-//     return useMutation<Product, unknown, { id: string; data: ProductInput }>({
-//         mutationFn: async ({ id, data }) => {
-//             try {
-//                 const formData = new FormData();
-//                 formData.append("name", data.name);
-//                 formData.append("price", data.price.toString());
-//                 formData.append("category", data.category);
-//                 if (data.img_file) {
-//                     formData.append("img_file", data.img_file);
-//                 }
-
-//                 const response = await apiFormData.put(`/product/${id}`, formData);
-
-//                 return response.data as Product;
-//             } catch (error: unknown) {
-//                 console.error("Error updating product:", error);
-//                 throw error;
-//             }
-//         },
-//         onSuccess: () => {
-//             queryClient.invalidateQueries({ queryKey: ["products"] });
-//             queryClient.invalidateQueries({ queryKey: ["products-search"] });
-//             queryClient.invalidateQueries({ queryKey: ["products-categories"] });
-//         }
-//     });
-// }
+export function useOrderStatistics() {
+    return useQuery({
+        queryKey: ["orders-statistics"],
+        queryFn: async () => {
+            try {
+                const response = await api.get(`/orders/statistics`);
+                return response.data;
+            } catch (error: unknown) {
+                console.error("Error fetching orders statistics:", error);
+                throw error;
+            }
+        }
+    });
+}
 
 
 export function useConfirmOrder() {

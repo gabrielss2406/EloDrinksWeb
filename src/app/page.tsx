@@ -1,84 +1,151 @@
 "use client";
 
-import { LineChart, Line, PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+} from "recharts";
 import { Card, CardContent } from "@/components/ui/card";
 import Header from "@/components/shared/Header";
+import { useOrderStatistics } from "@/hooks/useOrders";
 
-// Dados de exemplo
-const revenueData = [
-  { date: "01/01", revenue: 0 },
-  { date: "01/02", revenue: 0 },
-  { date: "01/03", revenue: 0 },
-  { date: "01/04", revenue: 0 },
-];
-
-const productData = [
-  { name: "Product 01", value: 0, color: "#007bff" },
-  { name: "Product 02", value: 0, color: "#ff7300" },
-  { name: "Product 03", value: 0, color: "#ffcc00" },
-  { name: "Product 04", value: 0, color: "#28a745" },
-];
+const COLORS = ["#f97316", "#10b981", "#3b82f6", "#6366f1", "#ec4899"];
 
 export default function Dashboard() {
+  const { data, isLoading } = useOrderStatistics();
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-orange-100 via-blue-100 to-purple-100">
+        <div className="flex flex-col items-center gap-4 p-8 bg-white/80 rounded-xl shadow-lg">
+          <svg className="animate-spin h-10 w-10 text-orange-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+          </svg>
+          <span className="text-lg font-semibold text-gray-700">Carregando dashboard...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <span>Nenhum dado disponível.</span>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen">
-      {/* Main Content */}
+      {/* Conteúdo Principal */}
       <div className="flex-1">
         <Header name={"Dashboard"} />
         <div className="pl-6">
-          {/* Aviso sobre dados de exemplo */}
-          <p className="text-sm text-gray-500 mb-4">
-            Todos os dados apresentados são apenas exemplos.
-          </p>
 
-          {/* Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-            <Card>
-              <CardContent>
-                <p className="text-sm">Total revenue (month)</p>
-                <h2 className="text-2xl font-bold">R$ 1.000,00</h2>
-                <p className="text-red-500">-13.5% less than last month</p>
+          {/* Cards com dados principais */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6 pr-6">
+            <Card className="shadow-xl rounded-2xl bg-gradient-to-r from-orange-100 to-orange-200">
+              <CardContent className="flex items-center gap-4 p-6">
+                <div className="bg-orange-500 text-white p-3 rounded-full shadow-md">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.104 0-2 .896-2 2v4h4v-4c0-1.104-.896-2-2-2z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 20c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Valor médio do pedido (mês)</p>
+                  <h2 className="text-2xl font-bold text-orange-700">{data.avg_order_value}</h2>
+                </div>
               </CardContent>
             </Card>
-            <Card>
-              <CardContent>
-                <p className="text-sm">Orders (month)</p>
-                <h2 className="text-2xl font-bold">37</h2>
-                <p className="text-red-500">-5.9% less than last month</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent>
-                <p className="text-sm">Orders (day)</p>
-                <h2 className="text-2xl font-bold">4</h2>
-                <p className="text-green-500">50% more than last day</p>
+
+            <Card className="shadow-xl rounded-2xl bg-gradient-to-r from-green-100 to-emerald-200">
+              <CardContent className="flex items-center gap-4 p-6">
+                <div className="bg-green-500 text-white p-3 rounded-full shadow-md">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M9 21h6m2 0a2 2 0 002-2v-5H5v5a2 2 0 002 2h10zM6 10V5a2 2 0 012-2h8a2 2 0 012 2v5" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Pedidos (mês)</p>
+                  <h2 className="text-2xl font-bold text-green-700">{data.month_order_count}</h2>
+                </div>
               </CardContent>
             </Card>
           </div>
 
-          {/* Gráficos */}
+          {/* Gráficos de Pizza */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Card>
+            <Card className="shadow-xl rounded-2xl">
               <CardContent>
-                <p className="text-sm mb-2">Revenue per day</p>
-                <LineChart width={400} height={200} data={revenueData}>
-                  <Line type="monotone" dataKey="revenue" stroke="#f59e0b" />
-                  <Tooltip />
-                </LineChart>
+                <p className="text-sm font-semibold text-gray-700 mb-4">Top 5 produtos mais pedidos</p>
+                <div className="flex justify-center">
+                  <PieChart width={500} height={320}>
+                    <Pie
+                      data={data.top5_items.map((item: { name: string; quantity: number }, index: number) => ({
+                        name: item.name,
+                        value: item.quantity,
+                        fill: COLORS[index % COLORS.length],
+                      }))}
+                      dataKey="value"
+                      nameKey="name"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      innerRadius={50}
+                      label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                      labelLine={false}
+                      isAnimationActive={true}
+                    >
+                      {data.top5_items.map((_: { name: string; quantity: number }, index: number) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      wrapperClassName="text-sm"
+                      formatter={(value: number) => [`${value} pedidos`, 'Quantidade']}
+                    />
+                    <Legend verticalAlign="bottom" height={36} />
+                  </PieChart>
+                </div>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="shadow-xl rounded-2xl">
               <CardContent>
-                <p className="text-sm mb-2">Most ordered products</p>
-                <PieChart width={200} height={200}>
-                  <Pie data={productData} dataKey="value" outerRadius={80}>
-                    {productData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Legend />
-                </PieChart>
+                <p className="text-sm font-semibold text-gray-700 mb-4">Estrutura do bar (percentual)</p>
+                <div className="flex justify-center">
+                  <PieChart width={500} height={320}>
+                    <Pie
+                      data={data.bar_structure_percentage.map((item: { name: string; percentage: number }, index: number) => ({
+                        name: item.name,
+                        value: item.percentage,
+                        fill: COLORS[index % COLORS.length],
+                      }))}
+                      dataKey="value"
+                      nameKey="name"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      innerRadius={50}
+                      label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                      labelLine={false}
+                      isAnimationActive={true}
+                    >
+                      {data.bar_structure_percentage.map((_: { name: string; percentage: number }, index: number) => (
+                        <Cell key={`bar-structure-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      wrapperClassName="text-sm"
+                      formatter={(value: number) => [`${value}%`, 'Percentual']}
+                    />
+                    <Legend verticalAlign="bottom" height={36} />
+                  </PieChart>
+                </div>
               </CardContent>
             </Card>
           </div>

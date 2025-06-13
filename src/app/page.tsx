@@ -47,7 +47,7 @@ export default function Dashboard() {
 
           {/* Cards com dados principais */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6 pr-6">
-            <Card className="shadow-xl rounded-2xl bg-gradient-to-r from-orange-100 to-orange-200">
+            <Card className="shadow-xl rounded-2xl bg-gradient-to-r from-orange-100 to-orange-200 dark:from-orange-900 dark:to-orange-800">
               <CardContent className="flex items-center gap-4 p-6">
                 <div className="bg-orange-500 text-white p-3 rounded-full shadow-md">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -56,13 +56,15 @@ export default function Dashboard() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Valor médio do pedido (mês)</p>
-                  <h2 className="text-2xl font-bold text-orange-700">R$ {data.avg_order_value.toFixed(2)}</h2>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">Valor médio a do pedido (mês)</p>
+                  <h2 className="text-2xl font-bold text-orange-700 dark:text-orange-300">
+                    R$ {data.avg_order_value.toFixed(2)}
+                  </h2>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="shadow-xl rounded-2xl bg-gradient-to-r from-green-100 to-emerald-200">
+            <Card className="shadow-xl rounded-2xl bg-gradient-to-r from-green-100 to-emerald-200 dark:from-emerald-900 dark:to-emerald-800">
               <CardContent className="flex items-center gap-4 p-6">
                 <div className="bg-green-500 text-white p-3 rounded-full shadow-md">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -70,8 +72,10 @@ export default function Dashboard() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Pedidos (mês)</p>
-                  <h2 className="text-2xl font-bold text-green-700">{data.month_order_count}</h2>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">Pedidos (mês)</p>
+                  <h2 className="text-2xl font-bold text-green-700 dark:text-green-300">
+                    {data.month_order_count}
+                  </h2>
                 </div>
               </CardContent>
             </Card>

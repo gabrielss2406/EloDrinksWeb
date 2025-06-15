@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-} from "recharts";
+import { ResponsivePie } from '@nivo/pie';
 import { Card, CardContent } from "@/components/ui/card";
 import Header from "@/components/shared/Header";
 import { useOrderStatistics } from "@/hooks/useOrders";
@@ -80,75 +74,76 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </div>
-
-          {/* Gráficos de Pizza */}
+          {/* Gráficos de Pizza com Nivo */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Gráfico: Top 5 produtos mais pedidos */}
             <Card className="shadow-xl rounded-2xl">
               <CardContent>
                 <p className="text-sm font-semibold text-gray-700 mb-4">Top 5 produtos mais pedidos</p>
-                <div className="flex justify-center">
-                  <PieChart width={500} height={320}>
-                    <Pie
-                      data={data.top5_items.map((item: { name: string; quantity: number }, index: number) => ({
-                        name: item.name,
-                        value: item.quantity,
-                        fill: COLORS[index % COLORS.length],
-                      }))}
-                      dataKey="value"
-                      nameKey="name"
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={100}
-                      innerRadius={50}
-                      label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
-                      labelLine={false}
-                      isAnimationActive={true}
-                    >
-                      {data.top5_items.map((_: { name: string; quantity: number }, index: number) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      wrapperClassName="text-sm"
-                      formatter={(value: number) => [`${value}`, 'Quantidade']}
-                    />
-                    <Legend verticalAlign="bottom" height={36} />
-                  </PieChart>
+                <div className="h-[320px]">
+                  <ResponsivePie
+                    data={data.top5_items.map((item: { name: string; quantity: number }, index: number) => ({
+                      id: item.name,
+                      label: item.name,
+                      value: item.quantity,
+                      color: COLORS[index % COLORS.length],
+                    }))}
+                    colors={{ datum: 'data.color' }}
+                    margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+                    innerRadius={0.5}
+                    padAngle={1}
+                    cornerRadius={3}
+                    activeOuterRadiusOffset={8}
+                    borderWidth={1}
+                    borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+                    arcLinkLabelsSkipAngle={10}
+                    arcLinkLabelsTextColor="#333333"
+                    arcLinkLabelsThickness={2}
+                    arcLinkLabelsColor={{ from: 'color' }}
+                    arcLabelsSkipAngle={10}
+                    arcLabelsTextColor={{ from: 'color', modifiers: [['brighter', 2]] }}
+                    tooltip={({ datum }) => (
+                      <div className="bg-white p-2 rounded shadow text-sm">
+                        <strong>{datum.label}</strong>: {datum.value}
+                      </div>
+                    )}
+                  />
                 </div>
               </CardContent>
             </Card>
 
+            {/* Gráfico: Estrutura do bar */}
             <Card className="shadow-xl rounded-2xl">
               <CardContent>
                 <p className="text-sm font-semibold text-gray-700 mb-4">Estrutura do bar (percentual)</p>
-                <div className="flex justify-center">
-                  <PieChart width={500} height={320}>
-                    <Pie
-                      data={data.bar_structure_percentage.map((item: { name: string; percentage: number }, index: number) => ({
-                        name: item.name,
-                        value: item.percentage,
-                        fill: COLORS[index % COLORS.length],
-                      }))}
-                      dataKey="value"
-                      nameKey="name"
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={100}
-                      innerRadius={50}
-                      label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
-                      labelLine={false}
-                      isAnimationActive={true}
-                    >
-                      {data.bar_structure_percentage.map((_: { name: string; percentage: number }, index: number) => (
-                        <Cell key={`bar-structure-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      wrapperClassName="text-sm"
-                      formatter={(value: number) => [`${value}%`, 'Percentual']}
-                    />
-                    <Legend verticalAlign="bottom" height={36} />
-                  </PieChart>
+                <div className="h-[320px]">
+                  <ResponsivePie
+                    data={data.bar_structure_percentage.map((item: { name: string; percentage: number }, index: number) => ({
+                      id: item.name,
+                      label: item.name,
+                      value: item.percentage,
+                      color: COLORS[index % COLORS.length],
+                    }))}
+                    colors={{ datum: 'data.color' }}
+                    margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+                    innerRadius={0.5}
+                    padAngle={1}
+                    cornerRadius={3}
+                    activeOuterRadiusOffset={8}
+                    borderWidth={1}
+                    borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+                    arcLinkLabelsSkipAngle={10}
+                    arcLinkLabelsTextColor="#333333"
+                    arcLinkLabelsThickness={2}
+                    arcLinkLabelsColor={{ from: 'color' }}
+                    arcLabelsSkipAngle={10}
+                    arcLabelsTextColor={{ from: 'color', modifiers: [['brighter', 2]] }}
+                    tooltip={({ datum }) => (
+                      <div className="bg-white p-2 rounded shadow text-sm">
+                        <strong>{datum.label}</strong>: {datum.value}%
+                      </div>
+                    )}
+                  />
                 </div>
               </CardContent>
             </Card>
